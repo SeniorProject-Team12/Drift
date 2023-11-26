@@ -1,19 +1,23 @@
 import React from "react";
 import { StyleSheet, Text, View, Pressable, Button } from 'react-native';
 
-const SplashPage = ({navigation}) => {
+const SignUpPage = ({navigation}) => {
     return (
         <View style={styles.container}>
-            <Text> Drift Splash Page</Text>
+            <Text>Sign Up Page</Text>
             <Button 
-                title="Let's get started!"
-                onPress={() => navigation.navigate('SignUpPage')}
+                title="Click Here"
+                onPress={() => alert('Button Clicked!')}
+            />
+            <Button 
+                title="Already have an accout? Login."
+                onPress={() => navigation.navigate('LoginPage')}
             />
         </View>
     );
 };
 
-export default SplashPage;
+export default SignUpPage;
 
 const styles = StyleSheet.create({
     container: {

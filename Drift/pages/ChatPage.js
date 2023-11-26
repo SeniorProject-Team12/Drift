@@ -6,8 +6,20 @@ const ChatPage = ({navigation}) => {
         <View style={styles.container}>
             <Text>Chat Page</Text>
             <Button 
-                title="Click Here"
-                onPress={() => alert('Button Clicked!')}
+                title="Go to chat screen...again"
+                onPress={() => navigation.push('Chat')}
+            />
+            <Button 
+                title="Go to discover screen..."
+                onPress={() => navigation.navigate('Discover')}
+            />
+            <Button 
+                title="Go back..."
+                onPress={() => navigation.goBack()}
+            />
+            <Button 
+                title="Go to the first screen..."
+                onPress={() => navigation.popToTop()}
             />
         </View>
     );

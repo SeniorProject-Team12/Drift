@@ -1,17 +1,20 @@
+import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-// import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, TextInput, View, Button, ActivityIndicator } from 'react-native';
-import Icon from 'react-native-ico-material-design';
 import { NavigationContainer } from '@react-navigation/native';
-import Tabs from './navigation/tabs';
-import SplashPage from './pages/SplashPage';
-import LoginPage from './pages/Login';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+// import DiscoverStackScreen from './pages/MainTabScreen';
+// import ChatStackScreen from './pages/MainTabScreen';
+import MainTabScreen from './pages/MainTabScreen';
+import { DrawerContent } from './pages/DrawerContent';
+import SettingsPage from './pages/SettingsPage';
+import AuthStackScreen from './pages/AuthScreenStack';
 
 import { AuthContext } from './components/context';
 
-const App = () => {
-  var isSignedIn = false;
+const Drawer = createDrawerNavigator();
 
+const App = () => {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userToken, setUserToken] = React.useState(null);
 
@@ -36,6 +39,7 @@ const App = () => {
     }, 1000);
   }, []);
 
+  // loading indication for userfeedback while auth determined
   if (isLoading) {
     return (
       <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
@@ -45,14 +49,20 @@ const App = () => {
   }
 
   return (
-  <AuthContext.Provider value={authContext}>
-      { userToken != null ? (
-        <NavigationContainer>
-          <Tabs />
-        </NavigationContainer>
-      ) : (
-        <LoginPage />
-      )}
+    <AuthContext.Provider value={authContext}>
+      <NavigationContainer>
+        { userToken != null ? (
+          // Drawer container - if user logged in
+          <Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+            <Drawer.Screen name="Drift" component={MainTabScreen} />
+            <Drawer.Screen name="Settings" component={SettingsPage} />
+          </Drawer.Navigator>
+          ) : (
+            // signup/login screen stack
+            <AuthStackScreen />
+          )
+        }
+      </NavigationContainer>
     </AuthContext.Provider>
   );
 }

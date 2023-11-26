@@ -8,6 +8,7 @@ const LoginPage = ({navigation, route}) => {
     const [password, setPassword] = React.useState('');
     // const { setUserToken } = route.params;
 
+    // login state variable as defined in App.js
     const { Login } = React.useContext(AuthContext);
 
     return (
@@ -22,7 +23,7 @@ const LoginPage = ({navigation, route}) => {
           placeholder="Password"
           secureTextEntry={true}
         />
-        <Button title="Sign Up" onPress={() => {Login()}} />
+        <Button title="Sign In" onPress={() => { Login() }} />
       </View>
     );
 };

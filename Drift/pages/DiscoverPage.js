@@ -6,8 +6,8 @@ const DiscoverPage = ({navigation}) => {
         <View style={styles.container}>
             <Text>Discover Page</Text>
             <Button 
-                title="Click Here"
-                onPress={() => alert('Button Clicked!')}
+                title="Go to chat screen..."
+                onPress={() => navigation.navigate('Chat')}
             />
         </View>
     );
