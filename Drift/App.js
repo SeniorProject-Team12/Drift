@@ -1,10 +1,9 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, TextInput, View, Button, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-// import DiscoverStackScreen from './pages/MainTabScreen';
-// import ChatStackScreen from './pages/MainTabScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MainTabScreen from './pages/MainTabScreen';
 import { DrawerContent } from './pages/DrawerContent';
 import SettingsPage from './pages/SettingsPage';
@@ -15,32 +14,98 @@ import { AuthContext } from './components/context';
 const Drawer = createDrawerNavigator();
 
 const App = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [userToken, setUserToken] = React.useState(null);
+
+  // NOTE - default username and pass is on line 66
+  // TODO - create api to add user and get user to can change auth check with such values from database
+
+  // initial login state variables
+  const initialLoginState = {
+    isLoading: true,
+    username: null,
+    userToken: null
+  };
+
+  const loginReducer = (previousState, event) => {
+    switch(event.type) {
+      case 'GET_TOKEN':
+        return {
+          ...previousState,
+          userToken: event.token,
+          isLoading: false
+        };
+      case 'LOGIN':
+        return {
+          ...previousState,
+          username: event.id,
+          userToken: event.token,
+          isLoading: false
+        };
+      case 'LOGOUT':
+        return {
+          ...previousState,
+          username: null,
+          userToken: null,
+          isLoading: false
+        };      
+      case 'SIGNUP':
+        return {
+          ...previousState,
+          username: event.id,
+          userToken: event.token,
+          isLoading: false
+        };    
+    }
+  };
+
+  const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
   const authContext = React.useMemo(() => ({
-    Login: () => {
-      setUserToken('dfsd');
-      setIsLoading(false);
+    SignUp: () => { },
+    Login: async (username, password) => {
+      let userToken;
+      userToken = null;
+      // default, but todo is pull from database through API call
+      if(username == 'user' && password == 'password') {
+        try {
+          // set random token currently, but pull from db once API developed
+          userToken = 'random';
+          await AsyncStorage.setItem('userToken', userToken);
+        } catch(e) {
+          console.log(e);
+        }
+      }
+      dispatch({ type: 'LOGIN', id: username, token: userToken });
     },
-    SignOut: () => {
-      setUserToken(null);
-      setIsLoading(false);
+    SignOut: async () => {
+      try {
+        // set random token currently, but pull from db once API developed
+        userToken = 'random';
+        await AsyncStorage.removeItem('userToken');
+      } catch(e) {
+        console.log(e);
+      }
+
+      dispatch({ type: 'LOGOUT' });
     },
-    SignUp: () => {
-      setUserToken('dfsd');
-      setIsLoading(false);
-    },
-  }));
+  }), []);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
+    setTimeout(async () => {
+      let userToken;
+      userToken = null;
+      try {
+        // set random token currently, but pull from db once API developed
+        userToken = await AsyncStorage.getItem('userToken', userToken);
+      } catch(e) {
+        console.log(e);
+      }
+      dispatch({ type: 'GET_TOKEN', token: userToken });
     }, 1000);
   }, []);
 
-  // loading indication for userfeedback while auth determined
-  if (isLoading) {
+  if (loginState.isLoading) {
+      // loading sign for userfeedback while auth determined
+
     return (
       <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
         <ActivityIndicator size={'large'} />
@@ -51,7 +116,7 @@ const App = () => {
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        { userToken != null ? (
+        { loginState.userToken != null ? (
           // Drawer container - if user logged in
           <Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
             <Drawer.Screen name="Drift" component={MainTabScreen} />
