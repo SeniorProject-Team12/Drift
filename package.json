@@ -1,0 +1,27 @@
+{
+  "name": "drift",
+  "version": "1.0.0",
+  "description": "Our project is a thrifting web/mobile application which will be a software service specifically for public users to buy and sell thrifting goods.  Individuals will be able to make an account, post items to their page for others to see, and peruse the application to see what other sellers are putting up for sale.",
+  "main": "out/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "cp ./routes/modules/db.config.json ./out/routes/modules/db.config.json",
+    "build": "npx tsc -p tsconfig.json && npm run prepare",
+    "start": "node ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.5"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "typescript": "^5.3.2"
+  }
+}
