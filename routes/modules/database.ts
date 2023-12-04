@@ -1,3 +1,4 @@
+import e from 'cors';
 import mysql from'mysql';
 const configs = require('./db.config.json');
 
@@ -8,10 +9,14 @@ class Database {
     async makeConnection() {
         console.log
         this.con = mysql.createConnection({
-            host: "localhost",
-            database: "drift",
-            user: "sqluser",
-            password: "Sqlrocks01!"
+            // host: "localhost",
+            // database: "drift",
+            // user: "sqluser",
+            // password: "Sqlrocks01!"
+            host: configs.development.host,
+            database: configs.development.database,
+            user: configs.development.username,
+            password: configs.development.password
         });
 
         this.con.connect(async(err) => {
@@ -40,13 +45,20 @@ class Database {
         let procedure = "CALL " + sp + "(";
 
         for(const key in params) {
-            if(params[key] == params[Object.keys(params)[Object.keys(params).length - 1]]) {
-                // if param is equal to the last object in params
-                procedure += "'" + params[key] + "')";
+            if(isNaN(params[key])) {
+                procedure += "'" + params[key] + "'";
+            } else if(params[key] == '') {
+                procedure += "null";
             } else {
-                procedure += "'" + params[key] + "',";
+                procedure += params[key];
+            }
+
+            if(params[key] != params[Object.keys(params)[Object.keys(params).length - 1]]) {
+                // if param is equal to the last object in params
+                procedure += ", ";
             }
         }
+        procedure += ")";
 
         console.log(procedure);
         (this.con).query(procedure, (err, result) => {

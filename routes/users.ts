@@ -10,10 +10,30 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
             if(err) {
                 console.log("ERROR: ", err);
             } else {
-                console.log(data);   
+                // console.log(data);   
                 res.send(data);
             }
         });     
+    } catch(e) {
+        next(e);
+    }
+});
+
+// Get user by userID
+router.get("/id/:id", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userID = req.params.id;
+        
+        await DB.executeSQL('select * from ', function(err, data) {
+            if(err) {
+                console.log("ERROR: ", err);
+            } else if(!data) {
+                res.send("No user with specified userID exists!");
+            } 
+            else {
+                res.send(data);
+            }
+        });
     } catch(e) {
         next(e);
     }
@@ -42,10 +62,18 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 // Update a specific user record
 router.post('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const userID = req.params.id;
         const { firstName, lastName, username, emailAddress, phoneNum, password } = req.body;
 
+        const sp = "SP_UpdateUser";
 
-
+        await DB.executeStoredProcedure(sp, { userID, firstName, lastName, username, emailAddress, phoneNum, password }, function(err, data) {
+            if(err) {
+                console.log("ERROR: ", err);
+            } else {
+                res.send(data);
+            }
+        });
     } catch(e) {
         next(e);
     }
@@ -54,6 +82,7 @@ router.post('/id/:id', async (req: Request, res: Response, next: NextFunction) =
 // Delete a user (aka delete account indefinitely)
 router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
+        const userID = req.params.id;
 
 
 
