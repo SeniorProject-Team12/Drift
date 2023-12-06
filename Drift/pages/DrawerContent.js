@@ -22,7 +22,7 @@ export function DrawerContent(props) {
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
                         <Title style={styles.title}>USER'S NAME</Title>
-                        <Caption style={styles.caption}>@user_name</Caption>
+                        <Caption style={styles.caption}>@user</Caption>
 
                         <Drawer.Section style={styles.drawerSection}>
                             <DrawerItem 
