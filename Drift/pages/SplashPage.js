@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import SplashStars from '../assets/splashStars.jpg';
+//import SplashStars from '../assets/splashStars.jpg';
 // import Icon from 'react-native-ico-material-design';
 
 const SplashPage = ({navigation}) => {
