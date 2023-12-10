@@ -8,6 +8,9 @@ import MainTabScreen from './pages/MainTabScreen';
 import { DrawerContent } from './pages/DrawerContent';
 import SettingsPage from './pages/SettingsPage';
 import AuthStackScreen from './pages/AuthScreenStack';
+import SellerPage from './pages/SellerPage';
+import CartPage from './pages/CartPage';
+import ItemPage from './pages/ItemPage';
 
 import { AuthContext } from './components/context';
 
@@ -119,6 +122,9 @@ const App = () => {
             	// Drawer container - if user logged in
 				<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
 					<Drawer.Screen name="Drift" component={MainTabScreen} />
+					<Drawer.Screen name="SellerPage" component={SellerPage} />
+					<Drawer.Screen name="ItemPage" component={ItemPage} />
+					<Drawer.Screen name="Cart" component={CartPage} />
 					<Drawer.Screen name="Settings" component={SettingsPage} />
 				</Drawer.Navigator>
             	) : (
@@ -136,7 +142,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#3962FF',
-    alignItems: 'center',
+	alignItems: 'center',
     justifyContent: 'center',
   },
 
