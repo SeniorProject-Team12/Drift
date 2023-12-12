@@ -117,11 +117,14 @@ const App = () => {
 				<NavigationContainer>
 					{ loginState.userToken != null ? (
 					// Drawer container - if user logged in
-					// <Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
-					// 	<Drawer.Screen name="Drift" component={AppScreenStack} />
-					// 	<Drawer.Screen name="Settings" component={SettingsPage} /> */}
-					// </Drawer.Navigator>
-					<AppScreenStack/>
+
+					<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+					<Drawer.Screen name="Drift" component={AppScreenStack} />
+					<Drawer.Screen name="Settings" component={SettingsPage} />
+				</Drawer.Navigator>
+
+
+					
 					) : (
 						// signup/login screen stack
 						<AuthStackScreen />
