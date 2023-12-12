@@ -4,10 +4,11 @@ import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import MainTabScreen from './pages/MainTabScreen';
+import AppScreenStack from './components/AppScreenStack';
 import { DrawerContent } from './pages/DrawerContent';
 import SettingsPage from './pages/SettingsPage';
 import AuthStackScreen from './pages/AuthScreenStack';
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { AuthContext } from './components/context';
 
@@ -94,7 +95,6 @@ const App = () => {
         	let userToken;
         	userToken = null;
         	try {
-        		// set random token currently, but pull from db once API developed
         		userToken = await AsyncStorage.getItem('userToken', userToken);
     		} catch(e) {
     			console.log(e);
@@ -104,7 +104,6 @@ const App = () => {
     }, []);
 
     if (loginState.isLoading) {
-		// loading sign for userfeedback while auth determined
     	return (
         	<View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
           		<ActivityIndicator size={'large'} />
@@ -114,18 +113,21 @@ const App = () => {
 
     return (
     	<AuthContext.Provider value={authContext}>
-        	<NavigationContainer>
-        		{ loginState.userToken != null ? (
-            	// Drawer container - if user logged in
-				<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
-					<Drawer.Screen name="Drift" component={MainTabScreen} />
-					<Drawer.Screen name="Settings" component={SettingsPage} />
-				</Drawer.Navigator>
-            	) : (
-            		// signup/login screen stack
-            		<AuthStackScreen />
-          		)}
-      		</NavigationContainer>
+			<SafeAreaProvider>
+				<NavigationContainer>
+					{ loginState.userToken != null ? (
+					// Drawer container - if user logged in
+					// <Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+					// 	<Drawer.Screen name="Drift" component={AppScreenStack} />
+					// 	<Drawer.Screen name="Settings" component={SettingsPage} /> */}
+					// </Drawer.Navigator>
+					<AppScreenStack/>
+					) : (
+						// signup/login screen stack
+						<AuthStackScreen />
+					)}
+				</NavigationContainer>
+			</SafeAreaProvider>
     	</AuthContext.Provider>
   	);
 }
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#3962FF',
-    alignItems: 'center',
+	alignItems: 'center',
     justifyContent: 'center',
   },
 
