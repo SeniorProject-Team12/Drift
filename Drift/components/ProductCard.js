@@ -8,19 +8,19 @@ const ProductCard = ({ item, cardWidth, showInfo, navigation }) => {
     <TouchableOpacity
       style={{ width: cardWidth }}
       onPress={() => {
-        //navigation.navigate("Product", { item });
+        navigation.navigate("Item Details",{item: item });
       }}
     >
       <Card elevation={0}>
         <Card.Content>
-          {/* <Image
+          <Image
             source={{
-              uri: item.images[0],
+              uri: item.photoURL
             }}
             style={{ width: "100%", height: 100 }}
             resizeMode="cover"
           />
-          {showInfo && <Text>{`Size: ${item.size} Price: ${item.price}`}</Text> } */}
+          {showInfo && <Text>{`Size: ${item.size} Price: ${item.price}`}</Text>}
         </Card.Content>
       </Card>
     </TouchableOpacity>

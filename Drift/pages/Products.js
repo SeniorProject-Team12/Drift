@@ -1,11 +1,7 @@
 import React from "react";
 import { View, FlatList, Dimensions } from "react-native";
 import ProductCard from "../components/ProductCard";
-import axios from 'axios';
-
-// const api = axios.create({
-//   baseURL: 'http://exp://fbkhzom.fchau1.8081.exp.direct', // Use your Expo development server's address
-// });
+import testItems from "./testData/testItems";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth / 2 - 20;
@@ -14,25 +10,43 @@ const Products = ({ query, navigation }) => {
   const [items, setItems] = React.useState([]);
 
   const fetchAllItems = async () => {
-    try {
-      {console.log('fetchAllItems', query)}
-      const response = await axios.get('/items/getAllItems'); 
-      setItems(response.data); 
-    } catch (error) {
-      console.error('Error fetching items:', error);
-    }
+    // try {
+    //   {console.log('fetchAllItems', query)}
+    //   const response = await axios.get('/items/getAllItems'); 
+    //   setItems(response.data); 
+    // } catch (error) {
+    //   console.error('Error fetching items:', error);
+    // }
+    setItems(testItems)
   };
 
   const fetchItemByKeyword= async (query) => {
-    {console.log('fetchItemByKeyword: in Products', query)}
-    const url = `/items/getItemsByKeyWord?keyword=${encodeURIComponent(query)}`;
+    {console.log('fetchByKeywords', query)}
 
-    try {
-      const response = await axios.get(url); // Replace with your server's URL
-      setItems(response.data); // Assuming response.data contains the items
-    } catch (error) {
-      console.error('Error fetching items:', error);
-    }
+  query = query.toLowerCase();
+
+  const filteredItems = testItems.filter((item) => {
+    const name = item.name.toLowerCase();
+    const brand = item.brand.toLowerCase();
+    const category = item.category.toLowerCase();
+
+    return (
+      name.includes(query) ||
+      brand.includes(query) ||
+      category.includes(query)
+    );
+  });
+  {console.log('filteredItems', filteredItems)}
+  setItems(filteredItems)
+    // {console.log('fetchItemByKeyword: in Products', query)}
+    // const url = `/items/getItemsByKeyWord?keyword=${encodeURIComponent(query)}`;
+
+    // try {
+    //   const response = await axios.get(url); 
+    //   setItems(response.data);
+    // } catch (error) {
+    //   console.error('Error fetching items:', error);
+    // }
   };
   
   const renderProduct = ({ item }) => (
