@@ -3,11 +3,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Icon from 'react-native-ico-material-design';
 
-import DiscoverPage from './DiscoverPage';
-import ChatPage from './ChatPage';
-import SavedItemsPage from "./SavedItemsPage";
-import PostPage from "./PostPage";
-import ProfilePage from "./ProfilePage";
+import DiscoverPage from '../pages/DiscoverPage';
+import ChatPage from '../pages/ChatPage';
+import SavedItemsPage from "../pages/SavedItemsPage";
+import PostPage from "../pages/PostPage";
+import ProfilePage from "../pages/ProfilePage";
 
 const DiscoverStack = createStackNavigator();
 const ChatStack = createStackNavigator();
