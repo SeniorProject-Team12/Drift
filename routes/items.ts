@@ -20,6 +20,7 @@ router.get('/getAllItems', async (req: Request, res: Response, next: NextFunctio
   }
 });
 
+// Get items by keyword
 router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const keyword = req.query.keyword; // Get the keyword from the query string
@@ -50,8 +51,6 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
   }
 });
 
-
-
 // Add a new item
 router.post('/addNewItem', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -67,6 +66,44 @@ router.post('/addNewItem', async (req: Request, res: Response, next: NextFunctio
       }
     });
   } catch (e) {
+    next(e);
+  }
+});
+
+// Update existing item
+router.post('/updateItem', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { name, description, price, quality, brand, color, hashtags, category, sellerId, photoURL, size } = req.body;
+
+    const sp = "SP_UpdateItem";
+
+    await DB.executeStoredProcedure(sp, { name, description, price, quality, brand, color, hashtags, category, sellerId, photoURL, size }, function(err, data) {
+      if(err) {
+          console.log("ERROR: ", err);
+      } else {
+          res.send(data);
+      }
+    });
+  } catch(e) {
+    next(e);
+  }
+});
+
+// Delete item
+router.delete('/deleteItem/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const itemIDtoDelete = req.params.id;
+    
+    const sp = "SP_DeleteItem";
+
+    await DB.executeStoredProcedure(sp, { itemIDtoDelete }, function(err, data) {
+      if(err) {
+        console.log("Error: ", err);
+      } else {
+        res.send(data);
+      }
+    });
+  } catch(e) {
     next(e);
   }
 });

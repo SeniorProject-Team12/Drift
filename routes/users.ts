@@ -24,7 +24,7 @@ router.get("/id/:id", async (req: Request, res: Response, next: NextFunction) =>
     try {
         const userID = req.params.id;
         
-        await DB.executeSQL('select * from ', function(err, data) {
+        await DB.executeSQL('select * from user where userID=' + userID.toString() + ';', function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else if(!data) {
@@ -83,9 +83,15 @@ router.post('/id/:id', async (req: Request, res: Response, next: NextFunction) =
 router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params.id;
+        const sp = "SP_DeleteUser";
 
-
-
+        await DB.executeStoredProcedure(sp, { userID }, function(err, data) {
+            if(err) {
+                console.log("ERROR: ", err);
+            } else {
+                res.send(data);
+            }
+        });
     } catch(e) {
         next(e);
     }
