@@ -1,8 +1,6 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity, Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-//import SplashStars from '../assets/splashStars.jpg';
-// import Icon from 'react-native-ico-material-design';
 
 const SplashPage = ({navigation}) => {
     return (
@@ -25,11 +23,7 @@ const SplashPage = ({navigation}) => {
                 </Text>
             </View>
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            {/* <SplashStars
-                width={300}
-                height={300}
-                style={{transform: [{rotate: '-15deg'}]}}
-            /> */}
+            {/* <Image source={require('../assets/star.jpg')} width={50} height={50} /> */}
             </View>
             <TouchableOpacity
                 style={{
