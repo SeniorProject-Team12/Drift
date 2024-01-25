@@ -18,13 +18,16 @@ const SplashPage = ({navigation}) => {
                     fontWeight: 'bold',
                     fontSize: 35,
                     color: '#20315f',
+                    backgroundColor: '#ffffff',
                 }}>
                     DRIFT
                 </Text>
             </View>
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            {/* <Image source={require('../assets/star.jpg')} width={50} height={50} /> */}
+                <Image style={{width: 300, height: 500}}
+                    source={require('../assets/star.jpg')} />
             </View>
+
             <TouchableOpacity
                 style={{
                     // backgroundColor: '#AD40AF',

@@ -9,10 +9,6 @@ class Database {
     async makeConnection() {
         console.log
         this.con = mysql.createConnection({
-            // host: "localhost",
-            // database: "drift",
-            // user: "sqluser",
-            // password: "Sqlrocks01!"
             host: configs.development.host,
             database: configs.development.database,
             user: configs.development.username,

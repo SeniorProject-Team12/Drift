@@ -6,7 +6,7 @@ export const router = Router();
 // Get all users
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        await DB.executeSQL('select * from user', function(err, data) {
+        await DB.executeSQL('select * from user;', function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else {
@@ -19,19 +19,27 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     }
 });
 
-// Get user by userID
-router.get("/id/:id", async (req: Request, res: Response, next: NextFunction) => {
+// Get user by username and password
+router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userID = req.params.id;
-        
-        await DB.executeSQL('select * from user where userID=' + userID.toString() + ';', function(err, data) {
+        // const userID = req.params.id;
+        const { username, password } = req.body;
+        console.log("IN API login");
+
+        await DB.executeSQL('select * from user where username = \'' + username + '\' and password = \'' + password + '\'', function(err: any, data: any) {
             if(err) {
+                // req.setEncoding({err: err});
                 console.log("ERROR: ", err);
-            } else if(!data) {
-                res.send("No user with specified userID exists!");
-            } 
+            }
+                // } else if(!data) {
+            //     res.send("No user with specified userID exists!");
+            // } 
             else {
-                res.send(data);
+                if(data.length > 0){
+                    res.send(data);
+                } else {
+                    res.send({message: "WRONG USERNAME OR PASSWORD."});
+                }
             }
         });
     } catch(e) {
@@ -40,7 +48,7 @@ router.get("/id/:id", async (req: Request, res: Response, next: NextFunction) =>
 });
 
 // Add a new user (aka user sign up)
-router.post('/', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/signUp', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { firstName, lastName, username, emailAddress, phoneNum, password } = req.body;
 
@@ -49,6 +57,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
         await DB.executeStoredProcedure(sp, { firstName, lastName, username, emailAddress, phoneNum, password }, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
+                res.send("ERROR: please enter correct sign up details.");
             } else {
                 // console.log(data);   
                 res.send(data);

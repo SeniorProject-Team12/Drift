@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import Axios from 'axios';
 import { StyleSheet, SafeAreaView, ScrollView, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SignUpInputField from '../components/signUpInputBox';
@@ -6,9 +7,18 @@ import CustomButton from '../components/customButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const SignUpPage = ({navigation}) => {
-    const [date, setDate] = useState(new Date());
-    const [open, setOpen] = useState(false);
-    const [dobLabel, setDobLabel] = useState('Date of Birth');
+    // const [date, setDate] = useState(new Date());
+    // const [open, setOpen] = useState(false);
+    // const [dobLabel, setDobLabel] = useState('Date of Birth');
+
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [phoneNumber, setPhoneNumber] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [signUpStatus, setSignUpStatus] = useState("");
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
@@ -26,7 +36,20 @@ const SignUpPage = ({navigation}) => {
                 </Text>
 
                 <SignUpInputField
-                    label={'Full Name'}
+                    label={'First Name'}
+                    icon={
+                        <Ionicons
+                            name="person-outline"
+                            size={20}
+                            color="#666"
+                            style={{marginRight: 5}}
+                        />
+                    }
+                    
+                />
+
+                <SignUpInputField
+                    label={'Last Name'}
                     icon={
                         <Ionicons
                             name="person-outline"

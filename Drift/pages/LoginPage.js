@@ -15,7 +15,7 @@ const LoginPage = ({navigation, route}) => {
         username: '',
     	password: '',
     	check_textInputChange: false,
-    	secureTextEntry: true,
+    	// secureTextEntry: true,
     	isValidUser: true,
     	isValidPassword: true,
     });
@@ -52,14 +52,15 @@ const LoginPage = ({navigation, route}) => {
                 isValidPassword: false
             });
         }
+		// console.log(data);
     }
 
-    const updateSecureTextEntry = () => {
-        setData({
-            ...data,
-            secureTextEntry: !data.secureTextEntry
-        });
-    }
+    // const updateSecureTextEntry = () => {
+    //     setData({
+    //         ...data,
+    //         secureTextEntry: !data.secureTextEntry
+    //     });
+    // }
 
     const handleValidUser = (val) => {
         if( val.trim().length >= 4 ) {

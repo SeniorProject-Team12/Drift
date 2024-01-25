@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from 'express';
+import mysql from 'mysql';
 // import Database from "./routes/modules/database";
 
 import { router as userRouter } from './routes/users';
@@ -10,13 +11,11 @@ import { router as indexRouter } from './routes/index';
 const app = express();
 
 const PORT = process.env.PORT || 3000;
-var corsOptions = { origin: "http://localhost:3000/" };
-
+var corsOptions = { origin: "http://localhost:3000/", methods: ["POST, GET, DELETE"], credentials: true };
 
 app.use(cors(corsOptions));
-// var cors = require('cors');
-// app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+// app.use(bodyParser.json());
 
 // use routes
 app.use('/', indexRouter);
