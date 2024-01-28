@@ -9,9 +9,10 @@ import { DrawerContent } from './pages/DrawerContent';
 import SettingsPage from './pages/SettingsPage';
 import AuthStackScreen from './pages/AuthScreenStack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
+const Drawer = createDrawerNavigator();
+
 import axios from 'axios';
 import { AuthContext } from './components/context';
-const Drawer = createDrawerNavigator();
 
 const App = () => {
 
@@ -72,15 +73,6 @@ const App = () => {
 	// 		.catch(error => console.error(error));
 	// }
 
-	const fetchData = async () => {
-		try {
-			const response = await axios.get(API_URL + '/user/login');
-			setData(response.data);
-		} catch(error) {
-			console.error('Error fetching data: ', error);
-		}
-	};
-
     const authContext = React.useMemo(() => ({
     	SignUp: () => { },
     	Login: async (username, password) => {
@@ -90,8 +82,19 @@ const App = () => {
 
 			const options = { method: 'POST', body: JSON.stringify({ username: username, password: password })}
 			console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
-			// fetchData();
-			// console.log(data);
+			
+			try {
+				// const response = await axios.get('https://reactnative.dev/movies.json');
+				const response = await fetch('http://192.168.1.54:8081/user');
+				console.log(response);
+				const json = await response.json();
+				console.log(json);
+				setData(json);
+			} catch(error) {
+				console.error('Error fetching data: ', error);
+			}
+			console.log("after");
+
 			// fetch("http://localhost:3000/user")
 			// .then((response) => response.json())
 			// .then(data => console.log(data))
@@ -111,7 +114,6 @@ const App = () => {
 			// 	console.error(error);
 			// });
 
-			console.log("after");
 			// const data = login(username, password);
 
 			// if(data != null) {

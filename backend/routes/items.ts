@@ -54,11 +54,11 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
 // Add a new item
 router.post('/addNewItem', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, description, price, quality, brand, color, hashtags, category, sellerId, photoURL, size } = req.body;
+    const { name, description, price, quality, brand, color, hashtags, category, sellerID, photoURL, size } = req.body;
 
     const sp = "SP_InsertItem"; // Adjust the stored procedure name
 
-    await DB.executeStoredProcedure(sp, { name, description, price, quality, brand, color, hashtags, category, sellerId, photoURL, size }, function(err, data) {
+    await DB.executeStoredProcedure(sp, { name, description, price, quality, brand, color, hashtags, category, sellerID, photoURL, size }, function(err, data) {
       if (err) {
         console.log("ERROR: ", err);
       } else {
@@ -71,13 +71,14 @@ router.post('/addNewItem', async (req: Request, res: Response, next: NextFunctio
 });
 
 // Update existing item
-router.post('/updateItem', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/updateItem/id/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, description, price, quality, brand, color, hashtags, category, sellerId, photoURL, size } = req.body;
+    const itemID = req.params.id;
+    const { name, description, price, quality, brand, color, hashtags, category, sellerID, photoURL, size } = req.body;
 
     const sp = "SP_UpdateItem";
 
-    await DB.executeStoredProcedure(sp, { name, description, price, quality, brand, color, hashtags, category, sellerId, photoURL, size }, function(err, data) {
+    await DB.executeStoredProcedure(sp, { itemID, name, description, price, quality, brand, color, hashtags, category, sellerID, photoURL, size }, function(err, data) {
       if(err) {
           console.log("ERROR: ", err);
       } else {

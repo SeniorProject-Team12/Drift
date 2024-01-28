@@ -89,7 +89,7 @@ router.post('/id/:id', async (req: Request, res: Response, next: NextFunction) =
 });
 
 // Delete a user (aka delete account indefinitely)
-router.delete('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/deleteUser/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params.id;
         const sp = "SP_DeleteUser";

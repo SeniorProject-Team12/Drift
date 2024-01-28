@@ -39,8 +39,9 @@ class Database {
 
         // construct sp query w/ procedure name and params
         let procedure = "CALL " + sp + "(";
-
+        let i = 0;
         for(const key in params) {
+            // console.log(params[key]);
             if(isNaN(params[key])) {
                 procedure += "'" + params[key] + "'";
             } else if(params[key] == '') {
@@ -48,12 +49,14 @@ class Database {
             } else {
                 procedure += params[key];
             }
+            i++;
 
-            if(params[key] != params[Object.keys(params)[Object.keys(params).length - 1]]) {
+            if(i != Object.keys(params).length){
                 // if param is equal to the last object in params
                 procedure += ", ";
             }
         }
+        i = 0;
         procedure += ")";
 
         console.log(procedure);
