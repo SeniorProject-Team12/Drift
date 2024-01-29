@@ -1,8 +1,6 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity, Image } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-//import SplashStars from '../assets/splashStars.jpg';
-// import Icon from 'react-native-ico-material-design';
 
 const SplashPage = ({navigation}) => {
     return (
@@ -20,17 +18,16 @@ const SplashPage = ({navigation}) => {
                     fontWeight: 'bold',
                     fontSize: 35,
                     color: '#20315f',
+                    backgroundColor: '#ffffff',
                 }}>
                     DRIFT
                 </Text>
             </View>
             <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            {/* <SplashStars
-                width={300}
-                height={300}
-                style={{transform: [{rotate: '-15deg'}]}}
-            /> */}
+                <Image style={{width: 300, height: 500}}
+                    source={require('../assets/star.jpg')} />
             </View>
+
             <TouchableOpacity
                 style={{
                     // backgroundColor: '#AD40AF',
