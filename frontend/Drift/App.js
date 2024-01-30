@@ -9,10 +9,14 @@ import { DrawerContent } from './pages/DrawerContent';
 import SettingsPage from './pages/SettingsPage';
 import AuthStackScreen from './pages/AuthScreenStack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StripeProvider } from '@stripe/stripe-react-native';
 const Drawer = createDrawerNavigator();
 
 import axios from 'axios';
 import { AuthContext } from './components/context';
+
+const STRIPE_KEY = 
+	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
 
 const App = () => {
 
@@ -171,20 +175,21 @@ const App = () => {
     return (
     	<AuthContext.Provider value={authContext}>
 			<SafeAreaProvider>
-				<NavigationContainer>
-					{ loginState.userToken != null ? (
-					// Drawer container - if user logged in
-
-						<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
-							<Drawer.Screen name="Drift" component={AppScreenStack} />
-							<Drawer.Screen name="Settings" component={SettingsPage} />
-						</Drawer.Navigator>
+				<StripeProvider publishableKey = {STRIPE_KEY}>
+					<NavigationContainer>
+						{ loginState.userToken != null ? (
+						// Drawer container - if user logged in
+							<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+								<Drawer.Screen name="Drift" component={AppScreenStack} />
+								<Drawer.Screen name="Settings" component={SettingsPage} />
+							</Drawer.Navigator>
 					
-					) : (
-						// signup/login screen stack
-						<AuthStackScreen />
-					)}
-				</NavigationContainer>
+						) : (
+							// signup/login screen stack
+							<AuthStackScreen />
+						)}
+					</NavigationContainer>
+				</StripeProvider>
 			</SafeAreaProvider>
     	</AuthContext.Provider>
   	);

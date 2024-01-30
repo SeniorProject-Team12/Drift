@@ -2005,6 +2005,11 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@stripe/stripe-react-native@^0.35.1":
+  "integrity" "sha512-F6sewQYO0/wS1LDsjH9mE6qvyhfU3BAfz81oBSzntH8HdGon/TablGYsGTXrpmok+c4qzbXCQcPmVOdisZMQ0A=="
+  "resolved" "https://registry.npmjs.org/@stripe/stripe-react-native/-/stripe-react-native-0.35.1.tgz"
+  "version" "0.35.1"
+
 "@types/hammerjs@^2.0.36":
   "integrity" "sha512-qkcUlZmX6c4J8q45taBKTL3p+LbITgyx7qhlPYOdOHZB7B31K0mXbP5YA7i7SgDeEGuI9MnumiKPEMrxg8j3KQ=="
   "resolved" "https://registry.npmjs.org/@types/hammerjs/-/hammerjs-2.0.45.tgz"
@@ -3376,7 +3381,7 @@
     "compare-versions" "^3.4.0"
     "invariant" "^2.2.4"
 
-"expo@*", "expo@~49.0.15":
+"expo@*", "expo@>=46.0.9", "expo@~49.0.15":
   "integrity" "sha512-1hhcphaKN74gDqEmGzU4sqxnusLi/i8SsWZ04rRn7b6zdyEchyudVLN3SOzeIUgfGmn7AcXm78JAQ7+e0WqSyw=="
   "resolved" "https://registry.npmjs.org/expo/-/expo-49.0.22.tgz"
   "version" "49.0.22"
