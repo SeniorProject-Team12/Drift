@@ -2,7 +2,7 @@
   "name": "drift",
   "version": "1.0.0",
   "description": "Our project is a thrifting web/mobile application which will be a software service specifically for public users to buy and sell thrifting goods.  Individuals will be able to make an account, post items to their page for others to see, and peruse the application to see what other sellers are putting up for sale.",
-  "main": "out/server.js",
+  "main": "server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "cp ./routes/modules/db.config.json ./out/routes/modules/db.config.json",
@@ -27,7 +27,8 @@
     "react-native-gesture-handler": "^2.14.0",
     "react-native-paper": "^5.11.3",
     "react-native-safe-area-context": "^4.8.0",
-    "react-native-vector-icons": "^10.0.2"
+    "react-native-vector-icons": "^10.0.2",
+    "stripe": "^14.14.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
