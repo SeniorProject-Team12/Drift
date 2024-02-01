@@ -5,6 +5,10 @@ import CartListItem from '../components/CartListItem';
 import { useStripe } from '@stripe/stripe-react-native';
 import testCartItems from './testData/testCartItems';
 
+const testPaymentIntent = 
+  'pi_3Of6rPAh9NlzJ6kb004CkX6x_secret_mRkPvVycVfCFtLZBA5W3476ot';
+
+
 //const CartTotals = () => {
 const CartTotals = (cartItems) => {
 // cartItem parameter ^^ only for demonstrating display. Use following API calls in the future ->
@@ -46,7 +50,21 @@ const onCheckout = async () => {
 
   //Initialize payment sheet
 
+  //***Temporary Logic ****/
+  const initResponse = await initPaymentSheet({
+    merchantDisplayName: 'Drift',
+    paymentIntentClientSecret: testPaymentIntent,
+  });
+  if (initResponse.error) {
+    console.log(initResponse.error);
+    Alert.alert('Something went wrong');
+    return;
+  }
+  //***********************/
+
   //Present the payment sheet from stripe
+  const paymentResponse = await presentPaymentSheet()
+
 
   //Authorize info & create order
   //onCreateOrder();
@@ -59,6 +77,45 @@ const CartPage = ({navigation}) => {
   //const total = {Some API call}
   
   const [cartItems, setCartItems] = React.useState([]);
+  
+  const {initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  const onCheckout = async () => {
+    //Create payment intent
+  
+    //Initialize payment sheet
+  
+    //***Temporary Logic ****/
+    const initResponse = await initPaymentSheet({
+      merchantDisplayName: 'Drift',
+      paymentIntentClientSecret: testPaymentIntent,
+    });
+    if (initResponse.error) {
+      console.log(initResponse.error);
+      Alert.alert('Something went wrong');
+      return;
+    }
+    //***********************/
+  
+    //Present the payment sheet from stripe
+    const paymentResponse = await presentPaymentSheet();
+
+    if(paymentResponse.error) {
+      Alert.alert(
+        `Error code: ${paymentResponse.error.code}`,
+        paymentResponse.error.message
+      );
+      return;
+    }
+  
+  
+    //Authorize info & create order
+    //onCreateOrder();
+  }
+
+
+
+
   const fetchCartItems = async () => {
     // try {
     //   {console.log('fetchCartItems')}
