@@ -24,7 +24,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
     try {
         // const userID = req.params.id;
         const { username, password } = req.body;
-        console.log("IN API login");
+        console.log("IN API login w/ ", username, password);
 
         await DB.executeSQL('select * from user where username = \'' + username + '\' and password = \'' + password + '\'', function(err: any, data: any) {
             if(err) {
@@ -38,7 +38,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
                 if(data.length > 0){
                     res.send(data);
                 } else {
-                    res.send({message: "WRONG USERNAME OR PASSWORD."});
+                    res.send(null);
                 }
             }
         });
