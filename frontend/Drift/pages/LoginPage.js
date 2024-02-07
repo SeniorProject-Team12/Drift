@@ -165,7 +165,18 @@ const LoginPage = ({navigation, route}) => {
 			</TouchableOpacity>
 			
 			{/* <Button title="Sign In" style={{ fontSize: 50 }} onPress={() => { loginHandle( data.username, data.password ) }} /> */}
-			<Button title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} />
+			<Button width="100px" title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} />
+			<View
+				style={{
+					flexDirection: 'row',
+					justifyContent: 'center',
+					marginBottom: 30,
+				}}>
+				<Text>Forgot Password?</Text>
+				<TouchableOpacity onPress={() => navigation.navigate()}>
+					<Text style={{color: '#8fcbbc', fontWeight: '700'}}> Login</Text>
+				</TouchableOpacity>
+            </View>
         </SafeAreaView>
     );
 };

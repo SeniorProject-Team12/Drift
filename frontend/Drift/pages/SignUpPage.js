@@ -20,6 +20,10 @@ const SignUpPage = ({navigation}) => {
 
     const [signUpStatus, setSignUpStatus] = useState("");
 
+    const signUpHandle = (firstName, lastName, username, email, phoneNumber, password) => {
+        SignUp(firstName, lastName, username, email, phoneNumber, password)
+  	}
+
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
             <ScrollView
@@ -35,7 +39,35 @@ const SignUpPage = ({navigation}) => {
                     Sign Up
                 </Text>
 
-                <SignUpInputField
+                {/* <View
+                    style={{
+                        flexDirection: 'row',
+                        borderBottomColor: '#ccc',
+                        borderBottomWidth: 1,
+                        paddingBottom: 8,
+                        marginBottom: 25,
+                    }}>
+                    icon={
+                        <Ionicons
+                            name="person-outline"
+                            size={20}
+                            color="#666"
+                            style={{marginRight: 5}}
+                        />
+                    }
+                    <TextInput
+                        placeholder="First Name"
+                        // keyboardType={keyboardType}
+                        style={{flex: 1, paddingVertical: 0}}
+                        onChangeText={(val) => setFirstName({ firstName: val })}
+                    />
+                    <TouchableOpacity onPress={fieldButtonFunction}>
+                        <Text style={{color: '#8fcbbc', fontWeight: '700'}}>{fieldButtonLabel}</Text>
+                    </TouchableOpacity>
+                </View> */}
+
+
+                {/* <SignUpInputField
                     label={'First Name'}
                     icon={
                         <Ionicons
@@ -45,8 +77,7 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
-                    
-                />
+                /> */}
 
                 <SignUpInputField
                     label={'Last Name'}
@@ -123,7 +154,13 @@ const SignUpPage = ({navigation}) => {
                     inputType="password"
                 />
 
-                <CustomButton label={'Sign Up'} onPress={() => { }} />
+                <CustomButton 
+                    label={'Sign Up'}
+                    onPress={() => { 
+                        console.log(firstName)
+                        signUpHandle(firstName, lastName, username, email, phoneNumber, password)
+                    }} 
+                />
 
                 <View
                     style={{
