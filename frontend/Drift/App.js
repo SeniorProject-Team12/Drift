@@ -16,9 +16,6 @@ import { AuthContext } from './components/context';
 
 const App = () => {
 
-    // NOTE - default username and pass is on line 68
-    // TODO - create api to add user and get user to can change auth check with such values from database
-
     // initial login state variables
     const initialLoginState = {
     	isLoading: true,
@@ -27,7 +24,7 @@ const App = () => {
     };
 
 	const [data, setData] = React.useState([]);
-	const API_URL = 'http://localhost:3000';
+	const API_URL = 'http://10.0.2.2:3000';
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -63,75 +60,68 @@ const App = () => {
 
     const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
-	// const login = async (username, password, e) => {
-	// 	e.preventDefault();
-	// 	console.log("HERE w/ " + username + " and " + password);
-	// 	await fetch("http://localhost:3000/user/login", { method: 'POST', body: JSON.stringify({ username: username, password: password })})
-	// 		.then((response) => response.json())
-	// 		.then(result)
-	// 		// .then(data => console.log(data[0]))
-	// 		.catch(error => console.error(error));
-	// }
-
     const authContext = React.useMemo(() => ({
-    	SignUp: () => { },
+    	SignUp: async (fName, lName, username, email, phoneNumber, pass) => { 
+			let userToken;
+			userToken = null;
+
+			try {
+				const response = await axios.post(API_URL + '/user/signUp', {
+					"firstName": fName, 
+					"lastName": lName, 
+					"username": username, 
+					"emailAddress": email, 
+					"phoneNum": phoneNumber, 
+					"password": pass 
+				});
+				console.log(response);
+			} catch(error) {
+				console.error(error);
+			}
+
+		},
     	Login: async (username, password) => {
         	let userToken;
         	userToken = null;
-        	// default, but todo is pull from database through API call
-
-			const options = { method: 'POST', body: JSON.stringify({ username: username, password: password })}
-			console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
 			
-			try {
-				// const response = await axios.get('https://reactnative.dev/movies.json');
-				const response = await fetch('http://192.168.1.54:8081/user');
-				console.log(response);
-				const json = await response.json();
-				console.log(json);
-				setData(json);
-			} catch(error) {
-				console.error('Error fetching data: ', error);
-			}
-			console.log("after");
-
-			// fetch("http://localhost:3000/user")
-			// .then((response) => response.json())
-			// .then(data => console.log(data))
-			// .catch(function (error) {
-			// 	console.log(error);
-			// 	throw error;
-			// });
-			// .then((result) => {
-			// 	if(result != null) {
-			// 		userToken = 'randomToken';
-			// 		AsyncStorage.setItem('userToken', userToken);
-			// 	} else {
-			// 		alert("Please check your login information.");
-			// 	}
-			// })
-			// .catch(function (error) {
-			// 	console.error(error);
-			// });
-
-			// const data = login(username, password);
-
-			// if(data != null) {
-			// 	userToken = 'randomToken';
-			// 	await AsyncStorage.setItem('userToken', userToken);
-			// } else {
-			// 	console.log("LOGIN ERROR!");
+			// try {
+			// 	const response = await axios.get(API_URL + '/user');
+			// 	console.log(API_URL + '/user');
+			// 	console.log("Get ALL users axios API call - \n\n", response.data);
+			// 	// const json = await response.json();
+			// 	// console.log(json);
+			// 	// setData(json);
+			// } catch(error) {
+			// 	console.error('Error fetching data: ', error);
 			// }
+			console.log(API_URL + '/user/login');
 
-        	if(username == 'username' && password == 'password') {
-        		try {
-            		// set random token currently, but pull from db once API developed
-            		userToken = 'randomToken';
-            		await AsyncStorage.setItem('userToken', userToken);
-        		} catch(e) {
-            		console.log(e);
-            	}
-      		}
+			try {
+				console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
+				const res = await axios.post(API_URL + '/user/login', { username: username, password: password });
+				console.log("GET input user by parameters - \n\n", res.data);
+
+				if(res.data != '') {
+					userToken = 'randomToken';
+					AsyncStorage.setItem('userToken', userToken);
+				} else {
+					alert("Please check your login information.  Username and/or password are incorrect!");
+				}
+			} catch(error) {
+				console.log(error);
+			}
+
+        	// if(username == 'username' && password == 'password') {
+        	// 	try {
+            // 		// set random token currently, but pull from db once API developed
+            // 		userToken = 'randomToken';
+            // 		await AsyncStorage.setItem('userToken', userToken);
+        	// 	} catch(e) {
+            // 		console.log(e);
+            // 	}
+      		// } else {
+			// 	alert("Please check your login information.  Username and/or password are incorrect!");
+			// }
         	dispatch({ type: 'LOGIN', id: username, token: userToken });
     	},
         SignOut: async () => {

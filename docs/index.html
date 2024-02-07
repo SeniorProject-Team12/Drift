@@ -3,9 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <title>Drift</title>
 </head>
 <body>
-    <h1>Drift - Team 12</h1>
+    <!-- Credits to w3.css for templated html/CSS components and stylesheet use -->
+
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+        }
+    </style>
+
+    <!-- Navigation -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+            <a href="#home" class="w3-bar-item w3-button"><b>DRIFT</b> - Team 12</a>
+            <div class="w3-right w3-hide-small">
+                <a href="#about" class="w3-bar-item w3-button">About</a>
+                <a href="#documentation" class="w3-bar-item w3-button">Documentation</a>
+                <a href="#resources" class="w3-bar-item w3-button">Resources</a>
+                <a href="#team" class="w3-bar-item w3-button">Team</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="w3-display-container w3-content w3-wide" style="max-width:1500px;">
+        <img class="w3-image" src="../docs/media/clothes-922988_1280.jpg" alt="clothes" width="1500" height="800">
+        <div class="w3-display-middle w3-margin-top w3-center">
+            <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>DRIFT</b></span></h1>
+        </div>
+    </header>
+
+
+    <!-- Title section -->
+    <div class="w3-container w3-padding-32" style="max-width:1200px" id="home">
+        <h2 class="w3-border-light-grey w3-padding-16">CS 426 - Senior Project in Computer Science</h2>
+        <h2 class="w3-border-bottom w3-border-light-grey">Spring 2024, UNR, CSE Department</h2>
+    </div>
+
+    <!-- About section -->
+    <div class="w3-container w3-padding-32" style="max-width:1200px" id="about">
+        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">About</h2>
+        <p>
+            Drift is a mobile thrifting application that makes an effort in creating a more sustainable way to shop through bringing thrifting to a virtual experience.  We want to create a more accessible and innovative experience when it comes to thrifting online because primarily this action is mainly an in-person endeavor.  Moreover, our project is working to tackle the problem of textile wastage and unethical practices surrounding the clothing industry.  Our project is important because it is one more push for getting thrifting closer to a multitude of audiences for both the causes of making it easier than ever to thrift as well as giving a route for more sustainable shopping actions.  Ultimately, individuals are going to be able to make an account, post items to their page for others to see/buy, and peruse the main pages to see what other sellers are putting up for sale.  
+        </p>
+        <p>    
+            While the app is open to anyone to use, the target user group is students and the populations where thrifting is not readily available.  This project will be beneficial to them because it provides an easier way to shop for second hand apparel and gear and/or bring in income from selling their own.  Our app features a bar with five tabs named as follows: Discover, Chat, Post, Saved Items, and Profile.  The discover screen has a search bar, shopping cart icon, and a feed of clothes to peruse.  From the feed of clothes, each item can be clicked on for more information and cart related functionality.   The chat screen will have all the user's conversations with other users separated by thread made.  The post screen will have fields to fill out for putting an item up for sale to other users.  The saved items screen will have the items saved by the respective user for their later reference.  Finally, the profile screen will feature the user's information, items for sale, and any other items pertaining to the user.  Our technology stack consists of a react native frontend, Typescript middleware, and a MySQL backend.
+        </p>
+
+    </div>
+
+    <!-- Project Docs section -->
+    <div class="w3-container w3-padding-32" style="max-width:1200px" id="documentation">
+        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">Project Documentation</h2>
+        <p>Below are links to all our projects documentation and technical papers.</p>
+    </div>
+
+    <div class="w3-row-padding">
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a href="../docs/media/P1_T12.pdf" target="_blank"><p>Project Part 1 - Concept & Project Management</p></a>
+        </div>
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a><p>Project Part 2 - Specification</p></a>
+        </div>
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a><p>Project Part 3 - Design</p></a>
+        </div>
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a><p>Project Part 4</p></a>
+        </div>
+    </div>
+
+
+    <!-- Resources section -->
+    <div class="w3-container w3-padding-32" style="max-width:800px" id="resources">
+        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">Resources</h2>
+        <p>This section consists of books, websites, articles, and news related to our project.</p>
+    </div>
+
+    <div class="w3-row-padding">
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a href="https://www.packtpub.com/product/full-stack-react-typescript-and-node/9781839219931" target="_blank"><p>Project Domain Book</p></a>
+        </div>
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a href="https://northell.design/blog/how-to-build-an-ecommerce-mobile-app" target="_blank"><p>A Guide to E-Commerce Mobile App Development</p></a>
+        </div>
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a href="https://theroundup.org/textile-waste-statistics/" target="_blank"><p>Textile Waste Statistics</p></a>
+        </div>
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a href="https://www.tandfonline.com/doi/epdf/10.1080/10447318.2022.2108964?needAccess=true" target="_blank"><p>"Feelings of Being for a Mobile User Experience Design"</p></a>
+        </div>
+        <div class="w3-card w3-col 13 m6 w3-margin-bottom">
+            <a href="https://developer.ibm.com/technologies/mobile/articles/" target="_blank"><p>IBM Mobile Development Articles</p></a>
+        </div>
+        
+    </div>
+
+    <!--Problem domain book, links to related websites, Technical reports/papers/articles, News or other related info-->
+
+    <!-- Team section -->
+    <div class="w3-container w3-padding-32" style="max-width:1000px" id="team">
+        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">Team</h2>
+    </div>
+
+    <div class="w3-row-padding">
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <img src="../docs/media/Photo_Rood_Jordan.JPG" alt="Picture of Jordan Rood" style="width:100%">
+            <h3>Jordan Rood</h3>
+            <p class="w3-opacity">Developer</p>
+            <p>Senior in Computer Science & Engineering, minoring in Mathematics.</p>
+            <a href="https://www.linkedin.com/in/jordan-rood/" target="_blank"><p><button class="w3-button w3-light-grey w3-block" >LinkedIn</button></p></a>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <img src="../docs/media/Jackson_Christian.JPG" alt="Picture of John Christian Jackson" style="width:100%">
+            <h3>John Christian Jackson</h3>
+            <p class="w3-opacity">Developer</p>
+            <p>Senior in Computer Science & Engineering.</p>
+            <a href="" target="_blank"><p><button class="w3-button w3-light-grey w3-block" >LinkedIn</button></p></a>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <img src="../docs/media/Chau_Fiorina.JPG" alt="Picture of Fiorina Chau" style="width:100%">
+            <h3>Fiorina Chau</h3>
+            <p class="w3-opacity">Developer</p>
+            <p>Senior in Computer Science & Engineering.</p>
+            <a href="https://www.linkedin.com/in/fiorina-chau/" target="_blank"><p><button class="w3-button w3-light-grey w3-block" >LinkedIn</button></p></a>
+        </div>
+    </div>
+
+    <!-- Instructors & Advisors section -->
+    <div class="w3-container w3-padding-32" style="max-width:1000px" id="team">
+        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">Instructors & Advisors</h2>
+    </div>
+
+    <div class="w3-row-padding w3-grayscale">
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <img src="" alt="" style="width:100%">
+            <h3>Dave Feil-Seifer</h3>
+            <p class="w3-opacity">Instructor</p>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <img src="" alt="" style="width:100%">
+            <h3>Devrin Lee</h3>
+            <p class="w3-opacity">Instructor</p>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <img src="" alt="" style="width:100%">
+            <h3>Sara Davis</h3>
+            <p class="w3-opacity">Instructor</p>
+        </div>
+    </div>
+
+    <div class="w3-row-padding w3-grayscale">
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <img src="" alt="" style="width:100%">
+            <h3>Brittany N Avila</h3>
+            <p class="w3-opacity">Advisor</p>
+            <p>Psycology Department, University of Nevada, Reno</p>
+        </div>
+        <div class="w3-col l3 m6 w3-margin-bottom">
+            <img src="" alt="" style="width:100%">
+            <h3>Araam Zaremehrjardi</h3>
+            <p class="w3-opacity">Advisor</p>
+            <p>CSE Grad Student, University of Nevada, Reno</p>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="w3-center w3-black w3-padding-16">
+        <p>Credits to <a href="https://www.w3schools.com/w3css/default.asp" title="WS.CSS" target="_blank" class="w3-hover-text-teal">w3.css</a> for CSS/Styling components.</p>
+    </footer>
+
 </body>
 </html>
