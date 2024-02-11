@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
-import Axios from 'axios';
-import { StyleSheet, SafeAreaView, ScrollView, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { AuthContext } from "../components/context";
+import { StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SignUpInputField from '../components/signUpInputBox';
 import CustomButton from '../components/customButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const SignUpPage = ({navigation}) => {
-    // const [date, setDate] = useState(new Date());
-    // const [open, setOpen] = useState(false);
-    // const [dobLabel, setDobLabel] = useState('Date of Birth');
+    const { SignUp } = React.useContext(AuthContext);
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -39,35 +37,7 @@ const SignUpPage = ({navigation}) => {
                     Sign Up
                 </Text>
 
-                {/* <View
-                    style={{
-                        flexDirection: 'row',
-                        borderBottomColor: '#ccc',
-                        borderBottomWidth: 1,
-                        paddingBottom: 8,
-                        marginBottom: 25,
-                    }}>
-                    icon={
-                        <Ionicons
-                            name="person-outline"
-                            size={20}
-                            color="#666"
-                            style={{marginRight: 5}}
-                        />
-                    }
-                    <TextInput
-                        placeholder="First Name"
-                        // keyboardType={keyboardType}
-                        style={{flex: 1, paddingVertical: 0}}
-                        onChangeText={(val) => setFirstName({ firstName: val })}
-                    />
-                    <TouchableOpacity onPress={fieldButtonFunction}>
-                        <Text style={{color: '#8fcbbc', fontWeight: '700'}}>{fieldButtonLabel}</Text>
-                    </TouchableOpacity>
-                </View> */}
-
-
-                {/* <SignUpInputField
+                <SignUpInputField
                     label={'First Name'}
                     icon={
                         <Ionicons
@@ -77,8 +47,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
-                /> */}
-
+                    onChangeText={(val) => setFirstName(val)}
+                />
                 <SignUpInputField
                     label={'Last Name'}
                     icon={
@@ -89,8 +59,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    onChangeText={(val) => setLastName(val)}
                 />
-
                 <SignUpInputField
                     label={'Username'}
                     icon={
@@ -101,8 +71,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    onChangeText={(val) => setUsername(val)}
                 />  
-
                 <SignUpInputField
                     label={'Email Address'}
                     icon={
@@ -114,8 +84,8 @@ const SignUpPage = ({navigation}) => {
                         />
                     }
                     keyboardType="email-address"
+                    onChangeText={(val) => setEmail(val)}
                 />
-
                 <SignUpInputField
                     label={'Phone Number'}
                     icon={
@@ -126,8 +96,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    onChangeText={(val) => setPhoneNumber(val)}
                 />
-
                 <SignUpInputField
                     label={'Password'}
                     icon={
@@ -139,8 +109,8 @@ const SignUpPage = ({navigation}) => {
                         />
                     }   
                     inputType="password"
+                    onChangeText={(val) => setPassword(val)}
                 />
-
                 <SignUpInputField
                     label={'Confirm Password'}
                     icon={
@@ -157,7 +127,8 @@ const SignUpPage = ({navigation}) => {
                 <CustomButton 
                     label={'Sign Up'}
                     onPress={() => { 
-                        console.log(firstName)
+                        console.log(firstName, lastName, username, email, phoneNumber, password)
+                        // Calls authContext to useMemo and jump to signup module
                         signUpHandle(firstName, lastName, username, email, phoneNumber, password)
                     }} 
                 />

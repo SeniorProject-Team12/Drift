@@ -23,7 +23,7 @@ const App = () => {
     	userToken: null
     };
 
-	const [data, setData] = React.useState([]);
+	// const [data, setData] = React.useState([]);
 	const API_URL = 'http://10.0.2.2:3000';
 
     const loginReducer = (previousState, event) => {
@@ -66,6 +66,11 @@ const App = () => {
 			userToken = null;
 
 			try {
+				userToken = 'randomToken';
+				AsyncStorage.setItem('userToken', userToken);
+
+				console.log("In SIGNUP w/ ", fName, lName, username, email, phoneNumber, pass)
+
 				const response = await axios.post(API_URL + '/user/signUp', {
 					"firstName": fName, 
 					"lastName": lName, 
@@ -74,11 +79,11 @@ const App = () => {
 					"phoneNum": phoneNumber, 
 					"password": pass 
 				});
-				console.log(response);
+				console.log(response.data);
 			} catch(error) {
 				console.error(error);
 			}
-
+        	dispatch({ type: 'SIGNUP', id: username, token: userToken });
 		},
     	Login: async (username, password) => {
         	let userToken;

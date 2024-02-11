@@ -51,8 +51,9 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
 router.post('/signUp', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { firstName, lastName, username, emailAddress, phoneNum, password } = req.body;
-
         const sp = "SP_InsertUser";
+
+
 
         await DB.executeStoredProcedure(sp, { firstName, lastName, username, emailAddress, phoneNum, password }, function(err, data) {
             if(err) {
