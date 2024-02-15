@@ -173,7 +173,7 @@ const LoginPage = ({navigation, route}) => {
 					marginBottom: 30,
 				}}>
 				<Text>Forgot Password?</Text>
-				<TouchableOpacity onPress={() => navigation.navigate()}>
+				<TouchableOpacity onPress={() => {}}>
 					<Text style={{color: '#8fcbbc', fontWeight: '700'}}> Login</Text>
 				</TouchableOpacity>
             </View>

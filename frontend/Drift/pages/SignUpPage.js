@@ -15,15 +15,16 @@ const SignUpPage = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [signUpStatus, setSignUpStatus] = useState("");
+    // const [signUpStatus, setSignUpStatus] = useState("");
 
-    const signUpHandle = (firstName, lastName, username, email, phoneNumber, password) => {
-        SignUp(firstName, lastName, username, email, phoneNumber, password)
+    const signUpHandle = (firstName, lastName, username, email, phoneNumber, password, confirmPassword) => {
+        SignUp(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
   	}
 
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignContent: 'center'}}>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{ paddingHorizontal: 25 }}>
@@ -33,6 +34,7 @@ const SignUpPage = ({navigation}) => {
                     fontWeight: '500',
                     color: '#333',
                     marginBottom: 30,
+                    paddingTop: 20
                 }}>
                     Sign Up
                 </Text>
@@ -122,14 +124,15 @@ const SignUpPage = ({navigation}) => {
                         />
                     }
                     inputType="password"
+                    onChangeText={(val) => setConfirmPassword(val)}
                 />
 
                 <CustomButton 
                     label={'Sign Up'}
                     onPress={() => { 
-                        console.log(firstName, lastName, username, email, phoneNumber, password)
+                        console.log(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
                         // Calls authContext to useMemo and jump to signup module
-                        signUpHandle(firstName, lastName, username, email, phoneNumber, password)
+                        signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword )
                     }} 
                 />
 
@@ -156,6 +159,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#8fcbbc'
+        backgroundColor: '#8fcbbc',
     },
 });
