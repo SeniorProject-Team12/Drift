@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import AppScreenStack from './components/AppScreenStack';
 import { DrawerContent } from './pages/DrawerContent';
 import SettingsPage from './pages/SettingsPage';
+import OrdersPage from './pages/OrdersPage';
 import AuthStackScreen from './pages/AuthScreenStack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 const Drawer = createDrawerNavigator();
@@ -170,6 +171,7 @@ const App = () => {
 						<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
 							<Drawer.Screen name="Drift" component={AppScreenStack} />
 							<Drawer.Screen name="Settings" component={SettingsPage} />
+							<Drawer.Screen name="Orders" component={OrdersPage} />
 						</Drawer.Navigator>
 					
 					) : (

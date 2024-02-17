@@ -83,14 +83,14 @@ const LoginPage = ({navigation, route}) => {
   	return (
     	<SafeAreaView style={styles.container}>
         	<Text style={styles.title}>Drift</Text>
-			<Text style={{ fontSize: 20, margin: 10 }}>Username</Text>
+			{/* <Text style={{ fontSize: 20, margin: 10 }}>Username</Text>
 			<TextInput 
 				style={styles.input} 
 				onChangeText={(val) => textInputChange(val)} 
 				placeholder="Username" 
 				onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-			/>
-{/* 			<SignUpInputField
+			/> */}
+ 			<SignUpInputField
 				label={'Username'}
 				icon={
 					<MaterialIcons
@@ -102,26 +102,27 @@ const LoginPage = ({navigation, route}) => {
 				}
 				onChangeText={(val) => textInputChange(val)}
 				onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-			/> */}
+				// style={}
+			/> 
 			{ data.isValidUser ? null : 
 				<Animatable.View animation="fadeInLeft" duration={500}>
 					<Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
 				</Animatable.View>
 			}
 
-			<Text style={{ fontSize:20,  margin: 10 }}>Password</Text>
+			{/* <Text style={{ fontSize:20,  margin: 10 }}>Password</Text>
 			<TextInput
 				style={styles.input}
 				onChangeText={(val) => handlePasswordChange(val)}
 				placeholder="Password"
 				secureTextEntry={true}
-			/> 
+			/>  */}
 			{ data.isValidPassword ? null : 
 				<Animatable.View animation="fadeInLeft" duration={500}>
 					<Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
 				</Animatable.View>
 			}
-			{/* <SignUpInputField
+			<SignUpInputField
 				style={styles.input}
 				label={'Password'}
 				icon={
@@ -136,7 +137,7 @@ const LoginPage = ({navigation, route}) => {
 				onChangeText={(val) => handlePasswordChange(val)}
 				onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
 				secureTextEntry={true}
-			/> */}
+			/>
 			<TouchableOpacity
 				style={{
 					// backgroundColor: '#AD40AF',
@@ -164,13 +165,40 @@ const LoginPage = ({navigation, route}) => {
 				<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
 			</TouchableOpacity>
 			
-			{/* <Button title="Sign In" style={{ fontSize: 50 }} onPress={() => { loginHandle( data.username, data.password ) }} /> */}
-			<Button width="100px" title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} />
+			{/* <Button width={50} title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} /> */}
+			<TouchableOpacity
+				style={{
+					// backgroundColor: '#AD40AF',
+					backgroundColor: '#8fcbbc',
+					padding: 20,
+					width: '50%',
+					borderRadius: 10,
+					marginBottom: 0,
+					marginTop: 0,
+					marginLeft: 100,
+					flexDirection: 'row',
+					justifyContent: 'space-between',
+				}}
+				onPress={() => { navigation.goBack() }}>
+				<Text
+					style={{
+						color: 'white',
+						fontSize: 16,
+						textAlign: 'center',
+						fontWeight: 'bold',
+						//   fontFamily: 'Roboto-MediumItalic',
+					}}>
+						Go Back
+				</Text>
+				<MaterialIcons name="arrow-back-ios" size={22} color="#fff" />
+			</TouchableOpacity>
+
 			<View
 				style={{
 					flexDirection: 'row',
 					justifyContent: 'center',
 					marginBottom: 30,
+					paddingTop: 20
 				}}>
 				<Text>Forgot Password?</Text>
 				<TouchableOpacity onPress={() => {}}>
@@ -193,6 +221,7 @@ const styles = StyleSheet.create({
 
     title: {
         paddingTop: 40,
+		paddingBottom: 20,
         fontSize: 50,
         fontWeight: "bold",
         justifyContent: "center"
@@ -203,6 +232,7 @@ const styles = StyleSheet.create({
         margin: 12,
         borderWidth: 1,
         padding: 10,
+		paddingTop: 10
     },
 
 	errorMsg: {

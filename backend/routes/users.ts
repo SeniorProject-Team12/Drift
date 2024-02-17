@@ -3,6 +3,8 @@ import { DB } from './modules/db';
 
 export const router = Router();
 
+const { createHash } = require('crypto');
+
 // Get all users
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,25 +24,38 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 // Get user by username and password
 router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // const userID = req.params.id;
         const { username, password } = req.body;
         console.log("IN API login w/ ", username, password);
 
-        await DB.executeSQL('select * from user where username = \'' + username + '\' and password = \'' + password + '\'', function(err: any, data: any) {
+        const query = 'select * from user where username = \'' + username + '\''; // and password = \'' + encryptedPassword + '\'';
+        console.log(query);
+
+        const hashedPass = createHash('sha256').update(password).digest('hex');
+
+        await DB.executeSQL(query, async function(err: any, data: any) {
+            console.log("Hashed pass - ", hashedPass);
+
             if(err) {
                 // req.setEncoding({err: err});
                 console.log("ERROR: ", err);
+                res.send("Error logging in!");
             }
-                // } else if(!data) {
-            //     res.send("No user with specified userID exists!");
-            // } 
+            else if(!data){
+                res.send("Error logging in!");
+            }
+            else if(hashedPass != data[0].password) {
+                res.send("Wrong password found in API!");
+            } 
             else {
+                 
+                console.log(data, data[0].password);
                 if(data.length > 0){
+                    console.log(data);
                     res.send(data);
                 } else {
                     res.send(null);
                 }
-            }
+            }                 
         });
     } catch(e) {
         next(e);
@@ -53,9 +68,9 @@ router.post('/signUp', async (req: Request, res: Response, next: NextFunction) =
         const { firstName, lastName, username, emailAddress, phoneNum, password } = req.body;
         const sp = "SP_InsertUser";
 
+        const encryptedPassword = createHash('sha256').update(password).digest('hex');
 
-
-        await DB.executeStoredProcedure(sp, { firstName, lastName, username, emailAddress, phoneNum, password }, function(err, data) {
+        await DB.executeStoredProcedure(sp, { firstName, lastName, username, emailAddress, phoneNum, encryptedPassword }, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
                 res.send("ERROR: please enter correct sign up details.");
