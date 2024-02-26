@@ -24,7 +24,7 @@ const App = () => {
     };
 
 	const [data, setData] = React.useState([]);
-	const API_URL = 'http://10.0.2.2:3000';
+	const API_URL = 'http://192.168.1.88:3000';
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -84,44 +84,44 @@ const App = () => {
         	let userToken;
         	userToken = null;
 			
+			// // try {
+			// // 	const response = await axios.get(API_URL + '/user');
+			// // 	console.log(API_URL + '/user');
+			// // 	console.log("Get ALL users axios API call - \n\n", response.data);
+			// // 	// const json = await response.json();
+			// // 	// console.log(json);
+			// // 	// setData(json);
+			// // } catch(error) {
+			// // 	console.error('Error fetching data: ', error);
+			// // }
+			// console.log(API_URL + '/user/login');
+
 			// try {
-			// 	const response = await axios.get(API_URL + '/user');
-			// 	console.log(API_URL + '/user');
-			// 	console.log("Get ALL users axios API call - \n\n", response.data);
-			// 	// const json = await response.json();
-			// 	// console.log(json);
-			// 	// setData(json);
+			// 	console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
+			// 	const res = await axios.post(API_URL + '/user/login', { username: username, password: password });
+			// 	console.log("GET input user by parameters - \n\n", res.data);
+
+			// 	if(res.data != '') {
+			// 		userToken = 'randomToken';
+			// 		AsyncStorage.setItem('userToken', userToken);
+			// 	} else {
+			// 		alert("Please check your login information.  Username and/or password are incorrect!");
+			// 	}
 			// } catch(error) {
-			// 	console.error('Error fetching data: ', error);
+			// 	console.log(error);
 			// }
-			console.log(API_URL + '/user/login');
 
-			try {
-				console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
-				const res = await axios.post(API_URL + '/user/login', { username: username, password: password });
-				console.log("GET input user by parameters - \n\n", res.data);
-
-				if(res.data != '') {
-					userToken = 'randomToken';
-					AsyncStorage.setItem('userToken', userToken);
-				} else {
-					alert("Please check your login information.  Username and/or password are incorrect!");
-				}
-			} catch(error) {
-				console.log(error);
+        	if(username == 'username' && password == 'password') {
+        		try {
+            		// set random token currently, but pull from db once API developed
+            		userToken = 'randomToken';
+            		await AsyncStorage.setItem('userToken', userToken);
+        		} catch(e) {
+            		console.log(e);
+            	}
+      		} else {
+				alert("Please check your login information.  Username and/or password are incorrect!");
 			}
-
-        	// if(username == 'username' && password == 'password') {
-        	// 	try {
-            // 		// set random token currently, but pull from db once API developed
-            // 		userToken = 'randomToken';
-            // 		await AsyncStorage.setItem('userToken', userToken);
-        	// 	} catch(e) {
-            // 		console.log(e);
-            // 	}
-      		// } else {
-			// 	alert("Please check your login information.  Username and/or password are incorrect!");
-			// }
         	dispatch({ type: 'LOGIN', id: username, token: userToken });
     	},
         SignOut: async () => {

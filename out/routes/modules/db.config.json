@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "sqluser",
+    "password": "Sqlrocks01!", 
+    "database": "drift",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "test": {
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "localhost",
+    "dialect": "mysql"
+  },
+  "production": {
+    "username": "",
+    "password": "",
+    "database": "",
+    "host": "",
+    "dialect": "mysql"
+  }
+}
