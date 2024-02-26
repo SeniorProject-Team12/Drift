@@ -16,6 +16,7 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import ImagePickerComponent from '../components/ImagePickerComponent.js';
 import { Picker } from '@react-native-picker/picker';
+import axios from 'axios';
 
 const categories = [
   'Shirt',
@@ -31,7 +32,6 @@ const categories = [
 
 const PostItemScreen = () => {
   const [image, setImage] = useState(null);
-  const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [brand, setBrand] = useState('');
@@ -40,14 +40,13 @@ const PostItemScreen = () => {
   const [category, setCategory] = useState('');
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('Select Category');
 
-  const [data, setData] = React.useState([]);
-	const API_URL = 'http://10.136.134.161:3000';
+	const API_URL = 'http://192.168.1.165:3000';
 
   useEffect(() => {
     getPermissionAsync();
   }, []);
 
-  //Image Picker Functions
+  //Image picker functions
 
   const getPermissionAsync = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -102,7 +101,7 @@ const PostItemScreen = () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [1, 1], // Square aspect ratio
+        aspect: [1, 1],
         quality: 1,
       });
   
@@ -119,32 +118,33 @@ const PostItemScreen = () => {
     setImage(null);
   };
   
-  const chooseDifferentImage = () => {
-    // Set the current image to null before selecting a different one
-    setImage(null);
-  
-    // Allow the user to choose a different image
-    selectImage();
-  };
-
-  //Category Modal Function
+  //Category modal function
   const handleCategoryChange = (itemValue) => {
     setCategory(itemValue);
     setSelectedCategoryLabel(itemValue !== '' ? itemValue : 'Select Category');
   };
 
-  //On Submit Function
-  const handleSubmit = () => {
+  //On submit
+  const handleSubmit = async () => {
     // Check if at least one image is uploaded and all fields are filled
     if (!image || !description || !price || !brand) {
       setErrorMessage('Please upload an image and fill in all fields before submitting.');
     } else {
 
-      //Eventually send data to back end
-      console.log('Image:', image);
-      console.log('Description:', description);
-      console.log('Price:', price);
-      console.log('Brand:', brand)
+      try {
+        console.log("In POSTITEM w/ ", description, brand, category, price, image, '1');
+        const response = await axios.post(API_URL + '/items/addNewItem', {
+          "description": description,
+          "brand": brand,
+          "price": price,
+          "category": category,
+          "photoURL": image,
+          "sellerID": 1 //Update with actual user id
+        });
+        console.log(response);
+      } catch(error) {
+          console.log(error);
+      }
 
       // Clear the form and error message after submission
       setImage(null);

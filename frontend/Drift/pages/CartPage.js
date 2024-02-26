@@ -6,7 +6,7 @@ import { useStripe } from '@stripe/stripe-react-native';
 import testCartItems from './testData/testCartItems';
 
 const testPaymentIntent = 
-  'pi_3Of6rPAh9NlzJ6kb004CkX6x_secret_mRkPvVycVfCFtLZBA5W3476ot';
+  'pi_3OnrzUAh9NlzJ6kb1zdRHqDw_secret_hPNIuthNdBdYAbxmXJsthJTdv';
 
 
 //const CartTotals = () => {
@@ -43,31 +43,6 @@ const CartTotals = (cartItems) => {
       </View>
     </View>
   )
-}
-
-const onCheckout = async () => {
-  //Create payment intent
-
-  //Initialize payment sheet
-
-  //***Temporary Logic ****/
-  const initResponse = await initPaymentSheet({
-    merchantDisplayName: 'Drift',
-    paymentIntentClientSecret: testPaymentIntent,
-  });
-  if (initResponse.error) {
-    console.log(initResponse.error);
-    Alert.alert('Something went wrong');
-    return;
-  }
-  //***********************/
-
-  //Present the payment sheet from stripe
-  const paymentResponse = await presentPaymentSheet()
-
-
-  //Authorize info & create order
-  //onCreateOrder();
 }
 
 const CartPage = ({navigation}) => {
@@ -113,13 +88,18 @@ const CartPage = ({navigation}) => {
     //onCreateOrder();
   }
 
-
+  const deleteCartItem = (index) => {
+    // Logic to delete the item from the cart
+    const updatedCartItems = [...cartItems];
+    updatedCartItems.splice(index, 1);
+    setCartItems(updatedCartItems);
+  }
 
 
   const fetchCartItems = async () => {
     // try {
     //   {console.log('fetchCartItems')}
-    //   const response = await axios.get('/cartItems/getCartItems'); 
+    //   const response = await axios.get(API_URL + '/items/getCartItems'); 
     //   setCartItems(response.data); 
     // } catch (error) {
     //   console.error('Error fetching items:', error);
@@ -138,7 +118,11 @@ const CartPage = ({navigation}) => {
       <>
         <FlatList
         data = {cartItems}
-        renderItem={({ item }) => <CartListItem cartItem={item} />}
+        renderItem={({ item, index }) => 
+        <CartListItem 
+        cartItem={item} 
+        onDelete={() => deleteCartItem(index)} // Pass onDelete callback
+      />}
         ListFooterComponent={CartTotals(cartItems)}
         />
         <Pressable onPress={onCheckout} style={styles.button}>

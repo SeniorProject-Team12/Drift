@@ -54,11 +54,10 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
 // Add a new item
 router.post('/addNewItem', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, description, price, quality, brand, color, hashtags, category, sellerID, photoURL, size } = req.body;
-
+    const { description, brand, price, category, photoURL, sellerID } = req.body;
     const sp = "SP_InsertItem"; // Adjust the stored procedure name
 
-    await DB.executeStoredProcedure(sp, { name, description, price, quality, brand, color, hashtags, category, sellerID, photoURL, size }, function(err, data) {
+    await DB.executeStoredProcedure(sp, { description, brand, price, category, photoURL, sellerID }, function(err, data) {
       if (err) {
         console.log("ERROR: ", err);
       } else {
@@ -69,6 +68,7 @@ router.post('/addNewItem', async (req: Request, res: Response, next: NextFunctio
     next(e);
   }
 });
+
 
 // Update existing item
 router.post('/updateItem/id/:id', async (req: Request, res: Response, next: NextFunction) => {
