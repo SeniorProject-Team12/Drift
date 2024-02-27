@@ -8,7 +8,7 @@ const { createHash } = require('crypto');
 // Get all users
 router.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        await DB.executeSQL('select * from user;', function(err, data) {
+        await DB.executeSQL('select * from users;', function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else {
@@ -27,14 +27,14 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
         const { username, password } = req.body;
         console.log("IN API login w/ ", username, password);
 
-        const query = 'select * from user where username = \'' + username + '\''; // and password = \'' + encryptedPassword + '\'';
+        const query = 'select * from users where username = \'' + username + '\''; // and password = \'' + encryptedPassword + '\'';
         console.log(query);
 
         const hashedPass = createHash('sha256').update(password).digest('hex');
 
         await DB.executeSQL(query, async function(err: any, data: any) {
             console.log("Hashed pass - ", hashedPass);
-
+            console.log("Data res - ", data);
             if(err) {
                 // req.setEncoding({err: err});
                 console.log("ERROR: ", err);

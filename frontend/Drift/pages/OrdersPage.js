@@ -1,12 +1,16 @@
 import React from "react";
+// import axios from 'axios';
+import Orders from './Orders';
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 const OrdersPage = ({navigation}) => {
+
     return (
         <SafeAreaView style={styles.container}>
             <Text style={{fontSize: 30}}>
-                Orders Page
+                Your Orders
             </Text>
+            <Orders navigation={navigation} />
         </SafeAreaView>
     );
 }
