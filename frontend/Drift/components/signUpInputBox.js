@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, TextInput} from 'react-native';
 
-export default function SignUpInputField({ label, icon, inputType, keyboardType, fieldButtonLabel, fieldButtonFunction }) {
+export default function SignUpInputField({ label, icon, inputType, keyboardType, fieldButtonLabel, fieldButtonFunction, onChangeText }) {
   return (
     <View
       style={{
@@ -18,12 +18,14 @@ export default function SignUpInputField({ label, icon, inputType, keyboardType,
           keyboardType={keyboardType}
           style={{flex: 1, paddingVertical: 0}}
           secureTextEntry={true}
+          onChangeText={onChangeText}
         />
       ) : (
         <TextInput
           placeholder={label}
           keyboardType={keyboardType}
           style={{flex: 1, paddingVertical: 0}}
+          onChangeText={onChangeText}
         />
       )}
       <TouchableOpacity onPress={fieldButtonFunction}>
