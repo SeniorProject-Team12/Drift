@@ -10,7 +10,7 @@ router.get('/', async (req:Request, res: Response, next: NextFunction) => {
             if(err) {
                 console.log("ERROR: ", err);
             } else {
-                // console.log(data);   
+                console.log(data);   
                 res.send(data);
             }
         });     
@@ -42,12 +42,12 @@ router.get('/getOrderByID/id/:id', async (req:Request, res: Response, next: Next
 // Insert new order
 router.post('/insertOrder', async (req:Request, res: Response, next: NextFunction) => {
     try {
-        const { customerName, billingAddress, shippingAddress, itemCount, orderStatus, userID } = req.body;
+        const { userID, customerName, billingAddress, shippingAddress, itemCount, orderStatus, items, totalPrice, salesTax, totalShippingPrice, trackingNumber  } = req.body;
         console.log(userID);
 
         const sp = "SP_InsertOrder";
 
-        await DB.executeStoredProcedure(sp, { customerName, billingAddress, shippingAddress, itemCount, orderStatus, userID }, function(err, data) {
+        await DB.executeStoredProcedure(sp, { userID, customerName, billingAddress, shippingAddress, itemCount, orderStatus, items, totalPrice, salesTax, totalShippingPrice, trackingNumber }, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else {
@@ -64,11 +64,11 @@ router.post('/insertOrder', async (req:Request, res: Response, next: NextFunctio
 router.post('/updateOrder/id/:id', async (req:Request, res: Response, next: NextFunction) => {
     try {
         const orderID = req.params.id;
-        const { customerName, billingAddress, shippingAddress, itemCount, orderStatus, userID } = req.body;
+        const { userID, customerName, billingAddress, shippingAddress, itemCount, orderStatus, items, totalPrice, salesTax, totalShippingPrice, trackingNumber } = req.body;
 
         const sp = "SP_UpdateOrder";
 
-        await DB.executeStoredProcedure(sp, { orderID, customerName, billingAddress, shippingAddress, itemCount, orderStatus, userID }, function(err, data) {
+        await DB.executeStoredProcedure(sp, { orderID, userID, customerName, billingAddress, shippingAddress, itemCount, orderStatus, items, totalPrice, salesTax, totalShippingPrice, trackingNumber }, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else {
