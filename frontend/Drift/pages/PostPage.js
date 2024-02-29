@@ -14,7 +14,9 @@ import {
   Pressable
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import ImagePickerComponent from '../components/ImagePickerComponent.js';
 import { Picker } from '@react-native-picker/picker';
+import axios from 'axios';
 
 const categories = [
   'Shirt',
@@ -29,18 +31,22 @@ const categories = [
 ];
 
 const PostItemScreen = () => {
-  const [images, setImages] = useState([null, null, null]);
-  const [title, setTitle] = useState('');
+  const [image, setImage] = useState(null);
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [brand, setBrand] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [category, setCategory] = useState('');
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('Select Category');
 
+	const API_URL = 'http://10.0.2.2:3000';
+
   useEffect(() => {
     getPermissionAsync();
   }, []);
+
+  //Image picker functions
 
   const getPermissionAsync = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -49,25 +55,23 @@ const PostItemScreen = () => {
     }
   };
 
-  const selectImage = async (index) => {
+  const selectImage = async () => {
     // If an image is already selected, show options to delete or select a different one
-    if (images[index]) {
+    if (image) {
       Alert.alert(
         'Image Options',
         'Choose an option:',
         [
           {
             text: 'Delete',
-            onPress: () => deleteImage(index),
+            onPress: () => deleteImage(),
             style: 'destructive',
           },
           {
             text: 'Select Different Image',
             onPress: async () => {
               // Reset the current image
-              const newImages = [...images];
-              newImages[index] = null;
-              setImages(newImages);
+              setImage(null);
   
               // Launch the image picker to select a different image
               let result = await ImagePicker.launchImageLibraryAsync({
@@ -78,9 +82,7 @@ const PostItemScreen = () => {
               });
   
               if (!result.canceled) {
-                const updatedImages = [...images];
-                updatedImages[index] = result.assets[0].uri;
-                setImages(updatedImages);
+                setImage(result.assets[0].uri);
   
                 // Clear error message when user selects an image
                 setErrorMessage('');
@@ -99,114 +101,111 @@ const PostItemScreen = () => {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
-        aspect: [1, 1], // Square aspect ratio
+        aspect: [1, 1],
         quality: 1,
       });
   
       if (!result.canceled) {
-        const newImages = [...images];
-        newImages[index] = result.assets[0].uri;
-        setImages(newImages);
+        setImage(result.assets[0].uri);
   
         // Clear error message when user selects an image
         setErrorMessage('');
       }
     }
   };
-  
 
-  const deleteImage = (index) => {
-    const newImages = [...images];
-    newImages[index] = null;
-    setImages(newImages);
+  const deleteImage = () => {
+    setImage(null);
+  };
+  
+  //Category modal function
+  const handleCategoryChange = (itemValue) => {
+    setCategory(itemValue);
+    setSelectedCategoryLabel(itemValue !== '' ? itemValue : 'Select Category');
   };
 
-  const chooseDifferentImage = (index) => {
-    // Set the current image to null before selecting a different one
-    const newImages = [...images];
-    newImages[index] = null;
-    setImages(newImages);
-  
-    // Allow the user to choose a different image
-    selectImage(index);
-  };
-
-  const handleSubmit = () => {
+  //On submit
+  const handleSubmit = async () => {
     // Check if at least one image is uploaded and all fields are filled
-    if (!images.some((image) => image) || !title || !description || !price) {
-      setErrorMessage('Please upload at least one image and fill in all fields before submitting.');
+    if (!image || !description || !price || !brand) {
+      setErrorMessage('Please upload an image and fill in all fields before submitting.');
     } else {
 
-      //Eventually send data to back end
-      console.log('Images:', images);
-      console.log('Title:', title);
-      console.log('Description:', description);
-      console.log('Price:', price);
+      try {
+        console.log("In POSTITEM w/ ", description, brand, category, price, image, '1');
+        const response = await axios.post(API_URL + '/items/addNewItem', {
+          "description": description,
+          "brand": brand,
+          "price": price,
+          "category": category,
+          "photoURL": image,
+          "sellerID": 1 //Update with actual user id
+        });
+        console.log(response);
+      } catch(error) {
+          console.log(error);
+      }
 
       // Clear the form and error message after submission
-      setImages([null, null, null]);
-      setTitle('');
+      setImage(null);
       setDescription('');
+      setBrand('');
       setPrice('');
       setErrorMessage('');
+      setSelectedCategoryLabel('Select Category');
     }
   };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
-        <View style={styles.imageRow}>
-          {images.map((img, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.smallImageContainer}
-              onPress={() => selectImage(index)}
-            >
-              {img ? (
-                <Image source={{ uri: img }} style={styles.smallImage} />
-              ) : (
-                <Text>Select Image</Text>
-              )}
-            </TouchableOpacity>
-          ))}
-        </View>
+        
+      <ImagePickerComponent image={image} selectImage={() => selectImage(setImage, setErrorMessage)} />
 
-        <Text style={styles.label}>Title</Text>
-        <TextInput
-          style={[styles.input, styles.titleInput]}
-          placeholder="Enter title"
-          value={title}
-          onChangeText={(text) => setTitle(text)}
-        />
-
-        <Text style={styles.label}>Description</Text>
+        <Text style={styles.label}>DESCRIPTION</Text>
         <TextInput
           style={[styles.input, styles.multilineInput]}
-          placeholder="Enter description"
+          placeholder="Describe your item with information about the condition, size, color, and style."
           multiline
-          numberOfLines={4}
+          numberOfLines={2}
           value={description}
           onChangeText={(text) => setDescription(text)}
         />
 
-        <Text style={styles.label}>Price</Text>
-        <View style={styles.priceContainer}>
-          <Text style={styles.currencySymbol}>$</Text>
+        <Text style={styles.infoHeader}>INFO</Text>
+        {/* Category */}
+        <TouchableOpacity
+          style={styles.categoryContainer}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.categoryLabelText}>Category:</Text>
+          <Text style={styles.selectCategoryBar}>{selectedCategoryLabel.toUpperCase()}</Text>
+      </TouchableOpacity>
+
+      <View style={styles.inputsContainer}>
+        {/* Price */}
+        <View style={styles.halfWidthContainer}>
+          <Text style={styles.halfWidthLabel}>Price:</Text>
           <TextInput
-            style={styles.input}
-            placeholder="Enter price"
+            style={styles.priceInput}
             keyboardType="numeric"
             value={price}
             onChangeText={(text) => setPrice(text)}
           />
-          <TouchableOpacity
-            style={styles.selectCategoryButton}
-            onPress={() => setModalVisible(true)}
-          >
-            <Text style={{ color: 'black', fontWeight: 'bold' }}>{selectedCategoryLabel}</Text>
-          </TouchableOpacity>
+          <Text style={styles.priceUnitText}>USD</Text>
         </View>
 
+        {/* Brand */}
+        <View style={styles.halfWidthContainer}>
+          <Text style={styles.halfWidthLabel}>Brand:</Text>
+          <TextInput
+            style={styles.brandInput}
+            placeholder="Enter brand"
+            value={brand}
+            onChangeText={(text) => setBrand(text)}
+          />
+        </View>
+      </View>
 
         {/* Error Message */}
         {errorMessage ? (
@@ -230,7 +229,7 @@ const PostItemScreen = () => {
                 <Text style={styles.modalText}>Select Category</Text>
                 <Picker
                   selectedValue={category}
-                  onValueChange={(itemValue) => setCategory(itemValue)}
+                  onValueChange={handleCategoryChange}
                 >
                   {categories.map((cat) => (
                     <Picker.Item key={cat} label={cat} value={cat} />
@@ -238,10 +237,7 @@ const PostItemScreen = () => {
                 </Picker>
                 <TouchableOpacity
                   style={styles.buttonClose}
-                  onPress={() => {
-                    setModalVisible(!modalVisible);
-                    setSelectedCategoryLabel(`Category: ${category || 'Select Category'}`);
-                  }}
+                  onPress={() => setModalVisible(!modalVisible)}
                 >
                   <Text style={styles.textStyle}>Close</Text>
                 </TouchableOpacity>
@@ -259,28 +255,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#8fcbbc',
+    //backgroundColor: '#8fcbbc',
   },
-  imageRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 16,
-  },
-  smallImageContainer: {
-    aspectRatio: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#eee',
-    width: '30%',
-    borderWidth: 1,
-    borderColor: 'black',
-  },
-  smallImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-  },
-  
   label: {
     fontSize: 16,
     marginBottom: 4,
@@ -297,23 +273,48 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom:20,
   },
-  priceContainer: {
+  infoHeader: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10
+  },
+  inputsContainer: {
     flexDirection: 'row',
+    marginBottom: 20,
+    gap: 10
+  },
+  halfWidthContainer: {
+    flexDirection: 'row',
+    flex: 1,
     alignItems: 'center',
-    width: '40%',
-    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
   },
-  currencySymbol: {
-    fontSize: 30,
-    marginRight: 8,
+  halfWidthLabel: {
+    marginRight: 10,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  priceInput: {
+    flex: 1,
+    textAlign: 'right',
+    padding: 8,
     color: 'black',
+    fontSize: 16,
+    marginLeft: 'auto'
   },
-  titleInput: {
-    fontSize: 18,
-    height: 50,
+  priceUnitText: {
+    color: '#888',
+    fontSize: 16,
+  },
+  brandInput: {
+    flex: 3,
+    padding: 8,
+    color: 'black',
+    fontSize: 16,
   },
   multilineInput: {
-    height: 80,
+    height: 60,
   },
   submitButton: {
     justifyContent: 'center',
@@ -328,14 +329,25 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     justifyContent: 'flex-end',
-    marginBottom: 36,
+    marginBottom: 40,
   },
-  selectCategoryButton: {
-    backgroundColor: 'white',
+  categoryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+  },
+  categoryLabelText: {
+    marginRight: 'auto',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  selectCategoryBar: {
     padding: 10,
     borderRadius: 5,
-    marginLeft: 20,
-    width: 150
+    fontWeight: 'bold',
+    marginLeft: 'auto'
   },
   centeredView: {
     flex: 1,
