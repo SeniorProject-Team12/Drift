@@ -7,7 +7,7 @@ import { router as userRouter } from './routes/users';
 import { router as itemRouter } from './routes/items';
 import { router as indexRouter } from './routes/index';
 import { router as orderRouter } from './routes/orders';
-import { router as savedItemRouter } from './routes/savedItems';
+import { router as savedFolderRouter } from './routes/savedFolders'
 
 const app = express();
 
@@ -26,9 +26,17 @@ app.use('/', indexRouter);
 app.use("/user", userRouter);
 app.use("/items", itemRouter);
 app.use("/order", orderRouter);
-app.use("/savedItem", savedItemRouter);
+app.use("/savedFolder", savedFolderRouter);
 
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+// TODO
+
+
+// Insert new listing or item user is selling
+// Insert Order corresponding to user
+// Insert new saved item for user
+// Insert new saved folder created

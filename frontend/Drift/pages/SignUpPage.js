@@ -1,15 +1,13 @@
 import React, {useState} from 'react';
-import Axios from 'axios';
-import { StyleSheet, SafeAreaView, ScrollView, View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { AuthContext } from "../components/context";
+import { StyleSheet, SafeAreaView, ScrollView, View, Text, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SignUpInputField from '../components/signUpInputBox';
 import CustomButton from '../components/customButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const SignUpPage = ({navigation}) => {
-    // const [date, setDate] = useState(new Date());
-    // const [open, setOpen] = useState(false);
-    // const [dobLabel, setDobLabel] = useState('Date of Birth');
+    const { SignUp } = React.useContext(AuthContext);
 
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -17,15 +15,16 @@ const SignUpPage = ({navigation}) => {
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    const [signUpStatus, setSignUpStatus] = useState("");
+    // const [signUpStatus, setSignUpStatus] = useState("");
 
-    const signUpHandle = (firstName, lastName, username, email, phoneNumber, password) => {
-        SignUp(firstName, lastName, username, email, phoneNumber, password)
+    const signUpHandle = (firstName, lastName, username, email, phoneNumber, password, confirmPassword) => {
+        SignUp(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
   	}
 
     return (
-        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignContent: 'center' }}>
+        <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignContent: 'center'}}>
             <ScrollView
                 showsVerticalScrollIndicator={false}
                 style={{ paddingHorizontal: 25 }}>
@@ -35,39 +34,12 @@ const SignUpPage = ({navigation}) => {
                     fontWeight: '500',
                     color: '#333',
                     marginBottom: 30,
+                    paddingTop: 20
                 }}>
                     Sign Up
                 </Text>
 
-                {/* <View
-                    style={{
-                        flexDirection: 'row',
-                        borderBottomColor: '#ccc',
-                        borderBottomWidth: 1,
-                        paddingBottom: 8,
-                        marginBottom: 25,
-                    }}>
-                    icon={
-                        <Ionicons
-                            name="person-outline"
-                            size={20}
-                            color="#666"
-                            style={{marginRight: 5}}
-                        />
-                    }
-                    <TextInput
-                        placeholder="First Name"
-                        // keyboardType={keyboardType}
-                        style={{flex: 1, paddingVertical: 0}}
-                        onChangeText={(val) => setFirstName({ firstName: val })}
-                    />
-                    <TouchableOpacity onPress={fieldButtonFunction}>
-                        <Text style={{color: '#8fcbbc', fontWeight: '700'}}>{fieldButtonLabel}</Text>
-                    </TouchableOpacity>
-                </View> */}
-
-
-                {/* <SignUpInputField
+                <SignUpInputField
                     label={'First Name'}
                     icon={
                         <Ionicons
@@ -77,8 +49,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
-                /> */}
-
+                    onChangeText={(val) => setFirstName(val)}
+                />
                 <SignUpInputField
                     label={'Last Name'}
                     icon={
@@ -89,8 +61,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    onChangeText={(val) => setLastName(val)}
                 />
-
                 <SignUpInputField
                     label={'Username'}
                     icon={
@@ -101,8 +73,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    onChangeText={(val) => setUsername(val)}
                 />  
-
                 <SignUpInputField
                     label={'Email Address'}
                     icon={
@@ -114,8 +86,8 @@ const SignUpPage = ({navigation}) => {
                         />
                     }
                     keyboardType="email-address"
+                    onChangeText={(val) => setEmail(val)}
                 />
-
                 <SignUpInputField
                     label={'Phone Number'}
                     icon={
@@ -126,8 +98,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    onChangeText={(val) => setPhoneNumber(val)}
                 />
-
                 <SignUpInputField
                     label={'Password'}
                     icon={
@@ -139,8 +111,8 @@ const SignUpPage = ({navigation}) => {
                         />
                     }   
                     inputType="password"
+                    onChangeText={(val) => setPassword(val)}
                 />
-
                 <SignUpInputField
                     label={'Confirm Password'}
                     icon={
@@ -152,13 +124,15 @@ const SignUpPage = ({navigation}) => {
                         />
                     }
                     inputType="password"
+                    onChangeText={(val) => setConfirmPassword(val)}
                 />
 
                 <CustomButton 
                     label={'Sign Up'}
                     onPress={() => { 
-                        console.log(firstName)
-                        signUpHandle(firstName, lastName, username, email, phoneNumber, password)
+                        console.log(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
+                        // Calls authContext to useMemo and jump to signup module
+                        signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword )
                     }} 
                 />
 
@@ -185,6 +159,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#8fcbbc'
+        backgroundColor: '#8fcbbc',
     },
 });

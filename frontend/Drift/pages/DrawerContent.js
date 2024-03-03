@@ -59,6 +59,17 @@ export function DrawerContent(props) {
                                 )} 
                             />
                             <DrawerItem 
+                                label="Orders" 
+                                onPress={() => { props.navigation.navigate('Orders') }}
+                                icon={({color, size}) => (
+                                    <Icon 
+                                    name="check-box"
+                                    color={color}
+                                    size={size}
+                                    />
+                                )} 
+                            />
+                            <DrawerItem 
                                 label="Settings" 
                                 onPress={() => { props.navigation.navigate('Settings') }}
                                 icon={({color, size}) => (
