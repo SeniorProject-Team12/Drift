@@ -121,3 +121,5 @@ router.delete('/deleteUser/id/:id', async (req: Request, res: Response, next: Ne
         next(e);
     }
 });
+
+export default router;

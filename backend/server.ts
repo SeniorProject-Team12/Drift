@@ -33,8 +33,8 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
+export default app;
 // TODO
-
 
 // Insert new listing or item user is selling
 // Insert Order corresponding to user

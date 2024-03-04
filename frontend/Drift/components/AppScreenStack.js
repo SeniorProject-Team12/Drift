@@ -8,6 +8,7 @@ import MainTabScreen from "./MainTabScreen";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import SellerPage from "../pages/SellerPage";
 import SettingsPage from '../pages/SettingsPage';
+import SelectedOrderPage from "../pages/SelectedOrderPage";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
@@ -31,6 +32,21 @@ const AppScreenStack = ({ navigation }) => {
                   size={20}
                   onPress={() => {
                     navigation.navigate("Cart");
+                  }}
+                />
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="Order Details"
+            component={SelectedOrderPage}
+            options={{
+              headerLeft: () => (
+                <IconButton
+                  icon="arrow-left-circle-outline"
+                  size={20}
+                  onPress={() => {
+                    navigation.navigate("Orders");
                   }}
                 />
               ),
