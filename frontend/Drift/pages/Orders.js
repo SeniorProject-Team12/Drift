@@ -1,19 +1,18 @@
 import React from "react";
 import axios from 'axios';
+import configs from "../config";
 import OrderCard from "../components/OrderCard";
-import { View, FlatList, Dimensions } from "react-native";
+import { View, FlatList, Dimensions, Text } from "react-native";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth - 20;
 
 const Orders = ({ query="", navigation }) => {
-  const API_URL = 'http://192.168.1.54:3000'
-
   const [orders, setOrders] = React.useState([]);
 
   const fetchAllOrders = async () => {
     try {
-      const response = await axios.get(API_URL + '/order/'); 
+      const response = await axios.get(configs[0].API_URL + '/order/'); 
       console.log(response.data);
       setOrders(response.data); 
     } catch (error) {
@@ -21,9 +20,9 @@ const Orders = ({ query="", navigation }) => {
     }
   };
   
-  const renderOrder = ({ order }) => (
-    <OrderCard order={order} cardWidth={cardWidth} showInfo={true} navigation={navigation} />
-  );
+  // const renderOrder = ({ item }) => (
+  //   <OrderCard item={item} cardWidth={cardWidth} showInfo={true} navigation={navigation} />
+  // );
 
   React.useEffect(() => {
     if (query === "") {
@@ -39,7 +38,9 @@ const Orders = ({ query="", navigation }) => {
     <View style={{ flex: 1 }}>
       <FlatList
         data={orders}
-        renderItem={renderOrder}
+        renderItem={({ item }) => 
+          <OrderCard item={item} cardWidth={cardWidth} showInfo={true} navigation={navigation} />
+        }
         numColumns={1}
         keyExtractor={(order) => order.id}
         contentContainerStyle={{ padding: 8 }}

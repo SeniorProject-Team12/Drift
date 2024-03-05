@@ -6,7 +6,7 @@ import Icon from 'react-native-ico-material-design';
 
 import { AuthContext } from "../components/context";
 
-export function DrawerContent(props) {
+export function DrawerContent({username, firstName, lastName, props}) {
     const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
     const toggleTheme = () => {
@@ -21,8 +21,8 @@ export function DrawerContent(props) {
             <DrawerContentScrollView { ...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <Title style={styles.title}>USER'S NAME</Title>
-                        <Caption style={styles.caption}>@user</Caption>
+                        <Title style={styles.title}>{`${firstName} ${lastName}`}</Title>
+                        <Caption style={styles.caption}>{`@${username}`}</Caption>
 
                         <Drawer.Section style={styles.drawerSection}>
                             <DrawerItem 

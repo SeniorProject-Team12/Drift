@@ -15,6 +15,7 @@ const Drawer = createDrawerNavigator();
 
 import axios from 'axios';
 import { AuthContext } from './components/context';
+import configs from './config';
 
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
@@ -29,7 +30,7 @@ const App = () => {
     };
 
 	// const API_URL = 'http://10.0.2.2:3000';
-  const API_URL = 'http://192.168.1.54:3000'
+	// const API_URL = 'http://192.168.1.54:3000'
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -64,6 +65,8 @@ const App = () => {
     };
 
     const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
+	const [firstName, setFirstName] = React.useState("");
+	const [lastName, setLastName] = React.useState("");
 
     const authContext = React.useMemo(() => ({
     	SignUp: async (fName, lName, username, email, phoneNumber, pass, confirmPass) => { 
@@ -76,7 +79,7 @@ const App = () => {
 				if(pass != confirmPass) {
 					alert("Make sure password's are identical!");
 				} else {
-					const response = await axios.post(API_URL + '/user/signUp', {
+					const response = await axios.post(configs[0].API_URL + '/user/signUp', {
 						"firstName": fName, 
 						"lastName": lName, 
 						"username": username, 
@@ -90,9 +93,11 @@ const App = () => {
 					} else {
 						userToken = 'randomToken';
 						AsyncStorage.setItem('userToken', userToken);
+						setFirstName(response.data[0].firstName)
+						setLastName(response.data[0].lastName);
 					}
+					console.log(response.data);
 				}
-				console.log(response.data);
 			} catch(error) {
 				console.error(error);
 			}
@@ -102,34 +107,25 @@ const App = () => {
         	let userToken;
         	userToken = null;
 			
-			console.log(API_URL + '/user/login');
+			console.log(configs[0].API_URL + '/user/login');
 
 			try {
 				console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
-				const res = await axios.post(API_URL + '/user/login', { username: username, password: password });
+				const res = await axios.post(configs[0].API_URL + '/user/login', { username: username, password: password });
 				console.log("GET input user by parameters - \n\n", res.data);
 
-				if(res.data == "Wrong password found in API!" || res.data == "Error logging in!") {
+				if(res.data == "Wrong password found in API!" || res.data == "Erxror logging in!") {
 					alert("Please check your login information.  Username and/or password are incorrect!");
 				} else {
 					userToken = 'randomToken';
 					AsyncStorage.setItem('userToken', userToken);
+					setFirstName(res.data[0].firstName)
+					setLastName(res.data[0].lastName);
 				}
 			} catch(error) {
 				console.log(error);
 			}
-
-        	// if(username == 'username' && password == 'password') {
-        	// 	try {
-            // 		// set random token currently, but pull from db once API developed
-            // 		userToken = 'randomToken';
-            // 		await AsyncStorage.setItem('userToken', userToken);
-        	// 	} catch(e) {
-            // 		console.log(e);
-            // 	}
-      		// } else {
-			// 	alert("Please check your login information.  Username and/or password are incorrect!");
-			// }
+			
         	dispatch({ type: 'LOGIN', id: username, token: userToken });
     	},
         SignOut: async () => {
@@ -174,7 +170,7 @@ const App = () => {
 						{ loginState.userToken != null ? (
 						// Drawer container - if user logged in
 
-							<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+							<Drawer.Navigator drawerContent={props => <DrawerContent username={loginState.username} firstName={firstName} lastName={lastName} {... props} />}>
 								<Drawer.Screen name="Drift" component={AppScreenStack} />
 								<Drawer.Screen name="Settings" component={SettingsPage} />
 								<Drawer.Screen name="Orders" component={OrdersPage} />
