@@ -10,13 +10,12 @@ const cardWidth = screenWidth / 2 - 20;
 
 const Products = ({ query, navigation }) => {
   const [items, setItems] = React.useState([]);
-  let itemsToQuery = [];
+  const [filteredItems, setFilteredItems] = React.useState([]);
 
   const fetchAllItems = async () => {
     try {
       // {console.log('fetchAllItems', query)}
       const response = await axios.get(configs[0].API_URL + '/items/getAllItems'); 
-      itemsToQuery = response.data;
       setItems(response.data); 
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -29,9 +28,9 @@ const Products = ({ query, navigation }) => {
 
     query = query.toLowerCase();
 
-    const response = await axios.get(configs[0].API_URL + '/items/getAllItems'); 
+    // const response = await axios.get(configs[0].API_URL + '/items/getAllItems'); 
 
-    const filteredItems = (response.data).filter((item) => {
+    const filteredItems = items.filter((item) => {
       const name = item.name.toLowerCase();
       const brand = item.brand.toLowerCase();
       const category = item.category.toLowerCase();
@@ -74,7 +73,7 @@ const Products = ({ query, navigation }) => {
         data={items}
         renderItem={renderProduct}
         numColumns={2}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.itemID}
         contentContainerStyle={{ padding: 8 }}
       />
     </View>

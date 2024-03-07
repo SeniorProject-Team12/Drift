@@ -1,21 +1,23 @@
 import 'react-native-gesture-handler';
+import axios from 'axios';
 import React, { useEffect } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AppScreenStack from './components/AppScreenStack';
-import { DrawerContent } from './pages/DrawerContent';
-import SettingsPage from './pages/SettingsPage';
-import OrdersPage from './pages/OrdersPage';
-import AuthStackScreen from './pages/AuthScreenStack';
+import { LogBox } from 'react-native';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StripeProvider } from '@stripe/stripe-react-native';
-const Drawer = createDrawerNavigator();
 
-import axios from 'axios';
+import AuthStackScreen from './pages/AuthScreenStack';
+import AppScreenStack from './components/AppScreenStack';
 import { AuthContext } from './components/context';
 import configs from './config';
+import { DrawerContent } from './pages/DrawerContent';
+import OrdersPage from './pages/OrdersPage';
+import SettingsPage from './pages/SettingsPage';
+
+const Drawer = createDrawerNavigator();
 
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
@@ -31,6 +33,7 @@ const App = () => {
 
 	// const API_URL = 'http://10.0.2.2:3000';
 	// const API_URL = 'http://192.168.1.54:3000'
+	LogBox.ignoreLogs(['Sending...']);
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -170,10 +173,12 @@ const App = () => {
 						{ loginState.userToken != null ? (
 						// Drawer container - if user logged in
 
-							<Drawer.Navigator drawerContent={props => <DrawerContent username={loginState.username} firstName={firstName} lastName={lastName} {... props} />}>
+							// <Drawer.Navigator drawerContent={props => <DrawerContent username={loginState.username} firstName={firstName} lastName={lastName} {... props} />}>
+							<Drawer.Navigator initialRouteName={"MainTab"} drawerContent={props => <DrawerContent {...props}/>}>
 								<Drawer.Screen name="Drift" component={AppScreenStack} />
-								<Drawer.Screen name="Settings" component={SettingsPage} />
+								<Drawer.Screen name="Settings" component={SettingsPage}  />
 								<Drawer.Screen name="Orders" component={OrdersPage} />
+								{/* <Drawer.Screen name="SelectedChatScreen" component={SelectedChatScreen} options={{drawerItemStyle: {}, headerShown: false}}/> */}
 							</Drawer.Navigator>
 						
 							) : (

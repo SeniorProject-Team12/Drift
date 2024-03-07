@@ -15,8 +15,9 @@ const OrderCard = ({ item, cardWidth, showInfo, navigation }) => {
     >
       <Card elevation={0} style={{ marginTop: 15, backgroundColor: 'white' }}>
         <Card.Content>
-          <Text>Order Card</Text>
-          {showInfo && <Text>{`Tracking Number: ${item.trackingNumber}, Customer Name: ${item.customerName}`}</Text>}
+          <Text style={{ fontSize: 16, paddingBottom: 15, fontWeight: '600'}}>Order Card</Text>
+          {showInfo && <Text>{`Tracking Number: ${item.trackingNumber}`}</Text>}
+          <Text>{`Customer Name: ${item.customerName}`}</Text>
         </Card.Content>
       </Card>
     </TouchableOpacity>

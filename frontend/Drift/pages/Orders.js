@@ -42,7 +42,7 @@ const Orders = ({ query="", navigation }) => {
           <OrderCard item={item} cardWidth={cardWidth} showInfo={true} navigation={navigation} />
         }
         numColumns={1}
-        keyExtractor={(order) => order.id}
+        keyExtractor={(order) => order.orderID}
         contentContainerStyle={{ padding: 8 }}
       />
     </View>
