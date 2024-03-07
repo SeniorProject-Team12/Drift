@@ -14,6 +14,7 @@ const OrderCard = ({ order, cardWidth, showInfo, navigation }) => {
         <Card elevation={0} style={{ marginTop: 15, backgroundColor: 'white' }}>
           <Card.Content>
             <Text>Order Card</Text>
+
             {/* <Image
             source={{
               uri: item.photoURL
@@ -21,7 +22,7 @@ const OrderCard = ({ order, cardWidth, showInfo, navigation }) => {
             style={{ width: "100%", height: 100 }}
             resizeMode="cover"
             /> */}
-            {/* {showInfo && <Text>{`Order ID: ${order}`}</Text>} */}
+            {showInfo && <Text>{`Number of items: ${order.itemCount}`}</Text>}
           </Card.Content>
         </Card>
       </TouchableOpacity>

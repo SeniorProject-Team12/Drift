@@ -11,6 +11,7 @@ import OrdersPage from './pages/OrdersPage';
 import AuthStackScreen from './pages/AuthScreenStack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StripeProvider } from '@stripe/stripe-react-native';
+import {CartProvider} from './components/CartContext'
 const Drawer = createDrawerNavigator();
 
 import axios from 'axios';
@@ -28,7 +29,8 @@ const App = () => {
     	userToken: null
     };
 
-	const API_URL = 'http://10.0.2.2:3000';
+	//const API_URL = 'http://10.0.2.2:3000';
+	const API_URL = 'http://192.168.1.165:3000';
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -169,21 +171,24 @@ const App = () => {
     	<AuthContext.Provider value={authContext}>
 			<SafeAreaProvider>
 				<StripeProvider publishableKey = {STRIPE_KEY}>
-					<NavigationContainer>
-						{ loginState.userToken != null ? (
-						// Drawer container - if user logged in
+					<CartProvider>
+						<NavigationContainer>
+							{ loginState.userToken != null ? (
+							// Drawer container - if user logged in
 
-							<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
-								<Drawer.Screen name="Drift" component={AppScreenStack} />
-								<Drawer.Screen name="Settings" component={SettingsPage} />
-								<Drawer.Screen name="Orders" component={OrdersPage} />
-							</Drawer.Navigator>
-						
-							) : (
-								// signup/login screen stack
-								<AuthStackScreen />
-							)}
-					</NavigationContainer>
+								<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+									<Drawer.Screen name="Drift" component={AppScreenStack} />
+									<Drawer.Screen name="Settings" component={SettingsPage} />
+									<Drawer.Screen name="Orders" component={OrdersPage} />
+								</Drawer.Navigator>
+							
+								) : (
+									// signup/login screen stack
+									<AuthStackScreen />
+								)}
+
+						</NavigationContainer>
+					</CartProvider>
 				</StripeProvider>
 			</SafeAreaProvider>
     	</AuthContext.Provider>

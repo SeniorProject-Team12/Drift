@@ -7,7 +7,8 @@ import { router as userRouter } from './routes/users';
 import { router as itemRouter } from './routes/items';
 import { router as indexRouter } from './routes/index';
 import { router as orderRouter } from './routes/orders';
-import { router as savedFolderRouter } from './routes/savedFolders'
+import { router as savedFolderRouter } from './routes/savedFolders';
+import { router as paymentRouter } from './routes/payment';
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/user", userRouter);
 app.use("/items", itemRouter);
 app.use("/order", orderRouter);
 app.use("/savedFolder", savedFolderRouter);
+app.use("/payment", paymentRouter);
 
 
 app.listen(PORT, () => {

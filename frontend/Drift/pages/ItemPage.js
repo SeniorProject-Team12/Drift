@@ -1,11 +1,20 @@
 import React from 'react';
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import { Button, Card } from "react-native-paper";
+import { useCart } from "../components/CartContext"
 
 const ItemPage = ({route}) => {
   console.log("ITEMPAGE")
 
     const {item} = route.params;
+    const { dispatch } = useCart();
+
+    const handleAddToCart = () => {
+      dispatch({ type: 'ADD_TO_CART', item });
+      console.log('Item added to cart:', item);
+    };
+  
+
     console.log(item)
     return (
       <View>
@@ -19,22 +28,26 @@ const ItemPage = ({route}) => {
             resizeMode="cover"
           />
 
-        <Card.Title title={item.name} subtitle={item.sellerId} />
+        <Card.Title title={item.brand + ' - '+ item.category} subtitle={item.sellerId} />
 
         <Card.Content
-          style={{ height: "100%", flexDirection: "column", gap: "5px" }}
+          style={{ height: "25%", flexDirection: "column", gap: "5px" }}
         >
 
-        <Text>{item.price}</Text>
-        <Text>{item.category}</Text>
-        <Text>{item.brand}</Text>
-        <Text>{item.quality}</Text>
+        <Text>{item.price} USD</Text>
+        <Text>{item.description}</Text>
 
         </Card.Content>
 
-        <Card.Actions style={{flexDirection: 'row'}}>
+        <Pressable style={{ marginLeft: 120}} onPress={handleAddToCart}>
+          <Text style = {{fontSize: 30}}>
+              Add to cart
+            </Text>
+        </Pressable>
+
+        {/* <Card.Actions style={{flexDirection: 'row'}}>
           <Button
-            textColor="white"
+            textColor = 'white'
           >
             More from owner
           </Button>
@@ -52,7 +65,7 @@ const ItemPage = ({route}) => {
               Add to cart
             </Button>
     
-        </Card.Actions>
+        </Card.Actions> */}
       </Card>
     </View>
   );

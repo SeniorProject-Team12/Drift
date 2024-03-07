@@ -1,23 +1,35 @@
 //component for items in cart
+import React from 'react'
+import { View, Text, StyleSheet, Image, Pressable } from 'react-native';
+import { useCart } from './CartContext'
 
-import { View, Text, StyleSheet, Image } from 'react-native';
 
+const CartListItem = ({ item, onDelete }) => {
 
-const CartListItem = ({ cartItem }) => {
+    const { dispatch } = useCart();
+    
+    const handleRemoveItem = () => {
 
-    //Add function for deletion
-    //
+        //Callback function defined in PostPage.js
+        onDelete();
+    };
 
     return (
         <View style={styles.container}>
-                <Image source={{ uri: cartItem.photoURL }} style={styles.image} />
+                <Image source={{ uri: item.photoURL }} style={styles.image} />
     
             <View style={styles.contentContainer}>
-                <Text style={styles.name}>{cartItem.name}</Text>
-                <Text style={styles.itemTotal}>
-                    $ {cartItem.price}
-                </Text>
-
+                <View style={styles.itemInfo}>
+                    <Text style={styles.name}>{item.brand + ' - ' + item.category}</Text>
+                    <Text style={styles.itemTotal}>
+                        $ {item.price}
+                    </Text>
+                </View>
+                <View style={styles.buttonContainer}>
+                <Pressable onPress={handleRemoveItem}>
+                    <Text style={styles.removeButton}>Remove</Text>
+                </Pressable>
+            </View>
             </View>
         </View>
     );
@@ -31,7 +43,18 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
         marginLeft: 10,
+        width: '100%'
+    },
+    itemInfo: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    buttonContainer: {
+        margin: 'auto'
     },
     image: {
         width: '40%',
@@ -40,11 +63,17 @@ const styles = StyleSheet.create({
     name: {
         fontWeight: '500',
         fontSize: 18,
+        maxWidth: 150
     },
     itemTotal: {
         fontSize: 16,
-        marginLeft: 'auto',
         fontWeight: '500',
+        marginLeft: 'auto',
+    },
+    removeButton: {
+        color: 'red',
+        fontWeight: '500',
+        marginTop: 20,
     },
 });
 

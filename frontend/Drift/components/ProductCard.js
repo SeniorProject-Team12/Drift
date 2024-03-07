@@ -20,7 +20,7 @@ const ProductCard = ({ item, cardWidth, showInfo, navigation }) => {
             style={{ width: "100%", height: 100 }}
             resizeMode="cover"
           />
-          {showInfo && <Text>{`Size: ${item.size} Price: ${item.price}`}</Text>}
+          {showInfo && <Text>{`${item.brand} - ${item.category} $${item.price}`}</Text>}
         </Card.Content>
       </Card>
     </TouchableOpacity>
