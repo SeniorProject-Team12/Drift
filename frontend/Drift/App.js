@@ -28,7 +28,8 @@ const App = () => {
     	userToken: null
     };
 
-	const API_URL = 'http://10.0.2.2:3000';
+	const [data, setData] = React.useState([]);
+	const API_URL = 'http://localhost:3000';
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -117,18 +118,6 @@ const App = () => {
 			} catch(error) {
 				console.log(error);
 			}
-
-        	// if(username == 'username' && password == 'password') {
-        	// 	try {
-            // 		// set random token currently, but pull from db once API developed
-            // 		userToken = 'randomToken';
-            // 		await AsyncStorage.setItem('userToken', userToken);
-        	// 	} catch(e) {
-            // 		console.log(e);
-            // 	}
-      		// } else {
-			// 	alert("Please check your login information.  Username and/or password are incorrect!");
-			// }
         	dispatch({ type: 'LOGIN', id: username, token: userToken });
     	},
         SignOut: async () => {

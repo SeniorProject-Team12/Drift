@@ -22,7 +22,7 @@ const ItemPage = ({route}) => {
         <Card.Title title={item.name} subtitle={item.sellerId} />
 
         <Card.Content
-          style={{ height: "100%", flexDirection: "column", gap: "5px" }}
+          style={{ height: "50%", flexDirection: "column", gap: "5px" }}
         >
 
         <Text>{item.price}</Text>
@@ -54,6 +54,7 @@ const ItemPage = ({route}) => {
     
         </Card.Actions>
       </Card>
+
     </View>
   );
 };

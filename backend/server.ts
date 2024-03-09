@@ -9,17 +9,18 @@ import { router as indexRouter } from './routes/index';
 import { router as orderRouter } from './routes/orders';
 import { router as savedFolderRouter } from './routes/savedFolders'
 
-const app = express();
+export const app = express();
 
 const PORT = process.env.PORT || 3000;
 
-// var corsOptions = { origin: "http://localhost:3000/", methods: ["POST, GET, DELETE"], credentials: true };
-
 var cors = require('cors');
+var corsOptions = { origin: "http://localhost:3000/", methods: ["POST, GET, DELETE"], credentials: true };
+
 
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
+
 
 // use routes
 app.use('/', indexRouter);
@@ -29,7 +30,7 @@ app.use("/order", orderRouter);
 app.use("/savedFolder", savedFolderRouter);
 
 
-app.listen(PORT, () => {
+app.listen(3000, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
