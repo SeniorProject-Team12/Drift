@@ -1,0 +1,46 @@
+const testCartItems = [
+{
+    id: 11,
+    name: "Doc Martens",
+    description: "Classic denim jeans for a stylish look.",
+    price: 29.99,
+    quality: "Used",
+    brand: "Doc Marten",
+    color: "Black",
+    hashtags: ["fashion", "shoe"],
+    category: "Shoe",
+    sellerId: 2,
+    photoURL: 'https://tse3.mm.bing.net/th?id=OIP.DVjC29tK-DT2PtdxWAgO-AHaHi&pid=Api&P=0&h=220',
+    size: "36x32",
+  },
+  {
+    id: 12,
+    name: "Blue Gabbi Purse",
+    description: "Purse for special occasions.",
+    price: 49.99,
+    quality: "New",
+    brand: "JW Pei",
+    color: "Blue",
+    hashtags: ["fashion", "formal", "new"],
+    category: "Bag",
+    sellerId: 3,
+    photoURL: 'https://i.pinimg.com/originals/ef/a7/7a/efa77aa4c97e3dc7f51f1623804bbf36.png',
+    size: "Small",
+  },
+  {
+    id: 13,
+    name: "Sweater",
+    description: "Comfortable cotton T-shirt for everyday wear.",
+    price: 19.99,
+    quality: "New",
+    brand: "Tommy Hilfiger",
+    color: "White",
+    hashtags: ["fashion", "casual", "new"],
+    category: "Top",
+    sellerId: 1,
+    photoURL: 'https://picture-cdn.wheretoget.it/imjf0g-l-610x610-sweater-white+sweater-oversized+sweater-tommy+hilfiger-vintage-old+school+vintage-designer-tommy-hilfiger-old+school-jumper-tommy+hilfiger+underwear-tommyhilfiger-white.jpg',
+    size: "Large",
+  }
+];
+
+export default testCartItems;

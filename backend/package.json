@@ -1,0 +1,43 @@
+{
+  "name": "drift",
+  "version": "1.0.0",
+  "description": "Our project is a thrifting web/mobile application which will be a software service specifically for public users to buy and sell thrifting goods.  Individuals will be able to make an account, post items to their page for others to see, and peruse the application to see what other sellers are putting up for sale.",
+  "main": "out/server.js",
+  "scripts": {
+    "test": "jest",
+    "prepare": "cp ./routes/modules/db.config.json ./out/routes/modules/db.config.json",
+    "build": "npx tsc -p tsconfig.json && npm run prepare",
+    "start": "node ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rneui/base": "^4.0.0-rc.7",
+    "@rneui/themed": "^4.0.0-rc.8",
+    "axios": "^1.6.2",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "https": "^1.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.5",
+    "react-native-gesture-handler": "^2.14.0",
+    "react-native-paper": "^5.11.3",
+    "react-native-safe-area-context": "^4.8.0",
+    "react-native-vector-icons": "^10.0.2",
+    "stripe": "^14.14.0"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.3.3"
+  }
+}
