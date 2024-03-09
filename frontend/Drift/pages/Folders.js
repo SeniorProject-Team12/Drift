@@ -8,7 +8,6 @@ const cardWidth = screenWidth / 3 - 20;
 const Folders = ({ folders, navigation}) => {
   
   const renderFolder = ({ item }) => {
-    console.log(item)
     return <FolderCard folder={item} cardWidth={cardWidth} navigation={navigation} />
   };
 

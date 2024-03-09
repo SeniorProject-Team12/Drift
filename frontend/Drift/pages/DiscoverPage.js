@@ -4,51 +4,100 @@ import { Searchbar, IconButton } from 'react-native-paper';
 import Products from "./Products";
 import { Appbar } from "react-native-paper";
 import testItems from "./testData/testItems";
+import axios from 'axios';
+
+import Constants from "expo-constants";
+
 
 const DiscoverPage = ({navigation}) => {
     const [searchQuery, setSearchQuery] = useState("");
-    const [searchResults, setSearchResults] = useState("");
-    const onChangeSearch = (query) => setSearchQuery(query);
     const [items, setItems] = useState([]);
+
+    const onChangeSearch = (keyword) => setSearchQuery(keyword);
 
     console.log("discover page")
 
+    // const fetchAllItems = async () => {
+    //     // try {
+    //     //   {console.log('fetchAllItems', query)}
+    //     //   const response = await axios.get('/items/getAllItems'); 
+    //     //   setItems(response.data); 
+    //     // } catch (error) {
+    //     //   console.error('Error fetching items:', error);
+    //     // }
+    //     setItems(testItems)
+    //   };
+
     const fetchAllItems = async () => {
         // try {
-        //   {console.log('fetchAllItems', query)}
-        //   const response = await axios.get('/items/getAllItems'); 
-        //   setItems(response.data); 
-        // } catch (error) {
-        //   console.error('Error fetching items:', error);
+        //     const response = await fetch(`http://q9u5jla.fchau1:3000/items/getAllItems`);
+        //     if (!response.ok) throw new Error('Network response was not ok.');
+        //     const data = await response.json();
+        //     setItems(data);
+        //     console.log("fetchAllItems",data)
+
+            
+        // } 
+        // catch (error) {
+        //     console.error('There was an error fetching the items:', error);
         // }
-        setItems(testItems)
-      };
-    
-    const fetchItemByKeyword= async (searchQuery) => {
-    
-      searchQuery = searchQuery.toLowerCase();
-    
-      const filteredItems = testItems.filter((item) => {
-        const name = item.name.toLowerCase();
-        const brand = item.brand.toLowerCase();
-        const category = item.category.toLowerCase();
-    
-        return (
-          name.includes(searchQuery) ||
-          brand.includes(searchQuery) ||
-          category.includes(searchQuery)
-        );
-      });
-      setItems(filteredItems)
-    }
+        try {
+            {console.log('fetchAllItems')}
+            const response = await axios.get(`https://long-waves-share.loca.lt/items/getAllItems`); 
+            setItems(response.data); 
+            console.log(response.data);
+          } catch (error) {
+            console.error('Error fetching items:', error);
+          }
+      
+    };
 
     useEffect(() => {
+
+        const fetchSearchResults = async () => {
+            try {
+                const response = await fetch(`https://long-waves-share.loca.lt/items/getItemsByKeyWord?keyword=${searchQuery}`);
+                if (!response.ok) throw new Error('Network response was not ok.');
+                const data = await response.json();
+                setItems(data);
+                console.log("fetchSearchREsults",data)
+            } catch (error) {
+                console.error('There was an error fetching the items by keyword:', error);
+            }
+        };
         if (searchQuery === "") {
             fetchAllItems();
         } else {
-            fetchItemByKeyword(searchQuery);
+            fetchSearchResults();
         }
-    }, [searchQuery])
+    }, [searchQuery]); // This effect runs whenever the 'keyword' changes.
+      
+    
+    // const fetchItemByKeyword= async (searchQuery) => {
+    
+    //   searchQuery = searchQuery.toLowerCase();
+    
+    //   const filteredItems = testItems.filter((item) => {
+    //     const name = item.name.toLowerCase();
+    //     const brand = item.brand.toLowerCase();
+    //     const category = item.category.toLowerCase();
+    
+    //     return (
+    //       name.includes(searchQuery) ||
+    //       brand.includes(searchQuery) ||
+    //       category.includes(searchQuery)
+    //     );
+    //   });
+    //   setItems(filteredItems)
+    // }
+
+    // useEffect(() => {
+    //     if (searchQuery === "") {
+    //         fetchAllItems();
+    //     } else {
+    //         fetchItemByKeyword(searchQuery);
+    //     }
+    // }, [searchQuery])
 
     return (
         <View style={[styles.container]}>

@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "@rneui/themed": "^4.0.0-rc.8"
+    "@rneui/themed": "^4.0.0-rc.8",
+    "@stripe/stripe-react-native": "^0.37.0"
   }
 }
