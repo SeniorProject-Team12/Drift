@@ -17,30 +17,8 @@ const DiscoverPage = ({navigation}) => {
 
     console.log("discover page")
 
-    // const fetchAllItems = async () => {
-    //     // try {
-    //     //   {console.log('fetchAllItems', query)}
-    //     //   const response = await axios.get('/items/getAllItems'); 
-    //     //   setItems(response.data); 
-    //     // } catch (error) {
-    //     //   console.error('Error fetching items:', error);
-    //     // }
-    //     setItems(testItems)
-    //   };
-
     const fetchAllItems = async () => {
-        // try {
-        //     const response = await fetch(`http://q9u5jla.fchau1:3000/items/getAllItems`);
-        //     if (!response.ok) throw new Error('Network response was not ok.');
-        //     const data = await response.json();
-        //     setItems(data);
-        //     console.log("fetchAllItems",data)
-
-            
-        // } 
-        // catch (error) {
-        //     console.error('There was an error fetching the items:', error);
-        // }
+      
         try {
             {console.log('fetchAllItems')}
             const response = await axios.get(`https://long-waves-share.loca.lt/items/getAllItems`); 

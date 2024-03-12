@@ -1,24 +1,48 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { StyleSheet, View, Pressable } from 'react-native';
 import Folders from "./Folders";
 import { Text, Button, Divider, Portal, Dialog, TextInput } from 'react-native-paper';
 import testFolders from "./testData/testFolders";
-const SavedItemsPage = ({navigation}) => {
+import axios from 'axios';
+
+const baseURL = "https://"
+
+const SavedPage = ({navigation}) => {
     const [savedFolders, setSavedFolders] = React.useState(testFolders);
     const [newFolderName, setNewFolderName] = React.useState("");
     const [visible, setVisible] = React.useState(false);
 
+    
+    const fetchSavedFolders = async () => {
+        try {
+            const response = await fetch(`${baseURL}/items/getSavedFolders/id/?id=${user}`);
+            if (!response.ok) throw new Error('Network response was not ok.');
+            const data = await response.json();
+            setSavedFolders(data);
+            console.log("fetchSavedFolders",data)
+        } catch (error) {
+            console.error('There was an error fetching the saved folders:', error);
+        }
+    };
 
-    const addFolder = () => {
-        // Create a new folder object
+    useEffect(() => {
+        fetchSavedFolders()
+    }, []);
+
+    const addFolder =  async () => {
         const newFolder = {
-            id: savedFolders.length > 0 ? Math.max(...savedFolders.map(folder => folder.id)) + 1 : 1, // Generate a unique ID
+            id: savedFolders.length > 0 ? Math.max(...savedFolders.map(folder => folder.id)) + 1 : 1,
             name: newFolderName,
             items: []
         };
-    
-        // Update the savedFolders state to include the new folder
-        setSavedFolders([...savedFolders, newFolder]);
+
+        try {
+            const response = await axios.post('http://yourserver.com/insertSavedFolder', newFolder);
+            console.log(response.data);
+            setSavedFolders([...savedFolders, newFolder]);
+        } catch (error) {
+            console.error('Error:', error);
+        }
         setNewFolderName('');
         hideDialog();
     };
@@ -57,7 +81,7 @@ const SavedItemsPage = ({navigation}) => {
     );
 };
 
-export default SavedItemsPage;
+export default SavedPage;
 
 const styles = StyleSheet.create({
     container: {
