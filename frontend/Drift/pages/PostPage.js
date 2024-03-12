@@ -19,7 +19,9 @@ import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 
 const categories = [
+  'Top',
   'Shirt',
+  'Sweater',
   'Pants',
   'Jacket',
   'Shoes',
@@ -127,8 +129,12 @@ const PostItemScreen = () => {
   //On submit
   const handleSubmit = async () => {
     // Check if at least one image is uploaded and all fields are filled
-    if (!image || !description || !price || !brand) {
+    if (/*!image ||*/ !description || !price || !brand) {
       setErrorMessage('Please upload an image and fill in all fields before submitting.');
+    } else if (Number.parseInt( price, 10) <= 0) {
+      setErrorMessage('Please enter a positive number for the price.');
+    } else if (!(/^\d*\.?\d*$/.test(price))) {
+      setErrorMessage('Please enter a number for the price.');
     } else {
 
       try {
@@ -139,7 +145,7 @@ const PostItemScreen = () => {
           "price": price,
           "category": category,
           "photoURL": image,
-          "sellerID": 1 //Update with actual user id
+          "userID": 1 //Update with actual user id
         });
         console.log(response);
       } catch(error) {
@@ -175,6 +181,7 @@ const PostItemScreen = () => {
         <Text style={styles.infoHeader}>INFO</Text>
         {/* Category */}
         <TouchableOpacity
+          testID='categoryChange'
           style={styles.categoryContainer}
           onPress={() => setModalVisible(true)}
         >
@@ -188,6 +195,7 @@ const PostItemScreen = () => {
           <Text style={styles.halfWidthLabel}>Price:</Text>
           <TextInput
             style={styles.priceInput}
+            type='number'
             keyboardType="numeric"
             value={price}
             onChangeText={(text) => setPrice(text)}
@@ -200,7 +208,6 @@ const PostItemScreen = () => {
           <Text style={styles.halfWidthLabel}>Brand:</Text>
           <TextInput
             style={styles.brandInput}
-            placeholder="Enter brand"
             value={brand}
             onChangeText={(text) => setBrand(text)}
           />
@@ -213,7 +220,7 @@ const PostItemScreen = () => {
         ) : null}
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <TouchableOpacity testID = 'submit-button' style={styles.submitButton} onPress={handleSubmit}>
             <Text style={{ fontWeight: 'bold', fontSize: 20 }}>POST ITEM</Text>
           </TouchableOpacity>
 
@@ -228,6 +235,7 @@ const PostItemScreen = () => {
               <View style={styles.modalView}>
                 <Text style={styles.modalText}>Select Category</Text>
                 <Picker
+                  testID='categoryChange'
                   selectedValue={category}
                   onValueChange={handleCategoryChange}
                 >
