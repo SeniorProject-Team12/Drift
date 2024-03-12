@@ -40,14 +40,15 @@ router.get('/getOrderByID/id/:id', async (req:Request, res: Response, next: Next
 });
 
 // Insert new order
+
 router.post('/insertOrder', async (req:Request, res: Response, next: NextFunction) => {
     try {
-        const { customerName, billingAddress, shippingAddress, itemCount, orderStatus, userID/*, items, totalPrice, salesTax, totalShippingPrice, trackingNumber*/  } = req.body;
+        const { customerName, billingAddress, shippingAddress, itemCount, orderStatus, userID,/*, items, totalPrice, salesTax, totalShippingPrice, trackingNumber*/  } = req.body;
         //console.log(userID);
 
         const sp = "SP_InsertOrder";
 
-        await DB.executeStoredProcedure(sp, { customerName, billingAddress, shippingAddress, itemCount, orderStatus, userID/*, items, totalPrice, salesTax, totalShippingPrice, trackingNumber*/ }, function(err, data) {
+        await DB.executeStoredProcedure(sp, { customerName, billingAddress, shippingAddress, itemCount, orderStatus, userID,/*, items, totalPrice/*, salesTax, totalShippingPrice, trackingNumber*/ }, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else {

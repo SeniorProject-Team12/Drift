@@ -45,6 +45,8 @@ const CartPage = ({navigation}) => {
 
   //const API_URL = 'http://10.0.2.2:3000';
   const API_URL = 'http://192.168.1.165:3000';
+  //const API_URL = '10.136.134.161:3000';
+
 
   const { cart, dispatch } = useCart();
   const [cartItems, setCartItems] = React.useState([]);
@@ -66,29 +68,33 @@ const CartPage = ({navigation}) => {
    const onCreateOrder = async () => {
 
     //calculate item count, subtotal, total, 
-
+    
+    let itemNames = ''
     let itemCount = 0;
     for (const item of cart.items) {
       itemCount++;
+      itemNames = itemNames + item.brand + '-' + item.category
     }
-    console.log(itemCount);
 
     let billingAddress = '1585 Hillside Drive, Reno, NV, 89503';
     let shippingAddress = '1585 Hillside Drive, Reno, NV, 89503';
-    let userID = 9;
+    let userID = 9; //Update when authentication context is added
     let customerName = 'Christian Jackson';
     let orderStatus = 1;
 
     try {
       const response = await axios.post(API_URL + '/order/insertOrder', {
+        'userID': userID,
         'customerName': customerName,
         'billingAddress': billingAddress,
         'shippingAddress': shippingAddress,
         'itemCount': itemCount,
         'orderStatus': orderStatus,
-        'userID': userID
-        //'items': null, 
-        //'totalPrice': null, 
+
+        //Need to edit Stored Procedure before adding these:
+
+        //'items': itemNames,
+        //'totalPrice': total, 
         //'salesTax': null, 
         //'totalShippingPrice': null, 
         //'trackingNumber': null,
@@ -160,15 +166,13 @@ const CartPage = ({navigation}) => {
       return;
     }
   
+    //Authorize info and create order
+
     if(paymentResponse) {
       //create order
       onCreateOrder()
     }
 
-    console.log(paymentResponse);
-  
-    //Authorize info & create order
-    //onCreateOrder();
   }
 
   const deleteCartItem = (index) => {

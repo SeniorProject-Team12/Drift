@@ -42,8 +42,7 @@ const PostItemScreen = () => {
   const [category, setCategory] = useState('');
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('Select Category');
 
-	//const API_URL = 'http://10.0.2.2:3000';
-  const API_URL = 'http://192.168.1.165:3000';
+	const API_URL = 'http://10.0.2.2:3000';
 
   useEffect(() => {
     getPermissionAsync();

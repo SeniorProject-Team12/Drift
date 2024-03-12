@@ -8,9 +8,8 @@ const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth - 20;
 
 const Orders = ({ navigation }) => {
-	// const API_URL = 'http://10.0.2.2:3000';
+	  const API_URL = 'http://10.0.2.2:3000';
 
-   const API_URL = 'http://192.168.1.165:3000'
     const [orders, setOrders] = React.useState([]);
 
     const fetchAllOrders = async () => {

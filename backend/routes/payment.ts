@@ -14,7 +14,6 @@ export const router = Router();
 router.post('/intent', async (req:Request, res:Response, next: NextFunction) => {
     try {
         //create a PaymentIntent
-        console.log('hello world')
         const paymentIntent = await stripe.paymentIntents.create({
             amount: req.body.amount, // Integer (in pennies)
             currency: 'usd',

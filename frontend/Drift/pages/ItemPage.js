@@ -39,13 +39,7 @@ const ItemPage = ({route}) => {
 
         </Card.Content>
 
-        <Pressable style={{ marginLeft: 120}} onPress={handleAddToCart}>
-          <Text style = {{fontSize: 30}}>
-              Add to cart
-            </Text>
-        </Pressable>
-
-        {/* <Card.Actions style={{flexDirection: 'row'}}>
+        <Card.Actions style={{flexDirection: 'row'}}>
           <Button
             textColor = 'white'
           >
@@ -61,11 +55,12 @@ const ItemPage = ({route}) => {
          
             <Button
               textColor="white"
+              onPress={handleAddToCart}
             >
               Add to cart
             </Button>
     
-        </Card.Actions> */}
+        </Card.Actions>
       </Card>
     </View>
   );

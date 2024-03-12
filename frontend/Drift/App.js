@@ -29,8 +29,8 @@ const App = () => {
     	userToken: null
     };
 
-	//const API_URL = 'http://10.0.2.2:3000';
-	const API_URL = 'http://192.168.1.165:3000';
+	const API_URL = 'http://10.0.2.2:3000';
+
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {

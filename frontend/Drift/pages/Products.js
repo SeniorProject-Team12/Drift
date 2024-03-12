@@ -8,7 +8,8 @@ import {useFocusEffect} from "@react-navigation/native"
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth / 2 - 20;
 
-const API_URL = 'http://192.168.1.165:3000';
+const API_URL = 'http://10.0.2.2:3000';
+
 
 const Products = ({ query, navigation }) => {
   const [items, setItems] = React.useState([]);
