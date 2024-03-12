@@ -4,40 +4,11 @@ import { Router, Request, Response, NextFunction } from 'express';
 import { DB } from './modules/db';
 
 export const router = Router();
-// var cors = require('cors');
-// var corsOptions = { origin: "http://localhost:3000/", methods: ["POST, GET, DELETE"], credentials: true };
-// Get all items
+
 router.get('/getAllItems', async (req: Request, res: Response, next: NextFunction) => {
   console.log("getting all items")
   req.setTimeout(30000)
-//   var mysql      = require('mysql');
-// var connection = mysql.createConnection({
-//   host: "localhost",
-//   user: "sqluser",
-//   password: "Sqlrocks01!"
-// });
 
-// connection.connect(function(err) {
-//   if (err) {
-//     console.error('error connecting: ' + err.stack);
-//     return;
-//   }
-
-//   console.log('connected as id ' + connection.threadId);
-// });
- 
-  // try{
-   
-  //   const configConn = {
-  //     host: "localhost",
-  //     database: "drift",
-  //     user: "sqluser",
-  //     password: "Sqlrocks01!"
-  //   }
-  //   await DB.makeConnection().then(() => res.send("testing"))
-  //   } catch (e) {
-  //   console.log(e)
-  // }
   try {
     await DB.executeSQL('SELECT * FROM items', function(err: any, data: any) {
       if (err) {
@@ -79,6 +50,48 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
         if (err) {
           console.log("ERROR: ", err);
           res.send("Error getting items by keyword");
+        } else {
+          res.send(data)
+        }
+      });
+    } catch (e) {
+      next(e);
+    }
+});
+
+router.get('/getItems/itemID/:itemID', async (req: Request, res: Response, next: NextFunction) => {
+  console.log("getting item by itemID")
+  req.setTimeout(10000)
+  try {
+    const itemID = req.query.itemID;
+
+    let sqlQuery = 'SELECT * FROM items WHERE itemID = ' + itemID;
+
+      await DB.executeSQL(sqlQuery, function(err: any, data: any){
+        if (err) {
+          console.log("ERROR: ", err);
+          res.send("Error getting items by itemID");
+        } else {
+          res.send(data)
+        }
+      });
+    } catch (e) {
+      next(e);
+    }
+});
+
+router.get('/getItems/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
+  console.log("getting items by userID")
+  req.setTimeout(10000)
+  try {
+    const userID = req.query.userID;
+
+    let sqlQuery = 'SELECT * FROM items WHERE userID = ' + userID;
+
+      await DB.executeSQL(sqlQuery, function(err: any, data: any){
+        if (err) {
+          console.log("ERROR: ", err);
+          res.send("Error getting items by userID");
         } else {
           res.send(data)
         }

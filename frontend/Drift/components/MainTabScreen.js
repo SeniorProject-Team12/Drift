@@ -5,7 +5,7 @@ import Icon from 'react-native-ico-material-design';
 
 import DiscoverPage from '../pages/DiscoverPage';
 import ChatPage from '../pages/ChatPage';
-import SavedItemsPage from "../pages/SavedItemsPage";
+import SavedPage from "../pages/SavedPage";
 import PostPage from "../pages/PostPage";
 import ProfilePage from "../pages/ProfilePage";
 
@@ -53,7 +53,7 @@ const MainTabScreen = () => (
       />
       <Tab.Screen
         name="Saved"
-        component={SavedItemsPage}
+        component={SavedPage}
         options={{
           tabBarLabel: 'Saved Items',
           tabBarIcon: ({ color }) => (
