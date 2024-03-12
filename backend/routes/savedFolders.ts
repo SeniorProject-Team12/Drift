@@ -1,5 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { DB } from './modules/db';
+const axios = require('axios');
+
+
 
 export const router = Router();
 
@@ -20,7 +23,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Get saved folders by userID
-router.get('/getSavedFolder/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/getSavedFolders/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const savedFolderID = req.params.id;
 
