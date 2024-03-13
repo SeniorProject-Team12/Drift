@@ -1,49 +1,47 @@
 import React from "react";
-import configs from "../config";
 import { View, FlatList, Dimensions } from "react-native";
 import ProductCard from "../components/ProductCard";
 import testItems from "./testData/testItems";
-import axios from "axios";
+import axios from 'axios';
+import {useFocusEffect} from "@react-navigation/native"
+import configs from "../config";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth / 2 - 20;
 
+
 const Products = ({ query, navigation }) => {
   const [items, setItems] = React.useState([]);
-  const [filteredItems, setFilteredItems] = React.useState([]);
 
   const fetchAllItems = async () => {
     try {
-      // {console.log('fetchAllItems', query)}
+      {console.log('fetchAllItems', query)}
       const response = await axios.get(configs[0].API_URL + '/items/getAllItems'); 
       setItems(response.data); 
     } catch (error) {
       console.error('Error fetching items:', error);
     }
-    // setItems(testItems)
+    //setItems(testItems)
   };
 
   const fetchItemByKeyword= async (query) => {
     {console.log('fetchByKeywords', query)}
 
-    query = query.toLowerCase();
+  query = query.toLowerCase();
 
-    // const response = await axios.get(configs[0].API_URL + '/items/getAllItems'); 
+  const filteredItems = items.filter((item) => {
+    const name = item.name.toLowerCase();
+    const brand = item.brand.toLowerCase();
+    const category = item.category.toLowerCase();
 
-    const filteredItems = items.filter((item) => {
-      const name = item.name.toLowerCase();
-      const brand = item.brand.toLowerCase();
-      const category = item.category.toLowerCase();
-
-      return (
-        name.includes(query) ||
-        brand.includes(query) ||
-        category.includes(query)
-      );
-    });
-
-    {console.log('filteredItems', filteredItems)}
-    setItems(filteredItems)
+    return (
+      name.includes(query) ||
+      brand.includes(query) ||
+      category.includes(query)
+    );
+  });
+  {console.log('filteredItems', filteredItems)}
+  setItems(filteredItems)
     // {console.log('fetchItemByKeyword: in Products', query)}
     // const url = `/items/getItemsByKeyWord?keyword=${encodeURIComponent(query)}`;
 
@@ -59,13 +57,14 @@ const Products = ({ query, navigation }) => {
     <ProductCard item={item} cardWidth={cardWidth} showInfo={true} navigation={navigation} />
   );
 
-  React.useEffect(() => {
+  useFocusEffect(
+    React.useCallback(() => {
     if (query === "") {
       fetchAllItems();
     } else {
       fetchItemByKeyword(query);
     }
-  }, [query])
+  }, [query]));
 
   return (
     <View style={{ flex: 1 }}>

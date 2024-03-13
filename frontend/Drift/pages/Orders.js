@@ -2,12 +2,13 @@ import React from "react";
 import axios from 'axios';
 import configs from "../config";
 import OrderCard from "../components/OrderCard";
-import { View, FlatList, Dimensions, Text } from "react-native";
+import { View, FlatList, Dimensions } from "react-native";
+import {useFocusEffect} from "@react-navigation/native"
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth - 20;
 
-const Orders = ({ query="", navigation }) => {
+const Orders = ({ navigation }) => {
   const [orders, setOrders] = React.useState([]);
 
   const fetchAllOrders = async () => {
@@ -24,13 +25,11 @@ const Orders = ({ query="", navigation }) => {
   //   <OrderCard item={item} cardWidth={cardWidth} showInfo={true} navigation={navigation} />
   // );
 
-  React.useEffect(() => {
-    if (query === "") {
-      fetchAllOrders();
-    } else {
-      // fetchItemByKeyword(query);
-    }
-  }, [query])
+    useFocusEffect(
+      React.useCallback(() => {
+          fetchAllOrders();
+      }, [])
+  );
 
   console.log("Here with orders => ", orders);
 
