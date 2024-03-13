@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import configs from "../config";
 import OrderCard from "../components/OrderCard";
 import { View, FlatList, Dimensions } from "react-native";
 import {useFocusEffect} from "@react-navigation/native"
@@ -33,7 +34,7 @@ const Orders = ({ navigation }) => {
       }, [])
   );
 
-    return (
+  return (
     <View style={{ flex: 1 }}>
         <FlatList
           data={orders}
@@ -43,7 +44,7 @@ const Orders = ({ navigation }) => {
           contentContainerStyle={{ padding: 8, paddingBottom: 10 }}
         />
     </View>
-    );
+  );
 };
 
 export default Orders;

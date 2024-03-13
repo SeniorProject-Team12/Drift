@@ -17,6 +17,7 @@ import * as ImagePicker from 'expo-image-picker';
 import ImagePickerComponent from '../components/ImagePickerComponent.js';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
+import configs from '../config.js';
 
 const categories = [
   'Top',
@@ -42,7 +43,7 @@ const PostItemScreen = () => {
   const [category, setCategory] = useState('');
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('Select Category');
 
-	const API_URL = 'http://10.0.2.2:3000';
+	// const API_URL = 'http://10.0.2.2:3000';
 
   useEffect(() => {
     getPermissionAsync();
@@ -139,7 +140,7 @@ const PostItemScreen = () => {
 
       try {
         console.log("In POSTITEM w/ ", description, brand, category, price, image, '1');
-        const response = await axios.post(API_URL + '/items/addNewItem', {
+        const response = await axios.post(configs[0].API_URL + '/items/addNewItem', {
           "description": description,
           "brand": brand,
           "price": price,

@@ -1,4 +1,5 @@
 import React from "react";
+import configs from "../config";
 import { View, FlatList, Dimensions } from "react-native";
 import ProductCard from "../components/ProductCard";
 import testItems from "./testData/testItems";
@@ -13,6 +14,7 @@ const API_URL = 'http://10.0.2.2:3000';
 
 const Products = ({ query, navigation }) => {
   const [items, setItems] = React.useState([]);
+  const [filteredItems, setFilteredItems] = React.useState([]);
 
   const fetchAllItems = async () => {
     try {
@@ -28,21 +30,24 @@ const Products = ({ query, navigation }) => {
   const fetchItemByKeyword= async (query) => {
     {console.log('fetchByKeywords', query)}
 
-  query = query.toLowerCase();
+    query = query.toLowerCase();
 
-  const filteredItems = testItems.filter((item) => {
-    const name = item.name.toLowerCase();
-    const brand = item.brand.toLowerCase();
-    const category = item.category.toLowerCase();
+    // const response = await axios.get(configs[0].API_URL + '/items/getAllItems'); 
 
-    return (
-      name.includes(query) ||
-      brand.includes(query) ||
-      category.includes(query)
-    );
-  });
-  {console.log('filteredItems', filteredItems)}
-  setItems(filteredItems)
+    const filteredItems = items.filter((item) => {
+      const name = item.name.toLowerCase();
+      const brand = item.brand.toLowerCase();
+      const category = item.category.toLowerCase();
+
+      return (
+        name.includes(query) ||
+        brand.includes(query) ||
+        category.includes(query)
+      );
+    });
+
+    {console.log('filteredItems', filteredItems)}
+    setItems(filteredItems)
     // {console.log('fetchItemByKeyword: in Products', query)}
     // const url = `/items/getItemsByKeyWord?keyword=${encodeURIComponent(query)}`;
 
@@ -73,7 +78,7 @@ const Products = ({ query, navigation }) => {
         data={items}
         renderItem={renderProduct}
         numColumns={2}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.itemID}
         contentContainerStyle={{ padding: 8 }}
       />
     </View>
