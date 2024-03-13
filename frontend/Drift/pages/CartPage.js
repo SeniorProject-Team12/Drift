@@ -6,6 +6,7 @@ import { useCart, CartProvider } from '../components/CartContext';
 import { useStripe } from '@stripe/stripe-react-native';
 import axios from 'axios';
 import testCartItems from './testData/testCartItems';
+import configs from '../config';
 
 const testPaymentIntent = 
   'pi_3OnrzUAh9NlzJ6kb1zdRHqDw_secret_hPNIuthNdBdYAbxmXJsthJTdv';
@@ -44,7 +45,7 @@ const CartTotals = () => {
 const CartPage = ({navigation}) => {
 
   //const API_URL = 'http://10.0.2.2:3000';
-  const API_URL = 'http://192.168.1.165:3000';
+  const API_URL = configs[0].API_URL;
   //const API_URL = '10.136.134.161:3000';
 
 
