@@ -40,7 +40,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
                 console.log("ERROR: ", err);
                 res.send("Error logging in!");
             }
-            else if(!data){
+            else if(!data || Object.keys(data).length == 0){
                 res.send("Error logging in!");
             }
             else if(hashedPass != data[0].password) {

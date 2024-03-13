@@ -12,7 +12,7 @@ import SelectedOrderPage from "../pages/SelectedOrderPage";
 import SelectedChatScreen from "../pages/SelectedChatScreen";
 
 const Stack = createStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
+// const Tab = createMaterialBottomTabNavigator();
 
 const AppScreenStack = ({ navigation }) => {
     return (

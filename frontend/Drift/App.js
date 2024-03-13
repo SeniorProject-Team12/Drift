@@ -16,6 +16,7 @@ import configs from './config';
 import { DrawerContent } from './pages/DrawerContent';
 import OrdersPage from './pages/OrdersPage';
 import SettingsPage from './pages/SettingsPage';
+import AdminScreenStack from './pages/pages_admin/AdminScreenStack';
 
 const Drawer = createDrawerNavigator();
 
@@ -68,8 +69,7 @@ const App = () => {
     };
 
     const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
-	const [firstName, setFirstName] = React.useState("");
-	const [lastName, setLastName] = React.useState("");
+	const [userData, setUserData] = React.useState({});
 
     const authContext = React.useMemo(() => ({
     	SignUp: async (fName, lName, username, email, phoneNumber, pass, confirmPass) => { 
@@ -96,8 +96,7 @@ const App = () => {
 					} else {
 						userToken = 'randomToken';
 						AsyncStorage.setItem('userToken', userToken);
-						setFirstName(response.data[0].firstName)
-						setLastName(response.data[0].lastName);
+						setUserData({ firstName: response.data.firstName, lastName: response.data.lastName, email: response.data.email });
 					}
 					console.log(response.data);
 				}
@@ -117,13 +116,12 @@ const App = () => {
 				const res = await axios.post(configs[0].API_URL + '/user/login', { username: username, password: password });
 				console.log("GET input user by parameters - \n\n", res.data);
 
-				if(res.data == "Wrong password found in API!" || res.data == "Erxror logging in!") {
+				if(res.data == "Wrong password found in API!" || res.data == "Error logging in!") {
 					alert("Please check your login information.  Username and/or password are incorrect!");
 				} else {
 					userToken = 'randomToken';
 					AsyncStorage.setItem('userToken', userToken);
-					setFirstName(res.data[0].firstName)
-					setLastName(res.data[0].lastName);
+					setUserData({ firstName: response.data.firstName, lastName: response.data.lastName, email: response.data.email });
 				}
 			} catch(error) {
 				console.log(error);
@@ -136,6 +134,7 @@ const App = () => {
         		// set random token currently, but pull from db once API developed
         		userToken = 'random';
         		await AsyncStorage.removeItem('userToken');
+				setUserData({});
         	} catch(e) {
         		console.log(e);
         	}
@@ -170,21 +169,22 @@ const App = () => {
 			<SafeAreaProvider>
 				<StripeProvider publishableKey = {STRIPE_KEY}>
 					<NavigationContainer>
-						{ loginState.userToken != null ? (
-						// Drawer container - if user logged in
-
-							// <Drawer.Navigator drawerContent={props => <DrawerContent username={loginState.username} firstName={firstName} lastName={lastName} {... props} />}>
-							<Drawer.Navigator initialRouteName={"MainTab"} drawerContent={props => <DrawerContent {...props}/>}>
-								<Drawer.Screen name="Drift" component={AppScreenStack} />
-								<Drawer.Screen name="Settings" component={SettingsPage}  />
-								<Drawer.Screen name="Orders" component={OrdersPage} />
-								{/* <Drawer.Screen name="SelectedChatScreen" component={SelectedChatScreen} options={{drawerItemStyle: {}, headerShown: false}}/> */}
-							</Drawer.Navigator>
-						
-							) : (
+						{(() => {
+							if (loginState.userToken != null && loginState.username == "admin" && loginState.password == 'DriftAdmin2024!') {
+								return <AdminScreenStack />
+							} else if (loginState.userToken != null) {
+								return(
+								// <Drawer.Navigator drawerContent={props => <DrawerContent username={loginState.username} firstName={firstName} lastName={lastName} {... props} />}>
+								<Drawer.Navigator initialRouteName={"MainTab"} drawerContent={props => <DrawerContent {...props}/>}>
+									<Drawer.Screen name="Drift" component={AppScreenStack} />
+									<Drawer.Screen name="Settings" component={SettingsPage}  />
+									<Drawer.Screen name="Orders" component={OrdersPage} />
+								</Drawer.Navigator>)
+							} else {
 								// signup/login screen stack
-								<AuthStackScreen />
-							)}
+								return <AuthStackScreen />
+							}
+						})()}
 					</NavigationContainer>
 				</StripeProvider>
 			</SafeAreaProvider>
