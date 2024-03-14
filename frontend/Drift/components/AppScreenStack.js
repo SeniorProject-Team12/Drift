@@ -9,9 +9,11 @@ import MainTabScreen from "./MainTabScreen";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import SellerPage from "../pages/SellerPage";
 import SettingsPage from '../pages/SettingsPage';
+import SelectedOrderPage from "../pages/SelectedOrderPage";
+import SelectedChatScreen from "../pages/SelectedChatScreen";
 
 const Stack = createStackNavigator();
-const Tab = createMaterialBottomTabNavigator();
+// const Tab = createMaterialBottomTabNavigator();
 
 const AppScreenStack = ({ navigation }) => {
     return (
@@ -26,6 +28,7 @@ const AppScreenStack = ({ navigation }) => {
             name="Item Details"
             component={ItemPage}
             options={{
+              headerBackTitleVisible: false,
               headerRight: () => (
                 <IconButton
                   icon="basket"
@@ -40,10 +43,30 @@ const AppScreenStack = ({ navigation }) => {
           <Stack.Screen
             name="Folder Details"
             component={FolderDetailsPage}
+            />
+          <Stack.Screen
+            name="Order Details"
+            component={SelectedOrderPage}
+            options={{
+              headerBackTitleVisible: false,
+              // headerLeft: navigation.navigate("Orders")
+            }}
           />
           <Stack.Screen
             name="Cart"
             component={CartPage}
+            options={{
+              headerBackTitleVisible: false
+            }}
+          />
+          <Stack.Screen
+            name="SelectedChat"
+            component={SelectedChatScreen}
+            options={({route}) => ({
+              title: route.params.nameOfUser,
+              headerBackTitleVisible: false,
+              headerShown: true
+            })}
           />
           <Stack.Screen
             name="Seller"

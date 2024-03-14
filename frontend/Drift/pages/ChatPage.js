@@ -1,27 +1,34 @@
 import React from "react";
-import { StyleSheet, Text, View, Pressable, Button } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Button, FlatList } from 'react-native';
+import { Container, Card, UserInfo, UserImgWrapper, UserImg, UserInfoText, UserName, PostTime, MessageText, TextSection } from '../components/ChatStyles';
+import MessageData from './testData/testMessages';
+
 
 const ChatPage = ({navigation}) => {
     return (
-        <View style={styles.container}>
-            <Text>Chat Page</Text>
-            <Button 
-                title="Go to chat screen...again"
-                onPress={() => navigation.push('Chat')}
+        <Container style={styles.container}>
+            <Text style={{ fontSize: 30, paddingTop: 10, padding: 15, borderBottomWidth: 1, borderBottomColor:'#cccccc' }}>Messages</Text>
+            <FlatList
+                data={MessageData}
+                keyExtractor={(item) => item.msgID}
+                renderItem={({ item }) => (
+                    <Card onPress={() => navigation.navigate('SelectedChat', {nameOfUser: item.nameOfUser})}>
+                        <UserInfo>
+                            <UserImgWrapper>
+                                <UserImg source={{uri: item.userImg}} />
+                            </UserImgWrapper>
+                            <TextSection>
+                                <UserInfoText>
+                                    <UserName>{item.nameOfUser}</UserName>
+                                    <PostTime>{item.messageTime}</PostTime>
+                                </UserInfoText>
+                                <MessageText>{item.messageText}</MessageText>
+                            </TextSection>
+                        </UserInfo>
+                    </Card>
+                )}
             />
-            <Button 
-                title="Go to discover screen..."
-                onPress={() => navigation.navigate('Discover')}
-            />
-            <Button 
-                title="Go back..."
-                onPress={() => navigation.goBack()}
-            />
-            <Button 
-                title="Go to the first screen..."
-                onPress={() => navigation.popToTop()}
-            />
-        </View>
+        </Container>
     );
 };
 

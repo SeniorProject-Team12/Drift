@@ -32,8 +32,8 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
   console.log("getting items by keyword")
   req.setTimeout(10000)
   try {
-    const keyword = req.query.keyword; // Get the keyword from the query string
-
+    //const keyword = req.query.keyword; // Get the keyword from the query string
+    const keyword = req.body;
     // Check if a keyword is provided, and construct the SQL query accordingly
     let sqlQuery = 'SELECT * FROM items WHERE ';
     const sqlParams: any[] = [];
@@ -45,6 +45,7 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
       sqlQuery += conditions;
     }
 
+    console.log(sqlQuery);
     // Execute the SQL query with parameters
       await DB.executeSQL(sqlQuery, function(err: any, data: any){
         if (err) {
@@ -159,3 +160,5 @@ router.delete('/deleteItem/id/:id', async (req: Request, res: Response, next: Ne
     next(e);
   }
 });
+
+export default router;
