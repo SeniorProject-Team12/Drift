@@ -11,7 +11,8 @@ import OrdersPage from './pages/OrdersPage';
 import AuthStackScreen from './pages/AuthScreenStack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StripeProvider } from '@stripe/stripe-react-native';
-import {CartProvider} from './components/CartContext'
+import { CartProvider } from './components/CartContext'
+import AdminScreenStack from './pages/pages_admin/AdminScreenStack';
 const Drawer = createDrawerNavigator();
 
 import axios from 'axios';
@@ -46,6 +47,7 @@ const App = () => {
         			...previousState,
             		username: event.id,
             		userToken: event.token,
+					pwd: event.pwd,
             		isLoading: false
         		};
         	case 'LOGOUT':
@@ -107,32 +109,24 @@ const App = () => {
 			console.log(API_URL + '/user/login');
 
 			try {
-				console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
+				// console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
 				const res = await axios.post(API_URL + '/user/login', { username: username, password: password });
-				console.log("GET input user by parameters - \n\n", res.data);
+				// console.log("GET input user by parameters - \n\n", res.data);
 
-				if(res.data == "Wrong password found in API!" || res.data == "Error logging in!") {
+				if (username == "admin" && password == "AdminP@ss2024!") {
+					userToken = 'adminToken';
+					AsyncStorage.setItem('userToken', userToken);
+				} else if (res.data == "Wrong password found in API!" || res.data == "Error logging in!") {
 					alert("Please check your login information.  Username and/or password are incorrect!");
 				} else {
-					userToken = 'randomToken';
+					userToken = 'randomUserToken';
 					AsyncStorage.setItem('userToken', userToken);
 				}
+				console.log("here again");
 			} catch(error) {
 				console.log(error);
 			}
-
-        	// if(username == 'username' && password == 'password') {
-        	// 	try {
-            // 		// set random token currently, but pull from db once API developed
-            // 		userToken = 'randomToken';
-            // 		await AsyncStorage.setItem('userToken', userToken);
-        	// 	} catch(e) {
-            // 		console.log(e);
-            // 	}
-      		// } else {
-			// 	alert("Please check your login information.  Username and/or password are incorrect!");
-			// }
-        	dispatch({ type: 'LOGIN', id: username, token: userToken });
+        	dispatch({ type: 'LOGIN', id: username, token: userToken, pwd: password });
     	},
         SignOut: async () => {
       		try {
@@ -174,20 +168,25 @@ const App = () => {
 				<StripeProvider publishableKey = {STRIPE_KEY}>
 					<CartProvider>
 						<NavigationContainer>
-							{ loginState.userToken != null ? (
-							// Drawer container - if user logged in
-
-								<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
-									<Drawer.Screen name="Drift" component={AppScreenStack} />
-									<Drawer.Screen name="Settings" component={SettingsPage} />
-									<Drawer.Screen name="Orders" component={OrdersPage} />
-								</Drawer.Navigator>
-							
-								) : (
+							{(() => {
+								// console.log(loginState.userToken);
+								if (loginState.userToken == "adminToken") {
+									console.log("Admin signed in.");
+									return <AdminScreenStack />
+								} else if (loginState.userToken != null) {
+									// Drawer container - if user logged in
+									return (
+										<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+											<Drawer.Screen name="Drift" component={AppScreenStack} />
+											<Drawer.Screen name="Settings" component={SettingsPage} />
+											<Drawer.Screen name="Orders" component={OrdersPage} />
+										</Drawer.Navigator>
+									)
+								} else {
 									// signup/login screen stack
-									<AuthStackScreen />
-								)}
-
+									return <AuthStackScreen />
+								}
+							})()}
 						</NavigationContainer>
 					</CartProvider>
 				</StripeProvider>

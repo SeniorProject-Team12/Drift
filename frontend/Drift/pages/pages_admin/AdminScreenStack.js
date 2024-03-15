@@ -1,6 +1,7 @@
 import React from "react";
 // import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import Icon from 'react-native-ico-material-design';
 
 import AccountsPage from "./AccountsPage";
 import DiscoverAdminPage from "./DiscoverAdmin";
@@ -14,7 +15,7 @@ const AdminScreenStack = ({navigation}) => (
         activeColor="#e91e63"
         barStyle={{ backgroundColor: 'white' }}
     >
-        <Tab.Screen
+        <AdminStack.Screen
             name="DiscoverAdminPage"
             component={DiscoverAdminPage}
             options={{
@@ -34,7 +35,7 @@ const AdminScreenStack = ({navigation}) => (
                 ),
             }}
         />
-        <Tab.Screen
+        <AdminStack.Screen
             name="AccountsPage"
             component={AccountsPage}
             options={{
