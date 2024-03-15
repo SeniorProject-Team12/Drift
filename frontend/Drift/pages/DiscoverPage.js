@@ -5,7 +5,7 @@ import Products from "./Products";
 import { Appbar } from "react-native-paper";
 import testItems from "./testData/testItems";
 import axios from 'axios';
-
+import configs from "../config";
 import Constants from "expo-constants";
 
 
@@ -18,64 +18,34 @@ const DiscoverPage = ({navigation}) => {
     console.log("discover page")
 
     const fetchAllItems = async () => {
-      
         try {
-            {console.log('fetchAllItems')}
-            const response = await axios.get(`https://long-waves-share.loca.lt/items/getAllItems`); 
-            setItems(response.data); 
-            console.log(response.data);
-          } catch (error) {
-            console.error('Error fetching items:', error);
-          }
-      
+          const response = await axios.get(configs[0].API_URL + '/items/getAllItems', { timeout: 30000 }); 
+          setItems(response.data); 
+        } catch (error) {
+          console.error('Error fetching items:', error);
+        }
+      };
+
+    const fetchSearchResults = async () => {
+        try {
+            const response = await fetch(configs[0].API_URL + `/items/getItemsByKeyWord?keyword=${searchQuery}`);
+            if (!response.ok) throw new Error('Network response was not ok.');
+            const data = await response.json();
+            setItems(data);
+            console.log("fetchSearchREsults",data)
+            console.log("items",items)
+        } catch (error) {
+            console.error('There was an error fetching the items by keyword:', error);
+        }
     };
 
     useEffect(() => {
-
-        const fetchSearchResults = async () => {
-            try {
-                const response = await fetch(`https://long-waves-share.loca.lt/items/getItemsByKeyWord?keyword=${searchQuery}`);
-                if (!response.ok) throw new Error('Network response was not ok.');
-                const data = await response.json();
-                setItems(data);
-                console.log("fetchSearchREsults",data)
-            } catch (error) {
-                console.error('There was an error fetching the items by keyword:', error);
-            }
-        };
         if (searchQuery === "") {
+            console.log("searchQuery at beginning", searchQuery)
             fetchAllItems();
-        } else {
-            fetchSearchResults();
+            console.log("fetchAllItems", items)
         }
-    }, [searchQuery]); // This effect runs whenever the 'keyword' changes.
-      
-    
-    // const fetchItemByKeyword= async (searchQuery) => {
-    
-    //   searchQuery = searchQuery.toLowerCase();
-    
-    //   const filteredItems = testItems.filter((item) => {
-    //     const name = item.name.toLowerCase();
-    //     const brand = item.brand.toLowerCase();
-    //     const category = item.category.toLowerCase();
-    
-    //     return (
-    //       name.includes(searchQuery) ||
-    //       brand.includes(searchQuery) ||
-    //       category.includes(searchQuery)
-    //     );
-    //   });
-    //   setItems(filteredItems)
-    // }
-
-    // useEffect(() => {
-    //     if (searchQuery === "") {
-    //         fetchAllItems();
-    //     } else {
-    //         fetchItemByKeyword(searchQuery);
-    //     }
-    // }, [searchQuery])
+    }, []); 
 
     return (
         <View style={[styles.container]}>
@@ -85,6 +55,7 @@ const DiscoverPage = ({navigation}) => {
                     placeholder="Search"
                     onChangeText={onChangeSearch}
                     value={searchQuery}
+                    onIconPress={fetchSearchResults}
                 />
                 <IconButton
                     icon="basket"

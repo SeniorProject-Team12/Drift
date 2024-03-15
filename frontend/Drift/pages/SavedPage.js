@@ -4,8 +4,9 @@ import Folders from "./Folders";
 import { Text, Button, Divider, Portal, Dialog, TextInput } from 'react-native-paper';
 import testFolders from "./testData/testFolders";
 import axios from 'axios';
+import configs from "../config";
 
-const baseURL = "https://"
+const userID = 1
 
 const SavedPage = ({navigation}) => {
     const [savedFolders, setSavedFolders] = React.useState(testFolders);
@@ -15,7 +16,7 @@ const SavedPage = ({navigation}) => {
     
     const fetchSavedFolders = async () => {
         try {
-            const response = await fetch(`${baseURL}/items/getSavedFolders/id/?id=${user}`);
+            const response = await fetch(configs[0].API_URL +`/savedFolders/getSavedFolders/id/?id=${userID}`);
             if (!response.ok) throw new Error('Network response was not ok.');
             const data = await response.json();
             setSavedFolders(data);
@@ -37,7 +38,7 @@ const SavedPage = ({navigation}) => {
         };
 
         try {
-            const response = await axios.post('http://yourserver.com/insertSavedFolder', newFolder);
+            const response = await axios.post(configs[0].API_URL +'savedFolders/insertSavedFolder', newFolder);
             console.log(response.data);
             setSavedFolders([...savedFolders, newFolder]);
         } catch (error) {

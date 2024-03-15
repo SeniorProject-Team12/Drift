@@ -26,14 +26,12 @@ router.get('/test', (req, res) => {
 console.log('hi') 
 res.send('Test route')});
 
-
-// Get items by keyword
 router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextFunction) => {
   console.log("getting items by keyword")
   req.setTimeout(10000)
   try {
-    //const keyword = req.query.keyword; // Get the keyword from the query string
-    const keyword = req.body;
+    const keyword = req.query.keyword; // Get the keyword from the query string
+
     // Check if a keyword is provided, and construct the SQL query accordingly
     let sqlQuery = 'SELECT * FROM items WHERE ';
     const sqlParams: any[] = [];
@@ -41,11 +39,10 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
     if (keyword) {
       const columnsToSearch = ['name', 'description', 'brand', 'color'];
       const conditions = columnsToSearch.map(column => `${column} LIKE '%${keyword}%'`).join(' OR ');
-      
+
       sqlQuery += conditions;
     }
 
-    console.log(sqlQuery);
     // Execute the SQL query with parameters
       await DB.executeSQL(sqlQuery, function(err: any, data: any){
         if (err) {

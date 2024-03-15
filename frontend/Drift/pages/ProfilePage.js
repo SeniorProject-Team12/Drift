@@ -8,6 +8,7 @@ import ProfileImage from '../components/profileImage.js';
 import { Picker } from '@react-native-picker/picker';
 import { Icon } from 'react-native-paper';
 import axios from 'axios';
+import configs from "../config";
 
 const testUser = {
       id: 1,
@@ -15,7 +16,7 @@ const testUser = {
       bio: "Looking to give me clothes a 2nd home. Please message me with any questions",
 }
 
-const baseURL = "https://"
+const userID = 1
 
 const ProfilePage = ({navigation}) => {
     const [items, setItems] = useState(testItems);
@@ -26,7 +27,7 @@ const ProfilePage = ({navigation}) => {
       
       try {
           {console.log('fetchItemsByUserID')}
-          const response = await axios.get(`${baseURL}/items/getItemsByUserID/${userID}`); 
+          const response = await axios.get(configs[0].API_URL + `/items/getItemsByUserID/${userID}`); 
           setItems(response.data); 
           console.log(response.data);
         } catch (error) {
