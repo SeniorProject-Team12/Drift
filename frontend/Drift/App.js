@@ -120,18 +120,6 @@ const App = () => {
 			} catch(error) {
 				console.log(error);
 			}
-
-        	// if(username == 'username' && password == 'password') {
-        	// 	try {
-            // 		// set random token currently, but pull from db once API developed
-            // 		userToken = 'randomToken';
-            // 		await AsyncStorage.setItem('userToken', userToken);
-        	// 	} catch(e) {
-            // 		console.log(e);
-            // 	}
-      		// } else {
-			// 	alert("Please check your login information.  Username and/or password are incorrect!");
-			// }
         	dispatch({ type: 'LOGIN', id: username, token: userToken });
     	},
         SignOut: async () => {

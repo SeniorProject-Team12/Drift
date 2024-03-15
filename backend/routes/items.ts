@@ -5,12 +5,15 @@ import { DB } from './modules/db';
 
 export const router = Router();
 
-// Get all items
 router.get('/getAllItems', async (req: Request, res: Response, next: NextFunction) => {
+  console.log("getting all items")
+  req.setTimeout(30000)
+
   try {
-    await DB.executeSQL('SELECT * FROM items', function(err, data) {
+    await DB.executeSQL('SELECT * FROM items', function(err: any, data: any) {
       if (err) {
         console.log("ERROR: ", err);
+        res.send("Error getting all items");
       } else {
         res.send(data);
       }
@@ -19,43 +22,81 @@ router.get('/getAllItems', async (req: Request, res: Response, next: NextFunctio
     next(e);
   }
 });
+router.get('/test', (req, res) => {
+console.log('hi') 
+res.send('Test route')});
 
-// Get items by keyword
 router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextFunction) => {
+  console.log("getting items by keyword")
+  req.setTimeout(10000)
   try {
-    //const keyword = req.query.keyword; // Get the keyword from the query string
-    const keyword = req.body;
+    const keyword = req.query.keyword; // Get the keyword from the query string
+
     // Check if a keyword is provided, and construct the SQL query accordingly
-    let sqlQuery = 'SELECT * FROM items WHERE';
+    let sqlQuery = 'SELECT * FROM items WHERE ';
     const sqlParams: any[] = [];
 
     if (keyword) {
-      // Create conditions for each column to search for the keyword
       const columnsToSearch = ['name', 'description', 'brand', 'color'];
-      const conditions = columnsToSearch.map(column => `${column} LIKE ?`).join(' OR ');
-      
-      sqlQuery += ` (${conditions})`;
-      const keywordPattern = `%${keyword}%`; // Add wildcards to search for the keyword within the text
-      
-      for (const _ of columnsToSearch) {
-        sqlParams.push(keywordPattern);
-      }
+      const conditions = columnsToSearch.map(column => `${column} LIKE '%${keyword}%'`).join(' OR ');
+
+      sqlQuery += conditions;
     }
 
-    console.log(sqlQuery);
     // Execute the SQL query with parameters
-    const result = await DB.executeSQL(sqlQuery, function(err, data) {
-      if (err) {
-        console.log("ERROR: ", err);
-      } else {
-        res.send(data);
-      }
-    });
+      await DB.executeSQL(sqlQuery, function(err: any, data: any){
+        if (err) {
+          console.log("ERROR: ", err);
+          res.send("Error getting items by keyword");
+        } else {
+          res.send(data)
+        }
+      });
+    } catch (e) {
+      next(e);
+    }
+});
 
-    // res.send(result);
-  } catch (e) {
-    next(e);
-  }
+router.get('/getItems/itemID/:itemID', async (req: Request, res: Response, next: NextFunction) => {
+  console.log("getting item by itemID")
+  req.setTimeout(10000)
+  try {
+    const itemID = req.query.itemID;
+
+    let sqlQuery = 'SELECT * FROM items WHERE itemID = ' + itemID;
+
+      await DB.executeSQL(sqlQuery, function(err: any, data: any){
+        if (err) {
+          console.log("ERROR: ", err);
+          res.send("Error getting items by itemID");
+        } else {
+          res.send(data)
+        }
+      });
+    } catch (e) {
+      next(e);
+    }
+});
+
+router.get('/getItems/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
+  console.log("getting items by userID")
+  req.setTimeout(10000)
+  try {
+    const userID = req.query.userID;
+
+    let sqlQuery = 'SELECT * FROM items WHERE userID = ' + userID;
+
+      await DB.executeSQL(sqlQuery, function(err: any, data: any){
+        if (err) {
+          console.log("ERROR: ", err);
+          res.send("Error getting items by userID");
+        } else {
+          res.send(data)
+        }
+      });
+    } catch (e) {
+      next(e);
+    }
 });
 
 // Add a new item

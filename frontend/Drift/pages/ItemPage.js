@@ -62,6 +62,7 @@ const ItemPage = ({route}) => {
     
         </Card.Actions>
       </Card>
+
     </View>
   );
 };

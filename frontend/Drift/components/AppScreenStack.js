@@ -2,6 +2,7 @@ import * as React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
 import { createStackNavigator } from "@react-navigation/stack";
 import ItemPage from "../pages/ItemPage";
+import FolderDetailsPage from "../pages/FolderDetailsPage";
 import CartPage from "../pages/CartPage";
 import { IconButton } from "react-native-paper";
 import MainTabScreen from "./MainTabScreen";
@@ -39,6 +40,10 @@ const AppScreenStack = ({ navigation }) => {
               ),
             }}
           />
+          <Stack.Screen
+            name="Folder Details"
+            component={FolderDetailsPage}
+            />
           <Stack.Screen
             name="Order Details"
             component={SelectedOrderPage}
