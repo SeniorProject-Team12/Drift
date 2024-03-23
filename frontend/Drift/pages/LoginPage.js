@@ -5,6 +5,7 @@ import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SignUpInputField from "../components/signUpInputBox";
+import { ScrollView } from "react-native-gesture-handler";
 // import SampleUsers from '../components/sampleUsers';
 
 const LoginPage = ({navigation, route}) => {
@@ -82,129 +83,120 @@ const LoginPage = ({navigation, route}) => {
 
   	return (
     	<SafeAreaView style={styles.container}>
-        	<Text style={styles.title}>Drift</Text>
-			{/* <Text style={{ fontSize: 20, margin: 10 }}>Username</Text>
-			<TextInput 
-				style={styles.input} 
-				onChangeText={(val) => textInputChange(val)} 
-				placeholder="Username" 
-				onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-			/> */}
- 			<SignUpInputField
-				label={'Username'}
-				icon={
-					<MaterialIcons
-						name="alternate-email"
-						size={20}
-						color="#666"
-						style={{marginRight: 5}}
-					/>
+			<ScrollView
+				showsHorizontalScrollIndicator={false}
+				style={{ paddingHorizontal: 25 }}
+			>
+				<Text style={styles.title}>Drift</Text>
+				<SignUpInputField
+					label={'Username'}
+					icon={
+						<MaterialIcons
+							name="alternate-email"
+							size={20}
+							color="#666"
+							style={{marginRight: 5}}
+						/>
+					}
+					onChangeText={(val) => textInputChange(val)}
+					onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
+					// style={}
+				/> 
+				{ data.isValidUser ? null : 
+					<Animatable.View animation="fadeInLeft" duration={500}>
+						<Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
+					</Animatable.View>
 				}
-				onChangeText={(val) => textInputChange(val)}
-				onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-				// style={}
-			/> 
-			{ data.isValidUser ? null : 
-				<Animatable.View animation="fadeInLeft" duration={500}>
-					<Text style={styles.errorMsg}>Username must be 4 characters long.</Text>
-				</Animatable.View>
-			}
 
-			{/* <Text style={{ fontSize:20,  margin: 10 }}>Password</Text>
-			<TextInput
-				style={styles.input}
-				onChangeText={(val) => handlePasswordChange(val)}
-				placeholder="Password"
-				secureTextEntry={true}
-			/>  */}
-			{ data.isValidPassword ? null : 
-				<Animatable.View animation="fadeInLeft" duration={500}>
-					<Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
-				</Animatable.View>
-			}
-			<SignUpInputField
-				style={styles.input}
-				label={'Password'}
-				icon={
-					<Ionicons
-						name="ios-lock-closed-outline"
-						size={20}
-						color="#666"
-						style={{marginRight: 5}}
-					/>
+				{ data.isValidPassword ? null : 
+					<Animatable.View animation="fadeInLeft" duration={500}>
+						<Text style={styles.errorMsg}>Password must be 8 characters long.</Text>
+					</Animatable.View>
 				}
-				inputType="password"
-				onChangeText={(val) => handlePasswordChange(val)}
-				onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
-				secureTextEntry={true}
-			/>
-			<TouchableOpacity
-				style={{
-					// backgroundColor: '#AD40AF',
-					backgroundColor: '#8fcbbc',
-					padding: 20,
-					width: '90%',
-					borderRadius: 10,
-					marginBottom: 50,
-					marginTop: 50,
-					marginLeft: 15,
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-				}}
-				onPress={() => { loginHandle( data.username, data.password ) }}>
-				<Text
+				<SignUpInputField
+					style={styles.input}
+					label={'Password'}
+					icon={
+						<Ionicons
+							name="ios-lock-closed-outline"
+							size={20}
+							color="#666"
+							style={{marginRight: 5}}
+						/>
+					}
+					inputType="password"
+					onChangeText={(val) => handlePasswordChange(val)}
+					onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
+					secureTextEntry={true}
+				/>
+				<TouchableOpacity
 					style={{
-						color: 'white',
-						fontSize: 30,
-						textAlign: 'center',
-						fontWeight: 'bold',
-						//   fontFamily: 'Roboto-MediumItalic',
-					}}>
-						Sign In
-				</Text>
-				<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
-			</TouchableOpacity>
-			
-			{/* <Button width={50} title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} /> */}
-			<TouchableOpacity
-				style={{
-					// backgroundColor: '#AD40AF',
-					backgroundColor: '#8fcbbc',
-					padding: 20,
-					width: '50%',
-					borderRadius: 10,
-					marginBottom: 0,
-					marginTop: 0,
-					marginLeft: 100,
-					flexDirection: 'row',
-					justifyContent: 'space-between',
-				}}
-				onPress={() => { navigation.goBack() }}>
-				<Text
-					style={{
-						color: 'white',
-						fontSize: 16,
-						textAlign: 'center',
-						fontWeight: 'bold',
-						//   fontFamily: 'Roboto-MediumItalic',
-					}}>
-						Go Back
-				</Text>
-				<MaterialIcons name="arrow-back-ios" size={22} color="#fff" />
-			</TouchableOpacity>
-
-			<View
-				style={{
-					flexDirection: 'row',
-					justifyContent: 'center',
-					marginBottom: 30,
-					paddingTop: 20
-				}}>
-				<Text>Forgot Password?</Text>
-				<TouchableOpacity onPress={() => {}}>
-					<Text style={{color: '#8fcbbc', fontWeight: '700'}}> Login</Text>
+						// backgroundColor: '#AD40AF',
+						backgroundColor: '#8fcbbc',
+						padding: 20,
+						width: '90%',
+						borderRadius: 10,
+						marginBottom: 50,
+						marginTop: 50,
+						marginLeft: 15,
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+					}}
+					onPress={() => { loginHandle( data.username, data.password ) }}>
+					<Text
+						style={{
+							color: 'white',
+							fontSize: 30,
+							textAlign: 'center',
+							fontWeight: 'bold',
+							//   fontFamily: 'Roboto-MediumItalic',
+						}}>
+							Sign In
+					</Text>
+					<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
 				</TouchableOpacity>
-            </View>
+				
+				{/* <Button width={50} title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} /> */}
+				<TouchableOpacity
+					style={{
+						// backgroundColor: '#AD40AF',
+						backgroundColor: '#8fcbbc',
+						padding: 20,
+						width: '50%',
+						borderRadius: 10,
+						marginBottom: 0,
+						marginTop: 0,
+						marginLeft: 85,
+						flexDirection: 'row',
+						justifyContent: 'space-between',
+					}}
+					onPress={() => { navigation.goBack() }}>
+					<Text
+						style={{
+							color: 'white',
+							fontSize: 16,
+							textAlign: 'center',
+							fontWeight: 'bold',
+							//   fontFamily: 'Roboto-MediumItalic',
+						}}>
+							Go Back
+					</Text>
+					<MaterialIcons name="arrow-back-ios" size={22} color="#fff" />
+				</TouchableOpacity>
+
+				<View
+					style={{
+						flexDirection: 'row',
+						justifyContent: 'center',
+						marginBottom: 30,
+						paddingTop: 20
+					}}>
+					<Text>Forgot Password?</Text>
+					<TouchableOpacity onPress={() => {}}>
+						<Text style={{color: '#8fcbbc', fontWeight: '700'}}> Login</Text>
+					</TouchableOpacity>
+				</View>
+			</ScrollView>
         </SafeAreaView>
     );
 };

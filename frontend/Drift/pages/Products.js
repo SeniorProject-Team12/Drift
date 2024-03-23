@@ -4,11 +4,10 @@ import ProductCard from "../components/ProductCard";
 import testItems from "./testData/testItems";
 import axios from 'axios';
 import {useFocusEffect} from "@react-navigation/native"
+import configs from "../config";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth / 2 - 20;
-
-const API_URL = 'http://10.0.2.2:3000';
 
 
 const Products = ({ query, navigation }) => {
@@ -17,7 +16,7 @@ const Products = ({ query, navigation }) => {
   const fetchAllItems = async () => {
     try {
       {console.log('fetchAllItems', query)}
-      const response = await axios.get(API_URL + '/items/getAllItems'); 
+      const response = await axios.get(configs[0].API_URL + '/items/getAllItems'); 
       setItems(response.data); 
     } catch (error) {
       console.error('Error fetching items:', error);
@@ -30,7 +29,7 @@ const Products = ({ query, navigation }) => {
 
   query = query.toLowerCase();
 
-  const filteredItems = testItems.filter((item) => {
+  const filteredItems = items.filter((item) => {
     const name = item.name.toLowerCase();
     const brand = item.brand.toLowerCase();
     const category = item.category.toLowerCase();
@@ -73,7 +72,7 @@ const Products = ({ query, navigation }) => {
         data={items}
         renderItem={renderProduct}
         numColumns={2}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.itemID}
         contentContainerStyle={{ padding: 8 }}
       />
     </View>

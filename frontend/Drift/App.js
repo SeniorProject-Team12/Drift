@@ -16,6 +16,7 @@ const Drawer = createDrawerNavigator();
 
 import axios from 'axios';
 import { AuthContext } from './components/context';
+import configs from './config';
 
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
@@ -29,8 +30,8 @@ const App = () => {
     	userToken: null
     };
 
-	const API_URL = 'http://10.0.2.2:3000';
-
+	// const API_URL = 'http://192.168.1.54:3000';
+	const API_URL = configs[0].API_URL;
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {

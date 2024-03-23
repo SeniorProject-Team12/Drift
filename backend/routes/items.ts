@@ -23,8 +23,8 @@ router.get('/getAllItems', async (req: Request, res: Response, next: NextFunctio
 // Get items by keyword
 router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const keyword = req.query.keyword; // Get the keyword from the query string
-
+    //const keyword = req.query.keyword; // Get the keyword from the query string
+    const keyword = req.body;
     // Check if a keyword is provided, and construct the SQL query accordingly
     let sqlQuery = 'SELECT * FROM items WHERE';
     const sqlParams: any[] = [];
@@ -42,10 +42,17 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
       }
     }
 
+    console.log(sqlQuery);
     // Execute the SQL query with parameters
-    const result = await DB.executeSQL(sqlQuery, sqlParams);
+    const result = await DB.executeSQL(sqlQuery, function(err, data) {
+      if (err) {
+        console.log("ERROR: ", err);
+      } else {
+        res.send(data);
+      }
+    });
 
-    res.send(result);
+    // res.send(result);
   } catch (e) {
     next(e);
   }
@@ -109,3 +116,5 @@ router.delete('/deleteItem/id/:id', async (req: Request, res: Response, next: Ne
     next(e);
   }
 });
+
+export default router;
