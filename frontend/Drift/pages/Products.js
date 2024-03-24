@@ -9,7 +9,6 @@ import configs from "../config";
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth / 2 - 20;
 
-
 const Products = ({ query, navigation }) => {
   const [items, setItems] = React.useState([]);
 

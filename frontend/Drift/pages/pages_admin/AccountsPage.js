@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
-
 import { AuthContext } from "../../components/context";
+import UserAccounts from "./UserAccounts";
 
 const AccountsPage = ({navigation}) => {
 
@@ -9,17 +9,20 @@ const AccountsPage = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={{fontSize: 30}}>
+            {/* <Text style={{ fontSize: 26, marginLeft: 35 }}>
                 Accounts Management Page
-            </Text>
+            </Text> */}
+
+            <UserAccounts navigation={navigation} />
             <TouchableOpacity
                 style={{
                     backgroundColor: '#ffffff',
                     padding: 20,
                     width: '40%',
                     borderRadius: 10,
-                    marginBottom: 50,
-                    marginTop: 50,
+                    marginBottom: 20,
+                    marginLeft: 120,
+                    marginTop: 20,
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                 }}
@@ -43,7 +46,6 @@ export default AccountsPage;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#8fcbbc'
     },

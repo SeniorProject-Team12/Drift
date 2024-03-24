@@ -6,7 +6,7 @@ import { useCart } from "../components/CartContext"
 const ItemPage = ({route}) => {
   console.log("ITEMPAGE")
 
-    const {item} = route.params;
+    const { item } = route.params;
     const { dispatch } = useCart();
 
     const handleAddToCart = () => {

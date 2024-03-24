@@ -1,23 +1,28 @@
 import React from "react";
-// import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { Provider as PaperProvider } from "react-native-paper";
+import { createStackNavigator } from "@react-navigation/stack";
 import Icon from 'react-native-ico-material-design';
 
 import AccountsPage from "./AccountsPage";
-import DiscoverAdminPage from "./DiscoverAdmin";
+import DiscoverAdminPage from "./DiscoverAdminPage";
 import ChatAdminPage from "./ChatAdminPage";
+import SelectedUserPage from "./SelectedUserPage";
+import SelectedItemPostPage from "./SelectedItemPost";
 
 const AdminStack = createMaterialBottomTabNavigator();
+const DiscoverAdminStack = createStackNavigator();
+const AccountStack = createStackNavigator();
 
-const AdminScreenStack = ({navigation}) => (
+const AdminScreenStack = ({ navigation }) => (
     <AdminStack.Navigator 
-        initialRouteName="Discover"
+        initialRouteName="DiscoverAdminStack"
         activeColor="#e91e63"
         barStyle={{ backgroundColor: 'white' }}
     >
         <AdminStack.Screen
-            name="DiscoverAdminPage"
-            component={DiscoverAdminPage}
+            name="Discover Admin Stack"
+            component={DiscoverAdminScreenStack}
             options={{
                 tabBarLabel: 'Admin Discover',
                 tabBarIcon: ({ color }) => (
@@ -36,8 +41,8 @@ const AdminScreenStack = ({navigation}) => (
             }}
         />
         <AdminStack.Screen
-            name="AccountsPage"
-            component={AccountsPage}
+            name="Accounts Stack"
+            component={AccountScreenStack}
             options={{
                 tabBarLabel: 'Accounts',
                 tabBarIcon: ({ color }) => (
@@ -47,5 +52,58 @@ const AdminScreenStack = ({navigation}) => (
         />
     </AdminStack.Navigator>
 );
+
+// Additional Stacks & Screens
+const DiscoverAdminScreenStack = ({ navigation }) => {
+    return (
+        <PaperProvider>
+            <DiscoverAdminStack.Navigator initialRouteName="">
+                <DiscoverAdminStack.Screen 
+                    name="Admin Discover"
+                    component={DiscoverAdminPage}
+                    options={{
+                        tabBarLabel: 'Admin Discover',
+                        tabBarIcon: ({ color }) => (
+                            <Icon name="world-shape-public-symbol" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <DiscoverAdminStack.Screen
+                    name="Selected Item Post"
+                    component={SelectedItemPostPage}
+                    options={{
+                        headerBackTitleVisible: false,
+                    }}
+                />
+            </DiscoverAdminStack.Navigator>
+        </PaperProvider>
+    );
+}
+
+const AccountScreenStack = ({ navigation }) => {
+    return (
+        <PaperProvider>
+          <AccountStack.Navigator initialRouteName="AccountsPage">
+            <AccountStack.Screen 
+              name="Accounts Management"
+              component={AccountsPage}
+              options={{
+                  tabBarLabel: 'Accounts',
+                  tabBarIcon: ({ color }) => (
+                      <Icon name="user-shape" color={color} size={26} />
+                  ),
+              }}
+            />
+            <AccountStack.Screen
+              name="Selected User"
+              component={SelectedUserPage}
+              options={{
+                headerBackTitleVisible: false,
+              }}
+            />
+          </AccountStack.Navigator>
+        </PaperProvider>
+    );
+};
 
 export default AdminScreenStack;
