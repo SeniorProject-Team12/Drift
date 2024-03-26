@@ -15,14 +15,17 @@ const DiscoverPage = ({navigation}) => {
 
     const onChangeSearch = (keyword) => setSearchQuery(keyword);
 
-    console.log("discover page")
+    // console.log("discover page")
 
     const fetchAllItems = async () => {
         try {
-          const response = await axios.get(configs[0].API_URL + '/items/getAllItems', { timeout: 30000 }); 
-          setItems(response.data); 
+            console.log(configs[0].API_URL + '/items/getAllItems') 
+            const response = await axios.get(configs[0].API_URL + '/items/getAllItems', { timeout: 30000 });
+            // console.log('test')
+            // console.log(response.data)
+            setItems(response.data); 
         } catch (error) {
-          console.error('Error fetching items:', error);
+            console.error('Error fetching items:', error);
         }
       };
 
@@ -32,8 +35,6 @@ const DiscoverPage = ({navigation}) => {
             if (!response.ok) throw new Error('Network response was not ok.');
             const data = await response.json();
             setItems(data);
-            console.log("fetchSearchREsults",data)
-            console.log("items",items)
         } catch (error) {
             console.error('There was an error fetching the items by keyword:', error);
         }
@@ -41,12 +42,13 @@ const DiscoverPage = ({navigation}) => {
 
     useEffect(() => {
         if (searchQuery === "") {
-            console.log("searchQuery at beginning", searchQuery)
             fetchAllItems();
-            console.log("fetchAllItems", items)
         }
     }, []); 
 
+    useEffect(() => {
+    }, [items]); 
+    
     return (
         <View style={[styles.container]}>
                 <Appbar.Header  style={{ backgroundColor: 'transparent' }}>

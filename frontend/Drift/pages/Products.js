@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+//KIM
+//import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+//KIM
 import { View, FlatList, Dimensions } from "react-native";
 import ProductCard from "../components/ProductCard";
 
@@ -12,8 +15,12 @@ const cardWidth = screenWidth / 2 - 20;
 
 const Products = ({ items, navigation, showInfo}) => {
   const [products, setProducts] = useState(items)
-  console.log("products",products)
- 
+  // console.log("products testing for profile",products)
+  //KIM
+  useEffect(() => {
+    setProducts(items);
+  }, [items]); // This effect runs whenever 'items' changes.
+  //KIM
   const renderProduct = ({ item }) => (
     <ProductCard item={item} cardWidth={cardWidth} showInfo={showInfo} navigation={navigation} />
   );
