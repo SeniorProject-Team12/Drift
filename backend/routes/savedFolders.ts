@@ -23,11 +23,11 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Get saved folders by userID
-router.get('/getSavedFolders/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/getSavedFolders/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const savedFolderID = req.params.id;
+        const userID = req.params.userID
 
-        await DB.executeSQL('select * from saved_folders where savedFolderID = ' + savedFolderID, function(err, data) {
+        await DB.executeSQL('select * from saved_folders where userID = ' + userID, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else {

@@ -8,14 +8,33 @@ export const router = Router();
 
 // Get saved items from saverFolderID
 router.get('/getSavedItems/savedFolderID/:savedFolderID', async (req: Request, res: Response, next: NextFunction) => {
+    console.log("savedItems")
     try {
         const savedFolderID = req.params.savedFolderID;
-
-        await DB.executeSQL('select itemID from saved_items where savedFolderID = ' + savedFolderID, function(err, data) {
+        console.log("savedFolderID", savedFolderID)
+        await DB.executeSQL('SELECT itemID FROM saved_items WHERE savedFolderID = '+ savedFolderID, async function(err, itemIDs) {
             if(err) {
                 console.log("ERROR: ", err);
-            } else { 
-                res.send(data);
+                res.send("Error fetching itemIDs");
+            } else {
+                const ids = itemIDs.map(row => row.itemID);
+                
+                if(ids.length === 0) {
+                    res.send([]); 
+                    return;
+                }
+
+                const placeholders = ids.map(() => ids).join(', '); 
+                const itemsQuery = `SELECT * FROM items WHERE itemID IN (${placeholders})`;
+
+                await DB.executeSQL(itemsQuery, function(err, items) {
+                    if(err) {
+                        console.log("ERROR: ", err);
+                        res.send("Error fetching items");
+                    } else {
+                        res.send(items);
+                    }
+                });
             }
         }); 
     } catch(e) {
