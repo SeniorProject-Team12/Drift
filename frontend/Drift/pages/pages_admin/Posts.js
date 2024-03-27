@@ -15,7 +15,7 @@ const Posts = ({ query, navigation }) => {
       try {
         {console.log('fetchAllPostedItems', query)}
         const response = await axios.get(configs[0].API_URL + '/items/getAllItems'); 
-        setPosts(response.data); 
+        setPosts(response.data);
       } catch (error) {
         console.error('Error fetching posted items:', error);
       }

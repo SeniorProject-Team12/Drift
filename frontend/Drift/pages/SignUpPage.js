@@ -132,7 +132,7 @@ const SignUpPage = ({navigation}) => {
                     onPress={() => { 
                         console.log(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
                         // Calls authContext to useMemo and jump to signup module
-                        signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword )
+                        signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
                     }} 
                 />
 

@@ -6,9 +6,9 @@ import Icon from 'react-native-ico-material-design';
 
 import AccountsPage from "./AccountsPage";
 import DiscoverAdminPage from "./DiscoverAdminPage";
-import ChatAdminPage from "./ChatAdminPage";
 import SelectedUserPage from "./SelectedUserPage";
 import SelectedItemPostPage from "./SelectedItemPost";
+import SettingsAdminPage from "./SettingsAdminPage";
 
 const AdminStack = createMaterialBottomTabNavigator();
 const DiscoverAdminStack = createStackNavigator();
@@ -31,10 +31,10 @@ const AdminScreenStack = ({ navigation }) => (
             }}
         />
         <AdminStack.Screen
-            name="ChatAdminPage"
-            component={ChatAdminPage}
+            name="Settings Admin Stack"
+            component={SettingsScreenStack}
             options={{
-                tabBarLabel: 'Admin Chat',
+                tabBarLabel: 'Admin Settings',
                 tabBarIcon: ({ color }) => (
                     <Icon name="bubble-speech-with-three-lines" color={color} size={26} />
                 ),
@@ -79,6 +79,32 @@ const DiscoverAdminScreenStack = ({ navigation }) => {
         </PaperProvider>
     );
 }
+
+const SettingsScreenStack = ({ navigation }) => {
+    return (
+        <PaperProvider>
+          <AccountStack.Navigator initialRouteName="AccountsPage">
+            <AccountStack.Screen 
+              name="Admin Settings"
+              component={SettingsAdminPage}
+              options={{
+                  tabBarLabel: 'Admin Settings',
+                  tabBarIcon: ({ color }) => (
+                      <Icon name="user-shape" color={color} size={26} />
+                  ),
+              }}
+            />
+            {/* <AccountStack.Screen
+              name="Selected User"
+              component={SelectedUserPage}
+              options={{
+                headerBackTitleVisible: false,
+              }}
+            /> */}
+          </AccountStack.Navigator>
+        </PaperProvider>
+    );
+};
 
 const AccountScreenStack = ({ navigation }) => {
     return (

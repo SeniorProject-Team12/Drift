@@ -146,7 +146,7 @@ const LoginPage = ({navigation, route}) => {
 					<Text
 						style={{
 							color: 'white',
-							fontSize: 30,
+							fontSize: 26,
 							textAlign: 'center',
 							fontWeight: 'bold',
 							//   fontFamily: 'Roboto-MediumItalic',
@@ -156,7 +156,6 @@ const LoginPage = ({navigation, route}) => {
 					<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
 				</TouchableOpacity>
 				
-				{/* <Button width={50} title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} /> */}
 				<TouchableOpacity
 					style={{
 						// backgroundColor: '#AD40AF',

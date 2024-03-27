@@ -1,7 +1,6 @@
 import * as React from "react";
 import { Text, TouchableOpacity } from "react-native";
 import { Card } from "react-native-paper";
-import SelectedUserPage from "./SelectedUserPage";
 
 const UserCard = ({ item, cardWidth, showInfo, navigation }) => {
     console.log("User card rendered w/", item);

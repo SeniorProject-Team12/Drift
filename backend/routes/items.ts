@@ -77,7 +77,6 @@ router.post('/addNewItem', async (req: Request, res: Response, next: NextFunctio
   }
 });
 
-
 // Update existing item
 router.post('/updateItem/id/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -89,6 +88,24 @@ router.post('/updateItem/id/:id', async (req: Request, res: Response, next: Next
     await DB.executeStoredProcedure(sp, { itemID, name, description, price, quality, brand, color, hashtags, category, userID, photoURL, size }, function(err, data) {
       if(err) {
           console.log("ERROR: ", err);
+      } else {
+          res.send(data);
+      }
+    });
+  } catch(e) {
+    next(e);
+  }
+});
+
+// Report Item Posted
+router.post('/report/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const itemID = req.params.id;
+    const sp = "SP_IncreaseItemReportCount";
+
+    await DB.executeStoredProcedure(sp, {itemID}, function(err, data) {
+      if(err) {
+          console.log("ERROR reporting in API: ", err);
       } else {
           res.send(data);
       }

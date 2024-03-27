@@ -5,6 +5,7 @@ import { Card } from "react-native-paper";
 
 const ItemCard = ({ item, cardWidth, showInfo, navigation }) => {
     console.log("Admin Item card rendered w/", item);
+    const showReported = item.reportedCount > 0;
 
     return(
         <TouchableOpacity
@@ -15,6 +16,7 @@ const ItemCard = ({ item, cardWidth, showInfo, navigation }) => {
         >
             <Card elevation={0}>
                 <Card.Content>
+                    {showReported && <Text style={{ color: 'red' }}>REPORTED ITEM</Text>}
                     <Image
                         source={{
                         uri: item.photoURL

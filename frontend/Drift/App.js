@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -77,8 +77,12 @@ const App = () => {
 			try {
 				console.log("In SIGNUP w/ ", fName, lName, username, email, phoneNumber, pass, confirmPass)
 				
-				if(pass != confirmPass) {
-					alert("Make sure password's are identical!");
+				if(!email.includes("@")) {
+					Alert.alert("Invalid Email","Please use a valid email address!"); 
+				} else if(pass.length < 8) {
+					alert("Password Length Too Short", "Password needs to be at least 8 characters in length!");
+				} else if(pass != confirmPass) {
+						alert("Password Mismatch", "Make sure password's are identical!");
 				} else {
 					const response = await axios.post(API_URL + '/user/signUp', {
 						"firstName": fName, 
@@ -95,8 +99,8 @@ const App = () => {
 						userToken = 'randomToken';
 						AsyncStorage.setItem('userToken', userToken);
 					}
+					console.log(response.data);
 				}
-				console.log(response.data);
 			} catch(error) {
 				console.error(error);
 			}
