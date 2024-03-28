@@ -11,10 +11,12 @@ import OrdersPage from './pages/OrdersPage';
 import AuthStackScreen from './pages/AuthScreenStack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StripeProvider } from '@stripe/stripe-react-native';
+import {CartProvider} from './components/CartContext'
 const Drawer = createDrawerNavigator();
 
 import axios from 'axios';
 import { AuthContext } from './components/context';
+import configs from './config';
 
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
@@ -28,8 +30,8 @@ const App = () => {
     	userToken: null
     };
 
-	const [data, setData] = React.useState([]);
-	const API_URL = 'http://localhost:3000';
+	// const API_URL = 'http://192.168.1.54:3000';
+	const API_URL = configs[0].API_URL;
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -158,21 +160,24 @@ const App = () => {
     	<AuthContext.Provider value={authContext}>
 			<SafeAreaProvider>
 				<StripeProvider publishableKey = {STRIPE_KEY}>
-					<NavigationContainer>
-						{ loginState.userToken != null ? (
-						// Drawer container - if user logged in
+					<CartProvider>
+						<NavigationContainer>
+							{ loginState.userToken != null ? (
+							// Drawer container - if user logged in
 
-							<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
-								<Drawer.Screen name="Drift" component={AppScreenStack} />
-								<Drawer.Screen name="Settings" component={SettingsPage} />
-								<Drawer.Screen name="Orders" component={OrdersPage} />
-							</Drawer.Navigator>
-						
-							) : (
-								// signup/login screen stack
-								<AuthStackScreen />
-							)}
-					</NavigationContainer>
+								<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+									<Drawer.Screen name="Drift" component={AppScreenStack} />
+									<Drawer.Screen name="Settings" component={SettingsPage} />
+									<Drawer.Screen name="Orders" component={OrdersPage} />
+								</Drawer.Navigator>
+							
+								) : (
+									// signup/login screen stack
+									<AuthStackScreen />
+								)}
+
+						</NavigationContainer>
+					</CartProvider>
 				</StripeProvider>
 			</SafeAreaProvider>
     	</AuthContext.Provider>

@@ -2,3 +2,4 @@ node_modules/
 out/
 frontend/Drift/yarn.lock
 frontend/Drift/node_modules
+package-lock.json

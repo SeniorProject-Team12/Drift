@@ -5,9 +5,9 @@ import Products from "./Products";
 import testItems from "./testData/testItems";
 import * as ImagePicker from 'expo-image-picker';
 import ProfileImage from '../components/profileImage.js';
-import { Picker } from '@react-native-picker/picker';
 import { Icon } from 'react-native-paper';
 import axios from 'axios';
+import configs from "../config";
 
 const testUser = {
       id: 1,
@@ -15,23 +15,23 @@ const testUser = {
       bio: "Looking to give me clothes a 2nd home. Please message me with any questions",
 }
 
-const baseURL = "https://"
+const userID = 1
 
 const ProfilePage = ({navigation}) => {
-    const [items, setItems] = useState(testItems);
+    const [items, setItems] = useState([]);
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
 
     const fetchItemsByUserID = async () => {
       
       try {
-          {console.log('fetchItemsByUserID')}
-          const response = await axios.get(`${baseURL}/items/getItemsByUserID/${userID}`); 
-          setItems(response.data); 
-          console.log(response.data);
-        } catch (error) {
-          console.error('Error fetching items:', error);
-        }
+        {console.log('fetchItemsByUserID')}
+        const response = await axios.get(configs[0].API_URL + `/items/getItemsByUserID/userID/${userID}`); 
+        setItems(response.data); 
+        //console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
     }
 
     const selectImage = async () => {
@@ -98,43 +98,47 @@ const ProfilePage = ({navigation}) => {
       };
     useEffect(() => {
         fetchItemsByUserID()
+        console.log("profile items", items)
     }, []);
+    //KIM
+    useEffect(() => {
+
+    }, [items]);
     return (
         <View style={styles.container}>
-            <Appbar.Header  style={{ backgroundColor: 'transparent' }}>
-            <IconButton
-                    title="Settings"
-                    size={20}
-                    onPress={() => {
-                        navigation.navigate("Settings");
-                    }}
-                />
-            </Appbar.Header>
-
-            <View style={styles.profileHeader}>
-                {/* <Avatar.Image size={100} source='https://cdn.pixabay.com/photo/2013/07/13/12/07/avatar-159236_960_720.png' /> */}
-                <View>
-                    <ProfileImage image={image} selectImage={() => selectImage(setImage, setErrorMessage)} />
-                </View>
-                <View style={styles.profileHeaderCol2}>
-                    <Text variant="headlineLarge">{testUser.name}</Text>
-                    <Button mode="contained" buttonColor="blue" textColor="white" onPress={() => console.log('Pressed')}>
-                        Message user 
-                    </Button>
-                </View>
-            </View>
-            <Text variant="bodyLarge">{testUser.bio} 
-            <Icon
-                icon="camera"
-                iconColor={'black'}
-                size={10}
-                onPress={() => console.log('Pressed')}
+        
+          <Appbar.Header  style={{ backgroundColor: 'transparent' }}>
+          <IconButton
+                title="Settings"
+                size={20}
+                onPress={() => {
+                    navigation.navigate("Settings");
+                }}
             />
-            </Text>
+        </Appbar.Header>
 
-            {/* <View style={styles.products}> */}
-                <Products items={items} navigation={navigation} showInfo={false} />
-            {/* </View> */}
+        <View style={styles.profileHeader}>
+            {/* <Avatar.Image size={100} source='https://cdn.pixabay.com/photo/2013/07/13/12/07/avatar-159236_960_720.png' /> */}
+            <View>
+                <ProfileImage image={image} selectImage={() => selectImage(setImage, setErrorMessage)} />
+            </View>
+            <View style={styles.profileHeaderCol2}>
+                <Text variant="headlineLarge">{testUser.name}</Text>
+                <Button mode="contained" buttonColor="blue" textColor="white" onPress={() => console.log('Pressed')}>
+                    Message user 
+                </Button>
+            </View>
+        </View>
+        <Text variant="bodyLarge">{testUser.bio} 
+        <Icon
+            icon="camera"
+            iconColor={'black'}
+            size={10}
+            onPress={() => console.log('Pressed')}
+        />
+        </Text>
+            
+          <Products items={items} navigation={navigation} showInfo={false}/>
         </View>
     );
 };

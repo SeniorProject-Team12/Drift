@@ -4,22 +4,21 @@ import Folders from "./Folders";
 import { Text, Button, Divider, Portal, Dialog, TextInput } from 'react-native-paper';
 import testFolders from "./testData/testFolders";
 import axios from 'axios';
+import configs from "../config";
 
-const baseURL = "https://"
+const userID = 1
 
 const SavedPage = ({navigation}) => {
-    const [savedFolders, setSavedFolders] = React.useState(testFolders);
+    const [savedFolders, setSavedFolders] = React.useState([]);
     const [newFolderName, setNewFolderName] = React.useState("");
     const [visible, setVisible] = React.useState(false);
 
-    
     const fetchSavedFolders = async () => {
         try {
-            const response = await fetch(`${baseURL}/items/getSavedFolders/id/?id=${user}`);
+            const response = await fetch(configs[0].API_URL +`/savedFolders/getSavedFolders/userID/${userID}`);
             if (!response.ok) throw new Error('Network response was not ok.');
             const data = await response.json();
             setSavedFolders(data);
-            console.log("fetchSavedFolders",data)
         } catch (error) {
             console.error('There was an error fetching the saved folders:', error);
         }
@@ -28,6 +27,8 @@ const SavedPage = ({navigation}) => {
     useEffect(() => {
         fetchSavedFolders()
     }, []);
+    useEffect(() => {
+    }, [savedFolders]); 
 
     const addFolder =  async () => {
         const newFolder = {
@@ -37,8 +38,7 @@ const SavedPage = ({navigation}) => {
         };
 
         try {
-            const response = await axios.post('http://yourserver.com/insertSavedFolder', newFolder);
-            console.log(response.data);
+            const response = await axios.post(configs[0].API_URL +'savedFolders/insertSavedFolder', newFolder);
             setSavedFolders([...savedFolders, newFolder]);
         } catch (error) {
             console.error('Error:', error);
@@ -76,7 +76,7 @@ const SavedPage = ({navigation}) => {
             </Portal>
 
             <Divider bold="true"/>
-            <Folders folders={savedFolders} navigation={navigation}/>
+            <Folders files={savedFolders} navigation={navigation}/>
         </View>
     );
 };

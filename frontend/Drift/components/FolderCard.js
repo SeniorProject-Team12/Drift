@@ -20,7 +20,7 @@ const FolderCard = ({folder, cardWidth, navigation }) => {
             style={{ width: "100%", height: 100 }}
             resizeMode="cover"
           />
-          <Text>{folder.name}</Text>
+          <Text>{folder.folderName}</Text>
         </Card.Content>
       </Card>
     </TouchableOpacity>

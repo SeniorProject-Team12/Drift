@@ -26,8 +26,6 @@ router.get('/test', (req, res) => {
 console.log('hi') 
 res.send('Test route')});
 
-
-// Get items by keyword
 router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextFunction) => {
   console.log("getting items by keyword")
   req.setTimeout(10000)
@@ -41,7 +39,7 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
     if (keyword) {
       const columnsToSearch = ['name', 'description', 'brand', 'color'];
       const conditions = columnsToSearch.map(column => `${column} LIKE '%${keyword}%'`).join(' OR ');
-      
+
       sqlQuery += conditions;
     }
 
@@ -59,11 +57,11 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
     }
 });
 
-router.get('/getItems/itemID/:itemID', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/getItemsByUserID/itemID/:itemID', async (req: Request, res: Response, next: NextFunction) => {
   console.log("getting item by itemID")
   req.setTimeout(10000)
   try {
-    const itemID = req.query.itemID;
+    const itemID = req.params.itemID;
 
     let sqlQuery = 'SELECT * FROM items WHERE itemID = ' + itemID;
 
@@ -80,13 +78,14 @@ router.get('/getItems/itemID/:itemID', async (req: Request, res: Response, next:
     }
 });
 
-router.get('/getItems/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
-  console.log("getting items by userID")
+router.get('/getItemsByUserID/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
+  console.log("getting items by userID typescript")
   req.setTimeout(10000)
   try {
-    const userID = req.query.userID;
+    const userID = req.params.userID;
 
     let sqlQuery = 'SELECT * FROM items WHERE userID = ' + userID;
+    console.log("sqlquery for items by userID",sqlQuery)
 
       await DB.executeSQL(sqlQuery, function(err: any, data: any){
         if (err) {
@@ -159,3 +158,5 @@ router.delete('/deleteItem/id/:id', async (req: Request, res: Response, next: Ne
     next(e);
   }
 });
+
+export default router;
