@@ -6,7 +6,7 @@ import { DB } from './modules/db';
 export const router = Router();
 
 router.get('/getAllItems', async (req: Request, res: Response, next: NextFunction) => {
-  console.log("getting all items")
+  console.log("ts getting all items")
   req.setTimeout(30000)
 
   try {
@@ -27,7 +27,7 @@ console.log('hi')
 res.send('Test route')});
 
 router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextFunction) => {
-  console.log("getting items by keyword")
+  console.log("ts getting items by keyword")
   req.setTimeout(10000)
   try {
     const keyword = req.query.keyword; // Get the keyword from the query string

@@ -31,19 +31,17 @@ const SavedPage = ({navigation}) => {
     }, [savedFolders]); 
 
     const addFolder =  async () => {
-        const newFolder = {
-            id: savedFolders.length > 0 ? Math.max(...savedFolders.map(folder => folder.id)) + 1 : 1,
-            name: newFolderName,
-            items: []
-        };
-
+        console.log("adding folder")
         try {
-            const response = await axios.post(configs[0].API_URL +'savedFolders/insertSavedFolder', newFolder);
-            setSavedFolders([...savedFolders, newFolder]);
+            console.log("newFolderName", newFolderName)
+            console.log(userID)
+            const response = await axios.post(configs[0].API_URL +`/savedFolders/addSavedFolder`, { userID: userID, folderName: newFolderName});
+       
         } catch (error) {
             console.error('Error:', error);
         }
         setNewFolderName('');
+        fetchSavedFolders();
         hideDialog();
     };
 

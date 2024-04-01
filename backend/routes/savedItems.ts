@@ -1,14 +1,11 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { DB } from './modules/db';
-const axios = require('axios');
-
-
 
 export const router = Router();
 
 // Get saved items from saverFolderID
 router.get('/getSavedItems/savedFolderID/:savedFolderID', async (req: Request, res: Response, next: NextFunction) => {
-    console.log("savedItems")
+    console.log("route getSavedItems")
     try {
         const savedFolderID = req.params.savedFolderID;
         console.log("savedFolderID", savedFolderID)
@@ -41,3 +38,45 @@ router.get('/getSavedItems/savedFolderID/:savedFolderID', async (req: Request, r
         next(e);
     }
 });
+
+
+//add saved items
+router.post('/addSavedItem', async (req, res, next) => {
+    console.log("Adding saved item");
+    try {
+        const { savedFolderID, itemID } = req.body;
+        await DB.executeSQL(
+            `INSERT INTO saved_items (savedFolderID, itemID) VALUES (${savedFolderID}, ${itemID});`,
+            async (err, results) => {
+                if(err) {
+                    console.log("ERROR: ", err);
+                    res.status(500).send("Error adding saved item");
+                } else {
+                    res.status(201).send(results);
+                }
+            }
+        ); 
+    } catch(e) {
+        console.error("Exception in adding saved items: ", e);
+        next(e);
+    }
+});
+
+//check if item is saved
+router.get('/isSaved/userID/:userID/itemID/:itemID', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userID = req.params.userID
+        const itemID = req.params.itemID
+
+        await DB.executeSQL(`CALL isSaved(${userID}, ${itemID});`, function(err, data) {
+            if(err) {
+                console.log("ERROR: ", err);
+            } else { 
+                res.send(data);
+            }
+        }); 
+    } catch(e) {
+        next(e);
+    }
+});
+
