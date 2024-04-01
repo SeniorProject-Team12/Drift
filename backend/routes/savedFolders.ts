@@ -12,8 +12,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
         await DB.executeSQL('select * from saved_folders;', function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
-            } else {
-                // console.log(data);   
+            } else {  
                 res.send(data);
             }
         }); 
@@ -30,8 +29,7 @@ router.get('/getSavedFolders/userID/:userID', async (req: Request, res: Response
         await DB.executeSQL('select * from saved_folders where userID = ' + userID, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
-            } else {
-                // console.log(data);   
+            } else { 
                 res.send(data);
             }
         }); 
@@ -40,22 +38,24 @@ router.get('/getSavedFolders/userID/:userID', async (req: Request, res: Response
     }
 });
 
-// Insert saved folder
-router.post('/insertSavedFolder', async (req: Request, res: Response, next: NextFunction) => {
+// add saved folder
+router.post('/addSavedFolder', async (req: Request, res: Response, next: NextFunction) => {
+    
     try {
-        const { userID, folderName, photoURL, items } = req.body;
+        const { userID, folderName } = req.body;
 
-        const sp = "SP_InsertSavedFolder";
-
-        await DB.executeStoredProcedure(sp, { userID, folderName, photoURL, items }, function(err, data) {
-            if(err) {
-                console.log("ERROR: ", err);
-            } else {
-                // console.log(data);   
-                res.send(data);
+        await DB.executeSQL(
+            `INSERT INTO saved_folders (userID, folderName) VALUES (${userID}, "${folderName}");`,
+            async (err, results) => {
+                if(err) {
+                    res.status(500).send("Error adding saved folder");
+                } else {
+                    res.status(201).send(results);
+                }
             }
-        });
+        ); 
     } catch(e) {
+        console.error("Exception in adding saved folder ", e);
         next(e);
     }
 });

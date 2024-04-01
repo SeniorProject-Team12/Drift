@@ -11,7 +11,8 @@ const FolderDetailsPage = ({ route, navigation }) => {
     const fetchSavedItems = async () => {
         try {
             console.log("trying to fetch items", folder.savedFolderID)
-            const response = await fetch(configs[0].API_URL + `savedItems/getSavedItems/savedFolderID/${folder.savedFolderID}`);
+            console.log("URL ", configs[0].API_URL + `/savedItems/getSavedItems/savedFolderID/${folder.savedFolderID}`)
+            const response = await fetch(configs[0].API_URL + `/savedItems/getSavedItems/savedFolderID/${folder.savedFolderID}`);
             if (!response.ok) throw new Error('Network response was not ok.');
             const data = await response.json();
             setItems(data);
@@ -28,7 +29,7 @@ const FolderDetailsPage = ({ route, navigation }) => {
     
     return (
         <View style={styles.container}>
-            <Text>{folder.name}</Text>
+            <Text>{folder.folderName}</Text>
             <Products items={items} navigation={navigation} showInfo={false} />
         </View>
     );

@@ -148,7 +148,8 @@ export default ProfilePage;
 const styles = StyleSheet.create({
     container: {
         // alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        flex: 1
     },
     profileHeader: {
         flexDirection: 'row',
