@@ -41,7 +41,8 @@ const ItemPage = ({route}) => {
 
         <Card.Actions style={{flexDirection: 'row'}}>
           <Button
-            textColor = 'white'
+            style={{ backgroundColor: 'white' }}
+            textColor = 'black'
           >
             More from owner
           </Button>
