@@ -1,13 +1,12 @@
 import e from 'cors';
-import mysql from'mysql';
+// import mysql from'mysql';
 const configs = require('./db.config.json');
-
+var mysql = require('mysql');
 class Database {
     con: any;
     output: any;
 
     async makeConnection() {
-        console.log
         this.con = mysql.createConnection({
             host: configs.development.host,
             database: configs.development.database,
@@ -21,18 +20,23 @@ class Database {
         });
     }
 
-    executeSQL(query, callback) {
-        
+    executeSQL(query: any, callback: any) {
         this.makeConnection();
-        (this.con).query(query, (err, result) => {
-            if(err) {
-                callback(err, null);
+        this.con.query(query, (err: any, result: any) => {
+            if (typeof callback === 'function') {
+                if (err) {
+                    console.error('1');
+                    callback(err, null);
+                } else {
+                    console.error('2');
+                    callback(null, result);
+                }
             } else {
-                callback(null, result);                
+                console.error('Callback is not a function');
             }
-
         });
     }
+    
 
     executeStoredProcedure(sp, params, callback) {
         this.makeConnection();

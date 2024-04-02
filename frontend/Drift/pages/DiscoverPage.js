@@ -1,14 +1,54 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
 import { StyleSheet, Text, View, Pressable, Button } from 'react-native';
 import { Searchbar, IconButton } from 'react-native-paper';
 import Products from "./Products";
 import { Appbar } from "react-native-paper";
+import testItems from "./testData/testItems";
+import axios from 'axios';
+import configs from "../config";
+import Constants from "expo-constants";
+
 
 const DiscoverPage = ({navigation}) => {
-    const [searchQuery, setSearchQuery] = React.useState("");
-    const [searchResults, setSearchResults] = React.useState("");
-    const onChangeSearch = (query) => setSearchQuery(query);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [items, setItems] = useState([]);
 
+    const onChangeSearch = (keyword) => setSearchQuery(keyword);
+
+    // console.log("discover page")
+
+    const fetchAllItems = async () => {
+        try {
+            console.log(configs[0].API_URL + '/items/getAllItems') 
+            const response = await axios.get(configs[0].API_URL + '/items/getAllItems', { timeout: 30000 });
+            // console.log('test')
+            // console.log(response.data)
+            setItems(response.data); 
+        } catch (error) {
+            console.error('Error fetching items:', error);
+        }
+      };
+
+    const fetchSearchResults = async () => {
+        try {
+            const response = await fetch(configs[0].API_URL + `/items/getItemsByKeyWord?keyword=${searchQuery}`);
+            if (!response.ok) throw new Error('Network response was not ok.');
+            const data = await response.json();
+            setItems(data);
+        } catch (error) {
+            console.error('There was an error fetching the items by keyword:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (searchQuery === "") {
+            fetchAllItems();
+        }
+    }, []); 
+
+    useEffect(() => {
+    }, [items]); 
+    
     return (
         <View style={[styles.container]}>
                 <Appbar.Header  style={{ backgroundColor: 'transparent' }}>
@@ -17,6 +57,7 @@ const DiscoverPage = ({navigation}) => {
                     placeholder="Search"
                     onChangeText={onChangeSearch}
                     value={searchQuery}
+                    onIconPress={fetchSearchResults}
                 />
                 <IconButton
                     icon="basket"
@@ -27,8 +68,7 @@ const DiscoverPage = ({navigation}) => {
                 />
                 </Appbar.Header>
            
-            {console.log('Search Query: in Discover', searchQuery)}
-            <Products query={searchQuery} navigation={navigation} />
+            <Products items={items} navigation={navigation} showInfo={true}/>
       
         </View>
     );

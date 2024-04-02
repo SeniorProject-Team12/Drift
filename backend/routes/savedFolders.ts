@@ -1,5 +1,8 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { DB } from './modules/db';
+const axios = require('axios');
+
+
 
 export const router = Router();
 
@@ -9,8 +12,7 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
         await DB.executeSQL('select * from saved_folders;', function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
-            } else {
-                // console.log(data);   
+            } else {  
                 res.send(data);
             }
         }); 
@@ -20,15 +22,14 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Get saved folders by userID
-router.get('/getSavedFolder/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/getSavedFolders/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const savedFolderID = req.params.id;
+        const userID = req.params.userID
 
-        await DB.executeSQL('select * from saved_folders where savedFolderID = ' + savedFolderID, function(err, data) {
+        await DB.executeSQL('select * from saved_folders where userID = ' + userID, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
-            } else {
-                // console.log(data);   
+            } else { 
                 res.send(data);
             }
         }); 
@@ -37,22 +38,24 @@ router.get('/getSavedFolder/id/:id', async (req: Request, res: Response, next: N
     }
 });
 
-// Insert saved folder
-router.post('/insertSavedFolder', async (req: Request, res: Response, next: NextFunction) => {
+// add saved folder
+router.post('/addSavedFolder', async (req: Request, res: Response, next: NextFunction) => {
+    
     try {
-        const { userID, folderName, photoURL, items } = req.body;
+        const { userID, folderName } = req.body;
 
-        const sp = "SP_InsertSavedFolder";
-
-        await DB.executeStoredProcedure(sp, { userID, folderName, photoURL, items }, function(err, data) {
-            if(err) {
-                console.log("ERROR: ", err);
-            } else {
-                // console.log(data);   
-                res.send(data);
+        await DB.executeSQL(
+            `INSERT INTO saved_folders (userID, folderName) VALUES (${userID}, "${folderName}");`,
+            async (err, results) => {
+                if(err) {
+                    res.status(500).send("Error adding saved folder");
+                } else {
+                    res.status(201).send(results);
+                }
             }
-        });
+        ); 
     } catch(e) {
+        console.error("Exception in adding saved folder ", e);
         next(e);
     }
 });

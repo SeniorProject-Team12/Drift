@@ -4,7 +4,7 @@
   "description": "Our project is a thrifting web/mobile application which will be a software service specifically for public users to buy and sell thrifting goods.  Individuals will be able to make an account, post items to their page for others to see, and peruse the application to see what other sellers are putting up for sale.",
   "main": "out/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "prepare": "cp ./routes/modules/db.config.json ./out/routes/modules/db.config.json",
     "build": "npx tsc -p tsconfig.json && npm run prepare",
     "start": "node ."
@@ -38,6 +38,10 @@
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
-    "typescript": "^5.3.2"
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.4",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.3.3"
   }
 }
