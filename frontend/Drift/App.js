@@ -18,6 +18,7 @@ const Drawer = createDrawerNavigator();
 import axios from 'axios';
 import { AuthContext } from './components/context';
 import configs from './config';
+import { profile } from './components/UserInfo';
 
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
@@ -31,7 +32,6 @@ const App = () => {
     	userToken: null
     };
 
-	// const API_URL = 'http://192.168.1.54:3000';
 	const API_URL = configs[0].API_URL;
 
     const loginReducer = (previousState, event) => {
@@ -98,6 +98,7 @@ const App = () => {
 					} else {
 						userToken = 'randomToken';
 						AsyncStorage.setItem('userToken', userToken);
+						// useUserStore((state) => state.setInfo(fName, lName, username, email));
 					}
 					console.log(response.data);
 				}
@@ -115,7 +116,7 @@ const App = () => {
 			try {
 				// console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
 				const res = await axios.post(API_URL + '/user/login', { username: username, password: password });
-				// console.log("GET input user by parameters - \n\n", res.data);
+				console.log(res.data);
 
 				if (username == "admin" && password == "AdminP@ss2024!") {
 					userToken = 'adminToken';
@@ -125,8 +126,10 @@ const App = () => {
 				} else {
 					userToken = 'randomUserToken';
 					AsyncStorage.setItem('userToken', userToken);
+					profile["fName"] = res.data[0].firstName;
+					profile["lName"] = res.data[0].lastName;
+					profile["email"] = res.data[0].emailAddress;
 				}
-				console.log("here again");
 			} catch(error) {
 				console.log(error);
 			}
@@ -137,6 +140,8 @@ const App = () => {
         		// set random token currently, but pull from db once API developed
         		userToken = 'random';
         		await AsyncStorage.removeItem('userToken');
+
+				// useUserStore((state) => state.clear);
         	} catch(e) {
         		console.log(e);
         	}
