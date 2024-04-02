@@ -16,7 +16,7 @@ export function DrawerContent(props) {
     }
 
     // signOut variable as assigned in App.js
-    const { SignOut } = React.useContext(AuthContext);
+    //const { SignOut } = React.useContext(AuthContext);
 
     return (
         <View style={{flex:1}}>
