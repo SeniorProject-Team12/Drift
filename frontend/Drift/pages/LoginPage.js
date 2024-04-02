@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button, Alert, SafeAreaView } from 'react-native';
 import { AuthContext } from "../components/context";
 import * as Animatable from 'react-native-animatable';
@@ -6,7 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SignUpInputField from "../components/signUpInputBox";
 import { ScrollView } from "react-native-gesture-handler";
-// import SampleUsers from '../components/sampleUsers';
+import { profile } from "../components/UserInfo";
 
 const LoginPage = ({navigation, route}) => {
     // login state variable as defined in App.js
@@ -142,11 +143,14 @@ const LoginPage = ({navigation, route}) => {
 						flexDirection: 'row',
 						justifyContent: 'space-between',
 					}}
-					onPress={() => { loginHandle( data.username, data.password ) }}>
+					onPress={async () => { 
+						profile["username"] = data.username;
+						loginHandle( data.username, data.password ); 
+					}}>
 					<Text
 						style={{
 							color: 'white',
-							fontSize: 30,
+							fontSize: 26,
 							textAlign: 'center',
 							fontWeight: 'bold',
 							//   fontFamily: 'Roboto-MediumItalic',
@@ -156,7 +160,6 @@ const LoginPage = ({navigation, route}) => {
 					<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
 				</TouchableOpacity>
 				
-				{/* <Button width={50} title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} /> */}
 				<TouchableOpacity
 					style={{
 						// backgroundColor: '#AD40AF',

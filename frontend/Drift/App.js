@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,12 +11,14 @@ import OrdersPage from './pages/OrdersPage';
 import AuthStackScreen from './pages/AuthScreenStack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StripeProvider } from '@stripe/stripe-react-native';
-import {CartProvider} from './components/CartContext'
+import { CartProvider } from './components/CartContext'
+import AdminScreenStack from './pages/pages_admin/AdminScreenStack';
 const Drawer = createDrawerNavigator();
 
 import axios from 'axios';
 import { AuthContext } from './components/context';
 import configs from './config';
+import { profile } from './components/UserInfo';
 
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
@@ -30,7 +32,6 @@ const App = () => {
     	userToken: null
     };
 
-	// const API_URL = 'http://192.168.1.54:3000';
 	const API_URL = configs[0].API_URL;
 
     const loginReducer = (previousState, event) => {
@@ -46,6 +47,7 @@ const App = () => {
         			...previousState,
             		username: event.id,
             		userToken: event.token,
+					pwd: event.pwd,
             		isLoading: false
         		};
         	case 'LOGOUT':
@@ -75,8 +77,12 @@ const App = () => {
 			try {
 				console.log("In SIGNUP w/ ", fName, lName, username, email, phoneNumber, pass, confirmPass)
 				
-				if(pass != confirmPass) {
-					alert("Make sure password's are identical!");
+				if(!email.includes("@")) {
+					Alert.alert("Invalid Email","Please use a valid email address!"); 
+				} else if(pass.length < 8) {
+					alert("Password Length Too Short", "Password needs to be at least 8 characters in length!");
+				} else if(pass != confirmPass) {
+						alert("Password Mismatch", "Make sure password's are identical!");
 				} else {
 					const response = await axios.post(API_URL + '/user/signUp', {
 						"firstName": fName, 
@@ -92,9 +98,10 @@ const App = () => {
 					} else {
 						userToken = 'randomToken';
 						AsyncStorage.setItem('userToken', userToken);
+						// useUserStore((state) => state.setInfo(fName, lName, username, email));
 					}
+					console.log(response.data);
 				}
-				console.log(response.data);
 			} catch(error) {
 				console.error(error);
 			}
@@ -107,26 +114,34 @@ const App = () => {
 			console.log(API_URL + '/user/login');
 
 			try {
-				console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
+				// console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
 				const res = await axios.post(API_URL + '/user/login', { username: username, password: password });
-				console.log("GET input user by parameters - \n\n", res.data);
+				console.log(res.data);
 
-				if(res.data == "Wrong password found in API!" || res.data == "Error logging in!") {
+				if (username == "admin" && password == "AdminP@ss2024!") {
+					userToken = 'adminToken';
+					AsyncStorage.setItem('userToken', userToken);
+				} else if (res.data == "Wrong password found in API!" || res.data == "Error logging in!") {
 					alert("Please check your login information.  Username and/or password are incorrect!");
 				} else {
-					userToken = 'randomToken';
+					userToken = 'randomUserToken';
 					AsyncStorage.setItem('userToken', userToken);
+					profile["fName"] = res.data[0].firstName;
+					profile["lName"] = res.data[0].lastName;
+					profile["email"] = res.data[0].emailAddress;
 				}
 			} catch(error) {
 				console.log(error);
 			}
-        	dispatch({ type: 'LOGIN', id: username, token: userToken });
+        	dispatch({ type: 'LOGIN', id: username, token: userToken, pwd: password });
     	},
         SignOut: async () => {
       		try {
         		// set random token currently, but pull from db once API developed
         		userToken = 'random';
         		await AsyncStorage.removeItem('userToken');
+
+				// useUserStore((state) => state.clear);
         	} catch(e) {
         		console.log(e);
         	}
@@ -162,20 +177,25 @@ const App = () => {
 				<StripeProvider publishableKey = {STRIPE_KEY}>
 					<CartProvider>
 						<NavigationContainer>
-							{ loginState.userToken != null ? (
-							// Drawer container - if user logged in
-
-								<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
-									<Drawer.Screen name="Drift" component={AppScreenStack} />
-									<Drawer.Screen name="Settings" component={SettingsPage} />
-									<Drawer.Screen name="Orders" component={OrdersPage} />
-								</Drawer.Navigator>
-							
-								) : (
+							{(() => {
+								// console.log(loginState.userToken);
+								if (loginState.userToken == "adminToken") {
+									console.log("Admin signed in.");
+									return <AdminScreenStack />
+								} else if (loginState.userToken != null) {
+									// Drawer container - if user logged in
+									return (
+										<Drawer.Navigator drawerContent={props => <DrawerContent {... props} />}>
+											<Drawer.Screen name="Drift" component={AppScreenStack} />
+											<Drawer.Screen name="Settings" component={SettingsPage} />
+											<Drawer.Screen name="Orders" component={OrdersPage} />
+										</Drawer.Navigator>
+									)
+								} else {
 									// signup/login screen stack
-									<AuthStackScreen />
-								)}
-
+									return <AuthStackScreen />
+								}
+							})()}
 						</NavigationContainer>
 					</CartProvider>
 				</StripeProvider>

@@ -20,6 +20,16 @@ const Orders = ({ navigation }) => {
       console.error('Error fetching orders:', error);
     }
   };
+
+  const fetchOrdersByUserID = async () => {
+    try {
+      const response = await axios.get(configs[0].API_URL + '/order/id/'); 
+      console.log(response.data);
+      setOrders(response.data); 
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    }
+  };
   
   // const renderOrder = ({ item }) => (
   //   <OrderCard item={item} cardWidth={cardWidth} showInfo={true} navigation={navigation} />

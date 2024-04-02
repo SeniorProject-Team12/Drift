@@ -1,7 +1,9 @@
-import * as React from 'react';
-import { View, Text, Image, Pressable } from "react-native";
+import axios from 'axios';
+import React from 'react';
+import { Alert, View, Text, Image, Pressable } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { useCart } from "../components/CartContext"
+import configs from "../config";
 
 const userID = 1;
 
@@ -10,7 +12,7 @@ const ItemPage = ({route}) => {
   const [folders, setFolders] = React.useState([]);
   const [isSaved, setIsSaved] = React.useState();
 
-    const {item} = route.params;
+    const { item } = route.params;
     const { dispatch } = useCart();
 
     const handleAddToCart = () => {
@@ -58,10 +60,35 @@ const ItemPage = ({route}) => {
     fetchIsSaved();
 }, []);
 
+    const handleReport = async () => {
+      console.log('item report button pressed!');
+      try {
+        Alert.alert("Report Item Post","Are you sure you want to report this post?", [
+          {
+              text: 'YES', onPress: async () => {
+              try{
+                const response = await axios.post(configs[0].API_URL + '/items/report/id/' + item.itemID); 
+                  alert("This post has just been reported and will be reviewed by admin!");
+              } catch(e) {
+                  console.error('Error reporting posted item:', e);
+              }
+          }},
+          {
+            text: 'NO',
+            onPress: () => console.log('No Pressed'),
+            style: 'cancel',
+          },
+        ]);
+      } catch (error) {
+        console.log(configs[0].API_URL + '/report/id/' + item.itemID);
+        console.error('Error reporting posted item:', error);
+      }
+    }
+    
     console.log(item)
     return (
       <View>
-        <Text>Item Page</Text>
+        {/* <Text>Item Page</Text> */}
       <Card style={{ borderRadius: 15 }} elevation={0}>
         <Image
             source={{
@@ -84,7 +111,7 @@ const ItemPage = ({route}) => {
 
         <Card.Actions style={{flexDirection: 'row'}}>
           <Button
-            textColor = 'white'
+            textColor = 'black'
           >
             More from owner
           </Button>
@@ -96,13 +123,23 @@ const ItemPage = ({route}) => {
             Save
           </Button>
          
-            <Button
-              textColor="white"
-              onPress={handleAddToCart}
-            >
-              Add to cart
-            </Button>
+          <Button
+            textColor="white"
+            onPress={handleAddToCart}
+          >
+            Add to cart
+          </Button>
     
+        </Card.Actions>
+
+        <Card.Actions style={{width: '50%', marginLeft: 82, marginTop: 25}}>
+          <Button
+              style={{ backgroundColor: 'red' }}
+              textColor="black"
+              onPress={() => handleReport()}
+            >
+              Report Posting
+            </Button>
         </Card.Actions>
       </Card>
 
