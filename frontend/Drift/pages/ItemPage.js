@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, Image, Pressable } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { useCart } from "../components/CartContext"
+import { useEffect } from "react";
 
 const userID = 1;
 
