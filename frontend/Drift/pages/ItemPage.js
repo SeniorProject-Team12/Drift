@@ -5,8 +5,12 @@ import { Button, Card } from "react-native-paper";
 import { useCart } from "../components/CartContext"
 import configs from "../config";
 
+const userID = 1;
+
 const ItemPage = ({route}) => {
   console.log("ITEMPAGE")
+  const [folders, setFolders] = React.useState([]);
+  const [isSaved, setIsSaved] = React.useState();
 
     const { item } = route.params;
     const { dispatch } = useCart();
@@ -15,6 +19,46 @@ const ItemPage = ({route}) => {
       dispatch({ type: 'ADD_TO_CART', item });
       console.log('Item added to cart:', item);
     };
+
+    const fetchIsSaved =  async () => {
+      console.log("checking if saved")
+      try {
+          console.log(items.itemID)
+          console.log(userID)
+          const response = await axios.post(configs[0].API_URL +`/savedItems/isSaved/userID/${userID}/itemID/${item.itemID}`);
+          setIsSaved(response.data)
+          console.log("isSaved", isSaved)
+      } catch (error) {
+          console.error('Error:', error);
+      }
+    };
+
+    const saveItem =  async () => {
+      console.log("saving item")
+      try {
+          console.log(folderName)
+          console.log(userID)
+          const response = await axios.post(configs[0].API_URL +`savedItems/addSavedItem`, { savedFolderID: savedFolderID, itemID: itemID});
+     
+      } catch (error) {
+          console.error('Error:', error);
+      }
+    };
+
+    const fetchSavedFolders = async () => {
+      try {
+          const response = await fetch(configs[0].API_URL +`/savedFolders/getSavedFolders/userID/${userID}`);
+          if (!response.ok) throw new Error('Network response was not ok.');
+          const data = await response.json();
+          setFolders(data);
+      } catch (error) {
+          console.error('There was an error fetching the saved folders:', error);
+      }
+  };
+  
+  useEffect(() => {
+    fetchIsSaved();
+}, []);
 
     const handleReport = async () => {
       console.log('item report button pressed!');
@@ -40,7 +84,7 @@ const ItemPage = ({route}) => {
         console.error('Error reporting posted item:', error);
       }
     }
-
+    
     console.log(item)
     return (
       <View>
@@ -98,6 +142,7 @@ const ItemPage = ({route}) => {
             </Button>
         </Card.Actions>
       </Card>
+
     </View>
   );
 };

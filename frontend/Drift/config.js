@@ -1,5 +1,5 @@
 const configs = [
-    { API_URL: 'http://192.168.1.54:3000' }
+    { API_URL: 'https://tangy-plants-vanish.loca.lt' }
 ];
 
 export default configs;
