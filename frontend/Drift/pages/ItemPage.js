@@ -3,6 +3,7 @@ import React from 'react';
 import { Alert, View, Text, Image, Pressable } from "react-native";
 import { Button, Card } from "react-native-paper";
 import { useCart } from "../components/CartContext"
+import { useEffect } from "react";
 import configs from "../config";
 
 const userID = 1;
@@ -111,6 +112,7 @@ const ItemPage = ({route}) => {
 
         <Card.Actions style={{flexDirection: 'row'}}>
           <Button
+            style={{ backgroundColor: 'white' }}
             textColor = 'black'
           >
             More from owner
