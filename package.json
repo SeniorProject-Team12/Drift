@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@rneui/themed": "^4.0.0-rc.8",
-    "@stripe/stripe-react-native": "^0.37.0"
+    "@stripe/stripe-react-native": "^0.37.0",
+    "react-native-sectioned-multi-select": "^0.10.0",
+    "react-native-vector-icons": "^10.0.3"
   }
 }
