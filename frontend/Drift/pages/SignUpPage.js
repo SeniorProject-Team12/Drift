@@ -5,6 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SignUpInputField from '../components/signUpInputBox';
 import CustomButton from '../components/customButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { profile } from '../components/UserInfo';
 
 const SignUpPage = ({navigation}) => {
     const { SignUp } = React.useContext(AuthContext);
@@ -131,8 +132,13 @@ const SignUpPage = ({navigation}) => {
                     label={'Sign Up'}
                     onPress={() => { 
                         console.log(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
+                        profile["fName"] = firstName;
+                        profile["lName"] = lastName;
+                        profile["email"] = email;
+                        profile["username"] = username;
+
                         // Calls authContext to useMemo and jump to signup module
-                        signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword )
+                        signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
                     }} 
                 />
 
