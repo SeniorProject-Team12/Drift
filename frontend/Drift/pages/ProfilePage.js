@@ -8,6 +8,7 @@ import ProfileImage from '../components/profileImage.js';
 import { Icon } from 'react-native-paper';
 import axios from 'axios';
 import configs from "../config";
+import { useIsFocused } from '@react-navigation/native';
 
 const testUser = {
       id: 1,
@@ -21,6 +22,8 @@ const ProfilePage = ({navigation}) => {
     const [items, setItems] = useState([]);
     const [image, setImage] = useState(null);
     const [errorMessage, setErrorMessage] = useState('');
+
+    const isFocused = useIsFocused();
 
     const fetchItemsByUserID = async () => {
       
@@ -99,7 +102,7 @@ const ProfilePage = ({navigation}) => {
     useEffect(() => {
         fetchItemsByUserID()
         console.log("profile items", items)
-    }, []);
+    }, [isFocused]);
     //KIM
     useEffect(() => {
 

@@ -25,10 +25,12 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { username, password } = req.body;
+        // const sp = "SP_GetUserByUsername";
+        const parsedUsername = (username.split(";"))[0];
+
         console.log("IN API login w/ ", username, password);
 
-        const query = 'select * from users where username = \'' + username + '\''; // and password = \'' + encryptedPassword + '\'';
-        console.log(query);
+        const query = 'select * from users where username = \'' + parsedUsername + '\'';
 
         const hashedPass = createHash('sha256').update(password).digest('hex');
 
@@ -47,10 +49,10 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
                 res.send("Wrong password found in API!");
             } 
             else {
-                 
+                
                 console.log(data, data[0].password);
                 if(data.length > 0){
-                    console.log(data);
+                    // console.log(data);
                     res.send(data);
                 } else {
                     res.send(null);

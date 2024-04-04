@@ -6,7 +6,7 @@ import FolderDetailsPage from "../pages/FolderDetailsPage";
 import CartPage from "../pages/CartPage";
 import { IconButton } from "react-native-paper";
 import MainTabScreen from "./MainTabScreen";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+// import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import SellerPage from "../pages/SellerPage";
 import SettingsPage from '../pages/SettingsPage';
 import SelectedOrderPage from "../pages/SelectedOrderPage";
@@ -80,5 +80,5 @@ const AppScreenStack = ({ navigation }) => {
       </PaperProvider>
     );
   };
-  
-  export default AppScreenStack
+
+export default AppScreenStack;

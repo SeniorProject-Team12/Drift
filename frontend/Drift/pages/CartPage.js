@@ -174,6 +174,10 @@ const CartPage = ({navigation}) => {
       onCreateOrder()
     }
 
+    setTimeout(() => {
+      navigation.navigate('Discover');
+    }, 500);
+
   }
 
   const deleteCartItem = (index) => {

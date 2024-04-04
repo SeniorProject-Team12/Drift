@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from "react";
-import { View, FlatList, Text, Image, Pressable } from "react-native";
+import { Alert, View, FlatList, Text, Image, Pressable } from "react-native";
 import { Button, Card, Portal, Dialog, Checkbox, List} from "react-native-paper";
 import { useCart } from "../components/CartContext"
 import axios from 'axios';
@@ -19,7 +19,7 @@ const ItemPage = ({route}) => {
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
 
-    const {item} = route.params;
+    const { item } = route.params;
     const { dispatch } = useCart();
     const toggleCheckBox = (savedFolderID) => {
       setCheckedFolders((currentItems) => ({
@@ -77,9 +77,35 @@ const ItemPage = ({route}) => {
 //   console.log("folderlist folders: ", folders)
 // }, [folders]);  
 
+    const handleReport = async () => {
+      console.log('item report button pressed!');
+      try {
+        Alert.alert("Report Item Post","Are you sure you want to report this post?", [
+          {
+              text: 'YES', onPress: async () => {
+              try{
+                const response = await axios.post(configs[0].API_URL + '/items/report/id/' + item.itemID); 
+                  alert("This post has just been reported and will be reviewed by admin!");
+              } catch(e) {
+                  console.error('Error reporting posted item:', e);
+              }
+          }},
+          {
+            text: 'NO',
+            onPress: () => console.log('No Pressed'),
+            style: 'cancel',
+          },
+        ]);
+      } catch (error) {
+        console.log(configs[0].API_URL + '/report/id/' + item.itemID);
+        console.error('Error reporting posted item:', error);
+      }
+    }
+    
+    console.log(item)
     return (
       <View>
-        <Text>Item Page</Text>
+        {/* <Text>Item Page</Text> */}
       <Card style={{ borderRadius: 15 }} elevation={0}>
         <Image
             source={{
@@ -102,7 +128,8 @@ const ItemPage = ({route}) => {
 
         <Card.Actions style={{flexDirection: 'row'}}>
           <Button
-            textColor = 'white'
+            style={{ backgroundColor: 'white' }}
+            textColor = 'black'
           >
             More from owner
           </Button>
@@ -116,12 +143,12 @@ const ItemPage = ({route}) => {
           </Button>
 
          
-            <Button
-              textColor="white"
-              onPress={handleAddToCart}
-            >
-              Add to cart
-            </Button>
+          <Button
+            textColor="white"
+            onPress={handleAddToCart}
+          >
+            Add to cart
+          </Button>
     
         </Card.Actions>
 
@@ -140,6 +167,15 @@ const ItemPage = ({route}) => {
                     </Dialog.Actions>
                 </Dialog>
         </Portal> */}
+        <Card.Actions style={{width: '50%', marginLeft: 82, marginTop: 25}}>
+          <Button
+              style={{ backgroundColor: 'red' }}
+              textColor="black"
+              onPress={() => handleReport()}
+            >
+              Report Posting
+            </Button>
+        </Card.Actions>
       </Card>
 
     </View>
