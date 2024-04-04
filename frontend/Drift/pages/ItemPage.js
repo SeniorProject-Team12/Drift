@@ -1,50 +1,36 @@
-import * as React from 'react';
-import { View, Text, Image, Pressable } from "react-native";
-import { Button, Card } from "react-native-paper";
+import React, { useEffect, useState} from "react";
+import { View, FlatList, Text, Image, Pressable } from "react-native";
+import { Button, Card, Portal, Dialog, Checkbox, List} from "react-native-paper";
 import { useCart } from "../components/CartContext"
-
+import axios from 'axios';
+import configs from "../config";
+import FolderList from "../components/FolderList"
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 const userID = 1;
 
 const ItemPage = ({route}) => {
-  console.log("ITEMPAGE")
   const [folders, setFolders] = React.useState([]);
   const [isSaved, setIsSaved] = React.useState();
+  const [visible, setVisible] = React.useState(false);
+  const [checkedFolders, setCheckedFolders] = useState({});
+
+
+  const showDialog = () => setVisible(true);
+  const hideDialog = () => setVisible(false);
 
     const {item} = route.params;
     const { dispatch } = useCart();
-
-    const handleAddToCart = () => {
-      dispatch({ type: 'ADD_TO_CART', item });
-      console.log('Item added to cart:', item);
-    };
-
-    const fetchIsSaved =  async () => {
-      console.log("checking if saved")
-      try {
-          console.log(items.itemID)
-          console.log(userID)
-          const response = await axios.post(configs[0].API_URL +`/savedItems/isSaved/userID/${userID}/itemID/${item.itemID}`);
-          setIsSaved(response.data)
-          console.log("isSaved", isSaved)
-      } catch (error) {
-          console.error('Error:', error);
-      }
-    };
-
-    const saveItem =  async () => {
-      console.log("saving item")
-      try {
-          console.log(folderName)
-          console.log(userID)
-          const response = await axios.post(configs[0].API_URL +`savedItems/addSavedItem`, { savedFolderID: savedFolderID, itemID: itemID});
-     
-      } catch (error) {
-          console.error('Error:', error);
-      }
+    const toggleCheckBox = (savedFolderID) => {
+      setCheckedFolders((currentItems) => ({
+        ...currentItems,
+        [savedFolderID]: !currentItems[savedFolderID],
+      }));
     };
 
     const fetchSavedFolders = async () => {
       try {
+          console.log("fetchingSavedFolders")
           const response = await fetch(configs[0].API_URL +`/savedFolders/getSavedFolders/userID/${userID}`);
           if (!response.ok) throw new Error('Network response was not ok.');
           const data = await response.json();
@@ -52,13 +38,45 @@ const ItemPage = ({route}) => {
       } catch (error) {
           console.error('There was an error fetching the saved folders:', error);
       }
-  };
+    }
+
+    const handleAddToCart = () => {
+      dispatch({ type: 'ADD_TO_CART', item });
+    };
+
+    const fetchIsSaved =  async () => {
+      try {
+          const response = await axios.get(configs[0].API_URL +`/savedItems/isSaved/userID/${userID}/itemID/${item.itemID}`);
+          setIsSaved(response.data[0][0].ItemExists)
+      } catch (error) {
+          console.error('Error:', error);
+      }
+    };
+
+    useEffect(() => {
+    }, [isSaved]);
+
+    const toggleSaveBtn = () => {
+      if (isSaved) {
+        //#unsave item
+        setIsSaved(0)
+      } else {
+        showDialog()
+        //saveItem(folderName, userID)
+        setIsSaved(1)
+      }
+    }
   
   useEffect(() => {
+    console.log("useEffect fetchSavedFolders")
     fetchIsSaved();
+    // fetchSavedFolders();
 }, []);
 
-    console.log(item)
+// useEffect(() => {
+//   console.log("folderlist folders: ", folders)
+// }, [folders]);  
+
     return (
       <View>
         <Text>Item Page</Text>
@@ -90,11 +108,13 @@ const ItemPage = ({route}) => {
           </Button>
 
           <Button
-            style={{ backgroundColor: 'white' }}
-            textColor="black"
+            style={{ backgroundColor: isSaved ? 'yellow' : 'white' }}
+            textColor='black' 
+            onPress={()=>toggleSaveBtn()}
           >
-            Save
+            {isSaved ? 'Saved' : 'Save'} 
           </Button>
+
          
             <Button
               textColor="white"
@@ -104,6 +124,22 @@ const ItemPage = ({route}) => {
             </Button>
     
         </Card.Actions>
+
+        {/* <Portal>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Folders</Dialog.Title>
+                    <SectionedMultiSelect
+                      items={folders}
+                      IconRenderer={Icon}
+                      uniqueKey="savedFolderID"
+                      onSelectedItemsChange={setCheckedFolders}
+                      checkedFolders={checkedFolders}
+                    />
+                    <Dialog.Actions>
+                    <Button onPress={hideDialog()}>Done</Button>
+                    </Dialog.Actions>
+                </Dialog>
+        </Portal> */}
       </Card>
 
     </View>
