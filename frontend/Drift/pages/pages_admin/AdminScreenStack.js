@@ -31,22 +31,22 @@ const AdminScreenStack = ({ navigation }) => (
             }}
         />
         <AdminStack.Screen
-            name="Settings Admin Stack"
-            component={SettingsScreenStack}
-            options={{
-                tabBarLabel: 'Admin Settings',
-                tabBarIcon: ({ color }) => (
-                    <Icon name="bubble-speech-with-three-lines" color={color} size={26} />
-                ),
-            }}
-        />
-        <AdminStack.Screen
             name="Accounts Stack"
             component={AccountScreenStack}
             options={{
                 tabBarLabel: 'Accounts',
                 tabBarIcon: ({ color }) => (
                     <Icon name="user-shape" color={color} size={26} />
+                ),
+            }}
+        />
+        <AdminStack.Screen
+            name="Settings Admin Stack"
+            component={SettingsScreenStack}
+            options={{
+                tabBarLabel: 'Admin Settings',
+                tabBarIcon: ({ color }) => (
+                    <Icon name="bubble-speech-with-three-lines" color={color} size={26} />
                 ),
             }}
         />

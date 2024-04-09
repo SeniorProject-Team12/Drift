@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -18,7 +18,7 @@ const Drawer = createDrawerNavigator();
 import axios from 'axios';
 import { AuthContext } from './components/context';
 import configs from './config';
-import { profile } from './components/UserInfo';
+import { UserContext, profile, useUserInfo } from './components/UserInfo';
 
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
@@ -33,6 +33,7 @@ const App = () => {
     };
 
 	const API_URL = configs[0].API_URL;
+	// const { assign } = useUserInfo();
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -126,6 +127,12 @@ const App = () => {
 				} else {
 					userToken = 'randomUserToken';
 					AsyncStorage.setItem('userToken', userToken);
+					// assign({ type: 'ADD_USER_INFO', userID: res.data[0].userID, fName: res.data[0].firstName, lName: res.data[0].lastName, username: username })
+					// setUserID(res.data[0].userID);
+					// setFirstName(res.data[0].firstName);
+					// setLastName(res.data[0].lastName);
+					// setEmail(res.data[0].emailAddress);
+					// setUsername(username);
 					profile["fName"] = res.data[0].firstName;
 					profile["lName"] = res.data[0].lastName;
 					profile["email"] = res.data[0].emailAddress;
@@ -176,6 +183,7 @@ const App = () => {
 			<SafeAreaProvider>
 				<StripeProvider publishableKey = {STRIPE_KEY}>
 					<CartProvider>
+					{/* <UserContext> */}
 						<NavigationContainer>
 							{(() => {
 								// console.log(loginState.userToken);
@@ -197,6 +205,7 @@ const App = () => {
 								}
 							})()}
 						</NavigationContainer>
+						{/* </UserContext> */}
 					</CartProvider>
 				</StripeProvider>
 			</SafeAreaProvider>

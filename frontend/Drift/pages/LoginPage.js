@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button, Alert, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Alert, SafeAreaView } from 'react-native';
 import { AuthContext } from "../components/context";
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -57,13 +57,6 @@ const LoginPage = ({navigation, route}) => {
 		// console.log(data);
     }
 
-    // const updateSecureTextEntry = () => {
-    //     setData({
-    //         ...data,
-    //         secureTextEntry: !data.secureTextEntry
-    //     });
-    // }
-
     const handleValidUser = (val) => {
         if( val.trim().length >= 4 ) {
             setData({
@@ -77,6 +70,10 @@ const LoginPage = ({navigation, route}) => {
             });
         }
     }
+
+	const handleForgotPass = () => {
+		navigation.navigate('ForgotPasswordPage');
+	}
 
     const loginHandle = (username, password) => {
         Login(username, password)
@@ -153,7 +150,6 @@ const LoginPage = ({navigation, route}) => {
 							fontSize: 26,
 							textAlign: 'center',
 							fontWeight: 'bold',
-							//   fontFamily: 'Roboto-MediumItalic',
 						}}>
 							Sign In
 					</Text>
@@ -180,7 +176,6 @@ const LoginPage = ({navigation, route}) => {
 							fontSize: 16,
 							textAlign: 'center',
 							fontWeight: 'bold',
-							//   fontFamily: 'Roboto-MediumItalic',
 						}}>
 							Go Back
 					</Text>
@@ -195,8 +190,8 @@ const LoginPage = ({navigation, route}) => {
 						paddingTop: 20
 					}}>
 					<Text>Forgot Password?</Text>
-					<TouchableOpacity onPress={() => {}}>
-						<Text style={{color: '#8fcbbc', fontWeight: '700'}}> Login</Text>
+					<TouchableOpacity onPress={() => { handleForgotPass() }}>
+						<Text style={{color: '#8fcbbc', fontWeight: '700'}}> Reset Password</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>

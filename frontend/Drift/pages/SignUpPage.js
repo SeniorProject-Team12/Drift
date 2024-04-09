@@ -99,6 +99,7 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    keyboardType={'numeric'}
                     onChangeText={(val) => setPhoneNumber(val)}
                 />
                 <SignUpInputField

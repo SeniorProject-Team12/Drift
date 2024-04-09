@@ -56,9 +56,9 @@ const ItemPage = ({route}) => {
       }
   };
   
-  useEffect(() => {
+  React.useEffect(() => {
     fetchIsSaved();
-}, []);
+  }, []);
 
     const handleReport = async () => {
       console.log('item report button pressed!');
