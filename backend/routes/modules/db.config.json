@@ -3,13 +3,13 @@
     "username": "sqluser",
     "password": "Sqlrocks01!", 
     "database": "drift",
-    "host": "localhost",
+    "host": "localhost", 
     "dialect": "mysql"
   },
   "test": {
-    "username": "",
-    "password": "",
-    "database": "",
+    "username": "root",
+    "password": "Nana7forever!",
+    "database": "drift",
     "host": "localhost",
     "dialect": "mysql"
   },

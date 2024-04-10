@@ -7,11 +7,13 @@ import testItems from "./testData/testItems";
 import axios from 'axios';
 import configs from "../config";
 import Constants from "expo-constants";
+import { useIsFocused } from '@react-navigation/native';
 
 
 const DiscoverPage = ({navigation}) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [items, setItems] = useState([]);
+    const isFocused = useIsFocused();
 
     const onChangeSearch = (keyword) => setSearchQuery(keyword);
 
@@ -44,7 +46,7 @@ const DiscoverPage = ({navigation}) => {
         if (searchQuery === "") {
             fetchAllItems();
         }
-    }, []); 
+    }, [isFocused]); 
 
     useEffect(() => {
     }, [items]); 
