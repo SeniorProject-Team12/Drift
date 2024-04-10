@@ -1,23 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
   TextInput,
-  Button,
-  Image,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
   Modal,
-  Pressable
+  Animated
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import ImagePickerComponent from '../components/ImagePickerComponent.js';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import configs from '../config.js';
+
+const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
 const categories = [
   'Top',
@@ -41,9 +42,10 @@ const PostItemScreen = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [category, setCategory] = useState('');
+  const [postSuccessful, setPostSuccesssful] = useState(false);
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('Select Category');
 
-	// const API_URL = 'http://10.0.2.2:3000';
+  const scaleValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     getPermissionAsync();
@@ -149,9 +151,25 @@ const PostItemScreen = () => {
           "userID": 1 //Update with actual user id
         });
         console.log(response);
+        setPostSuccesssful(true);
+
+        Animated.timing(scaleValue, {
+          toValue: 1,
+          duration: 300,
+          useNativeDriver: true,
+        }).start();
+
+        setTimeout(() => {
+          setPostSuccesssful(false);
+          scaleValue.setValue(0);
+        }, 2000);
+
+
       } catch(error) {
           console.log(error);
       }
+
+      
 
       // Clear the form and error message after submission
       setImage(null);
@@ -222,7 +240,15 @@ const PostItemScreen = () => {
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity testID = 'submit-button' style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={{ fontWeight: 'bold', fontSize: 20 }}>POST ITEM</Text>
+            <View style = {{ flexDirection: 'row', alignItems: 'center'}}>
+              <Text style={{ fontWeight: 'bold', fontSize: 20 }}>     POST ITEM</Text>
+              <AnimatedIcon
+                name={postSuccessful ? 'checkmark-circle' : 'ios-add-circle-outline'}
+                size={24}
+                color={postSuccessful ? 'green' : 'black'}
+                style={{ transform: [{ scale: scaleValue }]}}
+                />
+            </View>
           </TouchableOpacity>
 
 
