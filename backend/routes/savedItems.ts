@@ -44,9 +44,9 @@ router.get('/getSavedItems/savedFolderID/:savedFolderID', async (req: Request, r
 router.post('/addSavedItem', async (req, res, next) => {
     console.log("Adding saved item");
     try {
-        const { savedFolderID, itemID } = req.body;
+        const { itemID, savedFolderIDs } = req.body;
         await DB.executeSQL(
-            `INSERT INTO saved_items (savedFolderID, itemID) VALUES (${savedFolderID}, ${itemID});`,
+            `CALL saveItemToFolders(${itemID}, ${savedFolderIDs});`,
             async (err, results) => {
                 if(err) {
                     console.log("ERROR: ", err);
@@ -58,6 +58,28 @@ router.post('/addSavedItem', async (req, res, next) => {
         ); 
     } catch(e) {
         console.error("Exception in adding saved items: ", e);
+        next(e);
+    }
+});
+
+//add saved items
+router.post('/deleteSavedItem', async (req, res, next) => {
+    console.log("deleting saved item");
+    try {
+        const { userID, savedFolderIDs, itemID } = req.body;
+        await DB.executeSQL(
+            `CALL deleteSavedItem(${userID}, ${savedFolderIDs}, ${itemID});`,
+            async (err, results) => {
+                if(err) {
+                    console.log("ERROR: ", err);
+                    res.status(500).send("Error deleting saved item");
+                } else {
+                    res.status(201).send(results);
+                }
+            }
+        ); 
+    } catch(e) {
+        console.error("Exception in deleting saved items: ", e);
         next(e);
     }
 });
