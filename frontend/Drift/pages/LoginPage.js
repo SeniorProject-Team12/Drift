@@ -7,7 +7,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SignUpInputField from "../components/signUpInputBox";
 import { ScrollView } from "react-native-gesture-handler";
-import { profile } from "../components/UserInfo";
 
 const LoginPage = ({navigation, route}) => {
     // login state variable as defined in App.js
@@ -141,7 +140,6 @@ const LoginPage = ({navigation, route}) => {
 						justifyContent: 'space-between',
 					}}
 					onPress={async () => { 
-						profile["username"] = data.username;
 						loginHandle( data.username, data.password ); 
 					}}>
 					<Text

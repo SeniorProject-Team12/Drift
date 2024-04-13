@@ -4,14 +4,15 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch } from 'react-native-paper';
 import Icon from 'react-native-ico-material-design';
 import { AuthContext } from "../components/context";
-import { UserContext, UserProvider, clearProfile, profile, useUserInfo } from "../components/UserInfo";
+import useUserStore from "../components/UserContext";
 
 export function DrawerContent(props) {
     // signOut variable as assigned in App.js
     const { SignOut } = React.useContext(AuthContext);
     
-    // const { firstName, lastName, username } = useContext(UserContext);
-    // const { userInfo } = useUserInfo();
+    const ZusfirstName = useUserStore((state) => state.firstName);
+    const ZusLastName = useUserStore((state) => state.lastName);
+    const username = useUserStore((state) => state.username);
 
     return (
         <View style={{flex:1}}>
@@ -19,11 +20,11 @@ export function DrawerContent(props) {
                 <DrawerContentScrollView { ...props}>
                     <View style={styles.drawerContent}>
                         <View style={styles.userInfoSection}>
-                            <Title style={styles.title}>{profile.fName} {profile.lName}</Title>
-                            <Caption style={styles.caption}>@{profile.username}</Caption>
+                            {/* <Title style={styles.title}>{profile.fName} {profile.lName}</Title>
+                            <Caption style={styles.caption}>@{profile.username}</Caption> */}
 
-                            {/* <Title style={styles.title}>{userInfo.firstName} {userInfo.lastName}</Title>
-                            <Caption style={styles.caption}>@{userInfo.username}</Caption> */}
+                            <Title style={styles.title}>{ZusfirstName} {ZusLastName}</Title>
+                            <Caption style={styles.caption}>@{username}</Caption>
 
                             <Drawer.Section style={styles.drawerSection}>
                                 <DrawerItem 
@@ -90,7 +91,6 @@ export function DrawerContent(props) {
                     <DrawerItem 
                         label="Sign Out" 
                         onPress={() => { 
-                            clearProfile();
                             SignOut(); 
                         }}
                         icon={({color, size}) => (

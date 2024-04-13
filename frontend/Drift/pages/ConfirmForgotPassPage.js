@@ -18,6 +18,10 @@ const ForgotPassConfirmationPage = ({ navigation, route }) => {
         if(newPass != newPassConfirm) {
             Alert.alert("Passwords do not match. Please try again.");
             return;
+        } else if(newPass.length < 8) {
+            // CHECK VALID PASSWORD LENGTH
+            Alert.alert("Password is too short.  New password must be 8 characters or longer.  Please try again.");
+            return;
         }
 
         try {
@@ -96,7 +100,9 @@ const ForgotPassConfirmationPage = ({ navigation, route }) => {
 
             <CustomButton 
                 label={'Submit'}
-                onPress={() => { handleSubmit() }} 
+                onPress={() => { 
+                    handleSubmit() 
+                }} 
             />
             {/* <View
                 style={{
