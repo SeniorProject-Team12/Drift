@@ -1,14 +1,12 @@
 import React from "react";
 import { View, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
-import { Avatar, Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch } from 'react-native-paper';
+import { Title, Caption, Paragraph, Drawer, Text, TouchableRipple, Switch } from 'react-native-paper';
 import Icon from 'react-native-ico-material-design';
-
 import { AuthContext } from "../components/context";
+import { clearProfile, profile } from "../components/UserInfo";
 
 export function DrawerContent(props) {
-    // {username, firstName, lastName},
-    // {`${firstName} ${lastName}`}   {`@${username}`}
     const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
     const toggleTheme = () => {
@@ -23,8 +21,8 @@ export function DrawerContent(props) {
             <DrawerContentScrollView { ...props}>
                 <View style={styles.drawerContent}>
                     <View style={styles.userInfoSection}>
-                        <Title style={styles.title}>Users Name</Title>
-                        <Caption style={styles.caption}>@username</Caption>
+                        <Title style={styles.title}>{profile.fName} {profile.lName}</Title>
+                        <Caption style={styles.caption}>@{profile.username}</Caption>
 
                         <Drawer.Section style={styles.drawerSection}>
                             <DrawerItem 
@@ -48,7 +46,7 @@ export function DrawerContent(props) {
                                     size={size}
                                     />
                                 )} 
-                            />
+                            /> 
                             <DrawerItem 
                                 label="Saved Items" 
                                 onPress={() => { props.navigation.navigate('Saved') }}
@@ -103,7 +101,10 @@ export function DrawerContent(props) {
             <Drawer.Section style={styles.bottomDrawerSection}>
                 <DrawerItem 
                     label="Sign Out" 
-                    onPress={() => { SignOut() }}
+                    onPress={() => { 
+                        clearProfile();
+                        SignOut(); 
+                    }}
                     icon={({color, size}) => (
                         <Icon 
                         name="exit-to-app-button"
