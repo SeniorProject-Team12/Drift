@@ -1,7 +1,9 @@
-import React, {createContext, useContext, useReducer, useEffect }from 'react';
+import React, {createContext, useContext, useReducer, useEffect, useState }from 'react';
 import { View, Text, FlatList, StyleSheet, Pressable, ActivityIndicator, Alert } from "react-native";
 import CartListItem from '../components/CartListItem';
 import { useCart, CartProvider } from '../components/CartContext';
+import AddressEntrySheet from '../components/AddressEntrySheet';
+
 //import API calls here for selectTotal
 import { useStripe } from '@stripe/stripe-react-native';
 import axios from 'axios';
@@ -44,13 +46,11 @@ const CartTotals = () => {
 
 const CartPage = ({navigation}) => {
 
-  //const API_URL = 'http://10.0.2.2:3000';
   const API_URL = configs[0].API_URL;
-  //const API_URL = '10.136.134.161:3000';
-
 
   const { cart, dispatch } = useCart();
   const [cartItems, setCartItems] = React.useState([]);
+  const [showAddressEntrySheet, setShowAddressEntrySheet] = useState(false);
 
   useEffect(() => {
     setCartItems(cart.items);
@@ -126,6 +126,12 @@ const CartPage = ({navigation}) => {
   const onCheckout = async () => {
     //Create payment intent
 
+    if (!showAddressEntrySheet) {
+      // Show the address entry sheet
+      setShowAddressEntrySheet(true);
+      return;
+    }
+
     response = new Object();
 
     try {
@@ -136,12 +142,8 @@ const CartPage = ({navigation}) => {
     } catch(error) {
       console.log(error);
     }
-
-    console.log(response);
-
     //Initialize payment sheet
   
-    
     const { error: paymentSheetError } = await initPaymentSheet({
       merchantDisplayName: 'Drift',
       paymentIntentClientSecret: response.data.paymentIntent,
@@ -209,9 +211,19 @@ const CartPage = ({navigation}) => {
         />
         <Pressable onPress={onCheckout} style={styles.button}>
           <Text style={styles.buttonText}>
-            Checkout
+            CHECKOUT
           </Text>
         </Pressable>
+        {showAddressEntrySheet && (
+        <AddressEntrySheet
+          onSubmit={(addressData) => {
+            console.log('Submitted address data:', addressData);
+
+            setShowAddressEntrySheet(false);
+            onCheckout();
+          }}
+        />
+      )}
       </CartProvider>
   );
 };
@@ -249,7 +261,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontSize: 16,
   },
   emptyCartMessage: {
