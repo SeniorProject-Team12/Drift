@@ -43,6 +43,9 @@ const AppScreenStack = ({ navigation }) => {
           <Stack.Screen
             name="Folder Details"
             component={FolderDetailsPage}
+            options={{
+              headerBackTitleVisible: false,
+            }}
             />
           <Stack.Screen
             name="Order Details"

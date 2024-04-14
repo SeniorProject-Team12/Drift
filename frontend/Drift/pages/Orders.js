@@ -3,13 +3,16 @@ import axios from 'axios';
 import configs from "../config";
 import OrderCard from "../components/OrderCard";
 import { View, FlatList, Dimensions } from "react-native";
-import {useFocusEffect} from "@react-navigation/native"
+import { useFocusEffect } from "@react-navigation/native";
+import useUserStore from "../components/UserContext";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth - 20;
 
 const Orders = ({ navigation }) => {
   const [orders, setOrders] = React.useState([]);
+
+  const userID = useUserStore((state) => state.userID);
 
   const fetchAllOrders = async () => {
     try {
@@ -22,8 +25,9 @@ const Orders = ({ navigation }) => {
   };
 
   const fetchOrdersByUserID = async () => {
+    console.log(configs[0].API_URL + '/order/getOrderByID/id/' + userID.toString());
     try {
-      const response = await axios.get(configs[0].API_URL + '/order/id/'); 
+      const response = await axios.get(configs[0].API_URL + '/order/getOrderByID/id/' + userID.toString()); 
       console.log(response.data);
       setOrders(response.data); 
     } catch (error) {
@@ -37,7 +41,8 @@ const Orders = ({ navigation }) => {
 
     useFocusEffect(
       React.useCallback(() => {
-          fetchAllOrders();
+          // fetchAllOrders();
+          fetchOrdersByUserID();
       }, [])
   );
 

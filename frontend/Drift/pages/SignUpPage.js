@@ -5,7 +5,6 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SignUpInputField from '../components/signUpInputBox';
 import CustomButton from '../components/customButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { profile } from '../components/UserInfo';
 
 const SignUpPage = ({navigation}) => {
     const { SignUp } = React.useContext(AuthContext);
@@ -21,8 +20,7 @@ const SignUpPage = ({navigation}) => {
     // const [signUpStatus, setSignUpStatus] = useState("");
 
     const signUpHandle = (firstName, lastName, username, email, phoneNumber, password, confirmPassword) => {
-        SignUp(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
-  	
+        SignUp(firstName, lastName, username, email, phoneNumber, password, confirmPassword);
         // let authKey = "AUTH_KEY";
         // let uid = "user1";
         // let name = "Kevin";
@@ -38,10 +36,7 @@ const SignUpPage = ({navigation}) => {
         //         console.log("error", error);
         //     }
         // )
-    
-    }
-
-    
+  	}
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignContent: 'center'}}>
@@ -152,10 +147,6 @@ const SignUpPage = ({navigation}) => {
                     label={'Sign Up'}
                     onPress={() => { 
                         console.log(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
-                        profile["fName"] = firstName;
-                        profile["lName"] = lastName;
-                        profile["email"] = email;
-                        profile["username"] = username;
 
                         // Calls authContext to useMemo and jump to signup module
                         signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword)

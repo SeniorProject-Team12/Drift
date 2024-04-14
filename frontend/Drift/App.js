@@ -18,8 +18,8 @@ const Drawer = createDrawerNavigator();
 import axios from 'axios';
 import { AuthContext } from './components/context';
 import configs from './config';
-import { UserContext, profile, useUserInfo } from './components/UserInfo';
 import { CometChat } from '@cometchat-pro/react-native-chat';
+import useUserStore from './components/UserContext';
 
 const COMETCHAT_APPID = '25579388a65f32e7'
 const STRIPE_KEY = 
@@ -52,7 +52,6 @@ const App = () => {
     };
 
 	const API_URL = configs[0].API_URL;
-	// const { assign } = useUserInfo();
 
     const loginReducer = (previousState, event) => {
     	switch(event.type) {
@@ -89,9 +88,19 @@ const App = () => {
 
     const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
+	// const ZusfirstName = useUserStore((state) => state.firstName);
+	// const ZusLastName = useUserStore((state) => state.lastName); 
+
+	const setUserID = useUserStore((state) => state.updateUserID);
+	const setFirstName = useUserStore((state) => state.updateFirstName); 
+	const setLastName = useUserStore((state) => state.updateLastName);
+	const setUsername = useUserStore((state) => state.updateUsername);
+	const setEmail = useUserStore((state) => state.updateEmail);
+    const clearUserInfo = useUserStore((state) => state.clearUserInfo);
+
     const authContext = React.useMemo(() => ({
     	SignUp: async (fName, lName, username, email, phoneNumber, pass, confirmPass) => { 
-			let userToken;
+			let userToken, res;
 			userToken = null;
 
 			try {
@@ -102,9 +111,9 @@ const App = () => {
 				} else if(pass.length < 8) {
 					alert("Password Length Too Short", "Password needs to be at least 8 characters in length!");
 				} else if(pass != confirmPass) {
-						alert("Password Mismatch", "Make sure password's are identical!");
+					alert("Password Mismatch", "Make sure password's are identical!");
 				} else {
-					const response = await axios.post(API_URL + '/user/signUp', {
+					res = await axios.post(API_URL + '/user/signUp', {
 						"firstName": fName, 
 						"lastName": lName, 
 						"username": username, 
@@ -113,14 +122,23 @@ const App = () => {
 						"password": pass 
 					});
 
-					if(response.data == "ERROR: please enter correct sign up details.") {
+					if(res.data == "ERROR: please enter correct sign up details.") {
 						alert("Error in signup details.  Please check and try again!");
 					} else {
 						userToken = 'randomToken';
 						AsyncStorage.setItem('userToken', userToken);
-						// useUserStore((state) => state.setInfo(fName, lName, username, email));
+
+						setUserID(res.data[0].userID);
+						setFirstName(res.data[0].firstName);
+						setLastName(res.data[0].lastName);
+						setUsername(res.data[0].username);
+						setEmail(res.data[0].emailAddress);
+						// profile["userID"] = res.data[0].userID;
+						// profile["fName"] = res.data[0].firstName;
+						// profile["lName"] = res.data[0].lastName;
+						// profile["email"] = res.data[0].emailAddress;
 					}
-					console.log(response.data);
+					console.log(res.data);
 				}
 			} catch(error) {
 				console.error(error);
@@ -146,15 +164,19 @@ const App = () => {
 				} else {
 					userToken = 'randomUserToken';
 					AsyncStorage.setItem('userToken', userToken);
-					// assign({ type: 'ADD_USER_INFO', userID: res.data[0].userID, fName: res.data[0].firstName, lName: res.data[0].lastName, username: username })
-					// setUserID(res.data[0].userID);
-					// setFirstName(res.data[0].firstName);
-					// setLastName(res.data[0].lastName);
-					// setEmail(res.data[0].emailAddress);
-					// setUsername(username);
-					profile["fName"] = res.data[0].firstName;
-					profile["lName"] = res.data[0].lastName;
-					profile["email"] = res.data[0].emailAddress;
+					// value={ZusfirstName};
+					setUserID(res.data[0].userID);
+					setFirstName(res.data[0].firstName);
+					setLastName(res.data[0].lastName);
+					setUsername(res.data[0].username);
+					setEmail(res.data[0].emailAddress);
+
+					// profile["userID"] = res.data[0].userID;
+					// profile["fName"] = res.data[0].firstName;
+					// profile["lName"] = res.data[0].lastName;
+					// profile["email"] = res.data[0].emailAddress;
+					// console.log("Profile set as => ", profile);
+					// console.log(`Zustand profile -> ${ZusfirstName}`);
 				}
 			} catch(error) {
 				console.log(error);
@@ -167,7 +189,7 @@ const App = () => {
         		userToken = 'random';
         		await AsyncStorage.removeItem('userToken');
 
-				// useUserStore((state) => state.clear);
+				clearUserInfo();
         	} catch(e) {
         		console.log(e);
         	}
