@@ -19,9 +19,28 @@ import axios from 'axios';
 import { AuthContext } from './components/context';
 import configs from './config';
 import { UserContext, profile, useUserInfo } from './components/UserInfo';
+import { CometChat } from '@cometchat-pro/react-native-chat';
 
+const COMETCHAT_APPID = '25579388a65f32e7'
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
+
+	let region = "US";
+	let appSetting = new CometChat.AppSettingsBuilder()
+						.subscribePresenceForAllUsers()
+						.setRegion(region)
+						.autoEstablishSocketConnection(true)
+						.build();
+	CometChat.init(COMETCHAT_APPID, appSetting).then(
+	  () => {
+		console.log("Initialization completed successfully");
+	  }, error => {
+		console.log("Initialization failed with error:", error);
+	  }
+	);
+
+
+	
 
 const App = () => {
 
@@ -167,7 +186,7 @@ const App = () => {
     			console.log("ERROR: ", e);
         	}
       		dispatch({ type: 'GET_TOKEN', token: userToken });
-    	}, 1000);""
+    	}, 1000);
     }, []);
 
     if (loginState.isLoading) {

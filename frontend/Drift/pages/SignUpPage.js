@@ -22,7 +22,26 @@ const SignUpPage = ({navigation}) => {
 
     const signUpHandle = (firstName, lastName, username, email, phoneNumber, password, confirmPassword) => {
         SignUp(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
-  	}
+  	
+        // let authKey = "AUTH_KEY";
+        // let uid = "user1";
+        // let name = "Kevin";
+
+        // let user = new CometChat.User(uid);
+
+        // user.setName(name);
+
+        // CometChat.createUser(user, authKey).then(
+        //     user => {
+        //         console.log("user created", user);
+        //     }, error => {
+        //         console.log("error", error);
+        //     }
+        // )
+    
+    }
+
+    
 
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignContent: 'center'}}>

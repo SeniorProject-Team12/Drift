@@ -1,5 +1,5 @@
 const configs = [
-    { API_URL: 'http://192.168.1.165:3000' }
+    { API_URL: 'https://chatty-olives-check.loca.lt' }
 ];
 
 export default configs;
