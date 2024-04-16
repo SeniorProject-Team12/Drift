@@ -1,5 +1,5 @@
 import React, { useEffect, useState} from "react";
-import { StyleSheet, Text, View, Pressable, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Searchbar, IconButton } from 'react-native-paper';
 import Products from "./Products";
 import { Appbar } from "react-native-paper";
@@ -18,6 +18,8 @@ const DiscoverPage = ({navigation}) => {
     const onChangeSearch = (keyword) => setSearchQuery(keyword);
 
     // console.log("discover page")
+
+    // TODO - add filtering and debug search bar 
 
     const fetchAllItems = async () => {
         try {
@@ -46,6 +48,9 @@ const DiscoverPage = ({navigation}) => {
         if (searchQuery === "") {
             fetchAllItems();
         }
+        // else {
+            // fetchSearchResults();
+        // }
     }, [isFocused]); 
 
     useEffect(() => {
@@ -69,7 +74,7 @@ const DiscoverPage = ({navigation}) => {
                     }}
                 />
                 </Appbar.Header>
-           
+            
             <Products items={items} navigation={navigation} showInfo={true}/>
       
         </View>
@@ -82,7 +87,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         //justifyContent: 'center',
-        backgroundColor: '#8fcbbc'
+        backgroundColor: '#8fcbbc',
+        paddingLeft: 5
     },
     header: {
         //flexDirection: 'row',
