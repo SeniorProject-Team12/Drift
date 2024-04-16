@@ -76,25 +76,6 @@ const LoginPage = ({navigation, route}) => {
 
     const loginHandle = (username, password) => {
         Login(username, password)
-
-		let UID = "SUPERHERO1";
-		let authKey = "AUTH_KEY";
-
-		CometChat.getLoggedinUser().then(
-			(user) => {
-						if(!user){
-					CometChat.login(UID, authKey).then(
-					user => {
-						console.log("Login Successful:", { user });    
-					}, error => {
-						console.log("Login failed with exception:", { error });    
-					}
-					);
-				}
-				}, error => {
-						console.log("Some Error Occured", { error });
-				}
-		);
   	}
 
   	return (

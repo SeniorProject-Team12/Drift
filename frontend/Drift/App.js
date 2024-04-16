@@ -22,6 +22,7 @@ import { CometChat } from '@cometchat-pro/react-native-chat';
 import useUserStore from './components/UserContext';
 
 const COMETCHAT_APPID = '25579388a65f32e7'
+const COMETCHAT_AUTHKEY = 'dca323479e4634f3626d04753a10521f35a5c1cc';
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
 
@@ -39,8 +40,6 @@ const STRIPE_KEY =
 	  }
 	);
 
-
-	
 
 const App = () => {
 
@@ -133,10 +132,8 @@ const App = () => {
 						setLastName(res.data[0].lastName);
 						setUsername(res.data[0].username);
 						setEmail(res.data[0].emailAddress);
-						// profile["userID"] = res.data[0].userID;
-						// profile["fName"] = res.data[0].firstName;
-						// profile["lName"] = res.data[0].lastName;
-						// profile["email"] = res.data[0].emailAddress;
+
+						
 					}
 					console.log(res.data);
 				}
@@ -170,13 +167,22 @@ const App = () => {
 					setLastName(res.data[0].lastName);
 					setUsername(res.data[0].username);
 					setEmail(res.data[0].emailAddress);
-
-					// profile["userID"] = res.data[0].userID;
-					// profile["fName"] = res.data[0].firstName;
-					// profile["lName"] = res.data[0].lastName;
-					// profile["email"] = res.data[0].emailAddress;
-					// console.log("Profile set as => ", profile);
-					// console.log(`Zustand profile -> ${ZusfirstName}`);
+					
+					CometChat.getLoggedinUser().then(
+						(user) => {
+									if(!user){
+								CometChat.login(useUserStore.userID, COMETCHAT_AUTHKEY).then(
+								user => {
+									console.log("Login Successful:", { user });    
+								}, error => {
+									console.log("Login failed with exception:", { error });    
+								}
+								);
+							}
+							}, error => {
+									console.log("Some Error Occured", { error });
+							}
+					);
 				}
 			} catch(error) {
 				console.log(error);
