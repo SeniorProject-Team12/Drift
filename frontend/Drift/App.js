@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -18,7 +18,7 @@ const Drawer = createDrawerNavigator();
 import axios from 'axios';
 import { AuthContext } from './components/context';
 import configs from './config';
-import { profile } from './components/UserInfo';
+import useUserStore from './components/UserContext';
 
 const STRIPE_KEY = 
 	'pk_test_51Oe7muAh9NlzJ6kblOAtWXQxbJVim5q4EddknofdzrUzG9kWcvGP8JshwEwoafCskVAwtdzHaXwK0FKypiMgS0zl00AICSn8NI';
@@ -69,9 +69,19 @@ const App = () => {
 
     const [loginState, dispatch] = React.useReducer(loginReducer, initialLoginState);
 
+	// const ZusfirstName = useUserStore((state) => state.firstName);
+	// const ZusLastName = useUserStore((state) => state.lastName); 
+
+	const setUserID = useUserStore((state) => state.updateUserID);
+	const setFirstName = useUserStore((state) => state.updateFirstName); 
+	const setLastName = useUserStore((state) => state.updateLastName);
+	const setUsername = useUserStore((state) => state.updateUsername);
+	const setEmail = useUserStore((state) => state.updateEmail);
+    const clearUserInfo = useUserStore((state) => state.clearUserInfo);
+
     const authContext = React.useMemo(() => ({
     	SignUp: async (fName, lName, username, email, phoneNumber, pass, confirmPass) => { 
-			let userToken;
+			let userToken, res;
 			userToken = null;
 
 			try {
@@ -82,9 +92,9 @@ const App = () => {
 				} else if(pass.length < 8) {
 					alert("Password Length Too Short", "Password needs to be at least 8 characters in length!");
 				} else if(pass != confirmPass) {
-						alert("Password Mismatch", "Make sure password's are identical!");
+					alert("Password Mismatch", "Make sure password's are identical!");
 				} else {
-					const response = await axios.post(API_URL + '/user/signUp', {
+					res = await axios.post(API_URL + '/user/signUp', {
 						"firstName": fName, 
 						"lastName": lName, 
 						"username": username, 
@@ -93,14 +103,23 @@ const App = () => {
 						"password": pass 
 					});
 
-					if(response.data == "ERROR: please enter correct sign up details.") {
+					if(res.data == "ERROR: please enter correct sign up details.") {
 						alert("Error in signup details.  Please check and try again!");
 					} else {
 						userToken = 'randomToken';
 						AsyncStorage.setItem('userToken', userToken);
-						// useUserStore((state) => state.setInfo(fName, lName, username, email));
+
+						setUserID(res.data[0].userID);
+						setFirstName(res.data[0].firstName);
+						setLastName(res.data[0].lastName);
+						setUsername(res.data[0].username);
+						setEmail(res.data[0].emailAddress);
+						// profile["userID"] = res.data[0].userID;
+						// profile["fName"] = res.data[0].firstName;
+						// profile["lName"] = res.data[0].lastName;
+						// profile["email"] = res.data[0].emailAddress;
 					}
-					console.log(response.data);
+					console.log(res.data);
 				}
 			} catch(error) {
 				console.error(error);
@@ -126,9 +145,19 @@ const App = () => {
 				} else {
 					userToken = 'randomUserToken';
 					AsyncStorage.setItem('userToken', userToken);
-					profile["fName"] = res.data[0].firstName;
-					profile["lName"] = res.data[0].lastName;
-					profile["email"] = res.data[0].emailAddress;
+					// value={ZusfirstName};
+					setUserID(res.data[0].userID);
+					setFirstName(res.data[0].firstName);
+					setLastName(res.data[0].lastName);
+					setUsername(res.data[0].username);
+					setEmail(res.data[0].emailAddress);
+
+					// profile["userID"] = res.data[0].userID;
+					// profile["fName"] = res.data[0].firstName;
+					// profile["lName"] = res.data[0].lastName;
+					// profile["email"] = res.data[0].emailAddress;
+					// console.log("Profile set as => ", profile);
+					// console.log(`Zustand profile -> ${ZusfirstName}`);
 				}
 			} catch(error) {
 				console.log(error);
@@ -141,7 +170,7 @@ const App = () => {
         		userToken = 'random';
         		await AsyncStorage.removeItem('userToken');
 
-				// useUserStore((state) => state.clear);
+				clearUserInfo();
         	} catch(e) {
         		console.log(e);
         	}
@@ -176,6 +205,7 @@ const App = () => {
 			<SafeAreaProvider>
 				<StripeProvider publishableKey = {STRIPE_KEY}>
 					<CartProvider>
+					{/* <UserContext> */}
 						<NavigationContainer>
 							{(() => {
 								// console.log(loginState.userToken);
@@ -197,6 +227,7 @@ const App = () => {
 								}
 							})()}
 						</NavigationContainer>
+						{/* </UserContext> */}
 					</CartProvider>
 				</StripeProvider>
 			</SafeAreaProvider>

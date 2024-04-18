@@ -22,9 +22,9 @@ router.get('/', async (req:Request, res: Response, next: NextFunction) => {
 // Get order by ID
 router.get('/getOrderByID/id/:id', async (req:Request, res: Response, next: NextFunction) => {
     try {
-        const orderID = req.params.id;
+        const userID = req.params.id;
         
-        await DB.executeSQL('select * from orders where orderID = ' + orderID + ';', function(err, data) {
+        await DB.executeSQL('select * from orders where userID = ' + userID + ';', function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else if(!data) {
