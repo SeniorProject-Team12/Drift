@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { Alert, View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Card } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
@@ -26,7 +27,7 @@ const SelectedUserPage = ({ route }) => {
           {
               text: 'YES', onPress: async () => {
               try{
-                  // const res = await axios.delete(configs[0].API_URL + '/user/deleteUser/id/' + item.userID);
+                  const res = await axios.delete(configs[0].API_URL + '/user/deleteUser/id/' + item.userID);
                   console.log(configs[0].API_URL + '/user/deleteUser/id/' + item.userID);
                   alert("User Account has been deleted!");
                   navigation.navigate("Accounts Management");
@@ -48,30 +49,30 @@ const SelectedUserPage = ({ route }) => {
                 <Card.Title titleStyle={{ fontSize: 24, fontWeight: '700', marginTop: 25, marginBottom: 10 }} title={`Username: ${item.username}`} subtitleStyle={styles.text} subtitle={`User ID: ${item.userID}`} />
                 <Card.Content style={{ height: "100%", flexDirection: "column", gap: "5px" }}>
                     <Text style={styles.text}>User's First & Last Name: {item.firstName} {item.lastName}</Text>
-                    <Text style={{ marginTop: 30}}>Times Reported: </Text>
-                    <TouchableOpacity
-                        style={{
-                            backgroundColor: 'red',
-                            padding: 20,
-                            width: '50%',
-                            borderRadius: 10,
-                            marginBottom: 20,
-                            marginLeft: 90,
-                            marginTop: 100,
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                        }}
-                        onPress={() => { handleDeleteAccount() }}>
-                        <Text
+                    <Text style={{ marginTop: 30}}>Times Reported: 0</Text>
+                    <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+
+                        <TouchableOpacity
                             style={{
-                                color: 'white',
-                                fontSize: 26,
-                                textAlign: 'center',
-                                alignContent: 'center',
-                            }}>
-                                Delete User Account
-                        </Text>
-                    </TouchableOpacity>                
+                                marginBottom: 20,
+                                marginTop: 100,
+                                backgroundColor: 'red',
+                                padding: 20,
+                                width: '50%',
+                                borderRadius: 10,
+                            }}
+                            onPress={() => { handleDeleteAccount() }}>
+                            <Text
+                                style={{
+                                    color: 'white',
+                                    fontSize: 26,
+                                    textAlign: 'center',
+                                    alignContent: 'center',
+                                }}>
+                                    Delete User Account
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </Card.Content>
             </Card>
         </View>

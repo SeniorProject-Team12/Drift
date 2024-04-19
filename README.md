@@ -12,4 +12,6 @@ Drift is a thrifting mobile application as well as a software service specifical
 
 ## Project Overview Website
 
+For more infomation and documentation, please visit the overview website below created for our application:
+
 * https://seniorproject-team12.github.io/Drift/
