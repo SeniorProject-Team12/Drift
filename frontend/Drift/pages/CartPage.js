@@ -3,6 +3,8 @@ import { View, Text, FlatList, StyleSheet, Pressable, ActivityIndicator, Alert }
 import CartListItem from '../components/CartListItem';
 import { useCart, CartProvider } from '../components/CartContext';
 import AddressEntrySheet from '../components/AddressEntrySheet';
+import TotalsSheet from '../components/TotalsSheet';
+import salesTaxRates from '../components/salesTaxDict';
 
 //import API calls here for selectTotal
 import { useStripe } from '@stripe/stripe-react-native';
@@ -31,14 +33,6 @@ const CartTotals = () => {
           <Text style={styles.text}>Subtotal</Text>
           <Text style={styles.text}>{subtotal.toFixed(2)} US$</Text>
         </View>
-        <View style={styles.row}>
-          <Text style={styles.text}>Delivery</Text>
-          <Text style={styles.text}>{deliveryFee.toFixed(2)} US$</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.textBold}>Total</Text>
-          <Text style={styles.textBold}>{total.toFixed(2)} US$</Text>
-        </View>
       </View>
     </CartProvider>
   )
@@ -50,6 +44,9 @@ const CartPage = ({navigation}) => {
 
   const { cart, dispatch } = useCart();
   const [cartItems, setCartItems] = React.useState([]);
+  const [showTotalsSheet, setShowTotalsSheet] = useState(false);
+  const [addressData, setAddressData] = useState(null);
+  const [salesTax, setSalesTax] = useState(0);
   const [showAddressEntrySheet, setShowAddressEntrySheet] = useState(false);
 
   useEffect(() => {
@@ -60,11 +57,26 @@ const CartPage = ({navigation}) => {
    for (const item of cart.items) {
      subtotal += item.price;
    }
-   let deliveryFee = 5;
-   let total = subtotal + deliveryFee;
-    
 
   const {initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  const handleAddressEntrySubmit = async (addressData) => {
+    // Handle address entry submission logic
+    console.log('Submitted address data:', addressData);
+
+    setAddressData(addressData); // Save address data
+    setShowAddressEntrySheet(false);
+    const percentage = calculateSalesTax(addressData);
+    const calculatedSalesTax = subtotal * percentage;
+    setSalesTax(calculatedSalesTax);
+    onCheckout();
+  };
+
+  const calculateSalesTax = (addressData) => {
+
+    return salesTaxRates[addressData.state];
+
+  };
 
    const onCreateOrder = async () => {
 
@@ -123,62 +135,73 @@ const CartPage = ({navigation}) => {
 
    };
 
+   const handleCloseTotalsSheet = async() => {
+    setShowTotalsSheet(false);
+    onCheckout();
+};
+
   const onCheckout = async () => {
     //Create payment intent
 
-    if (!showAddressEntrySheet) {
+    if (!showAddressEntrySheet && !showTotalsSheet) {
       // Show the address entry sheet
       setShowAddressEntrySheet(true);
       return;
     }
 
-    response = new Object();
+    if(!showTotalsSheet) {
+      setShowTotalsSheet(true);
+    }
 
-    try {
-        response = await axios.post(API_URL + '/payment/intent', {
-        amount: Math.floor(total * 100),
+    if(!showAddressEntrySheet && showTotalsSheet) {
+      response = new Object();
+
+      try {
+          response = await axios.post(API_URL + '/payment/intent', {
+          amount: Math.floor(21.65 * 100),
+        });
+        console.log(response);
+      } catch(error) {
+        console.log(error);
+      }
+      //Initialize payment sheet
+    
+      const { error: paymentSheetError } = await initPaymentSheet({
+        merchantDisplayName: 'Drift',
+        paymentIntentClientSecret: response.data.paymentIntent,
+        billingAddressCollection: 'required',
+        defaultBillingDetails: {
+          name: 'Christian Jackson',
+        },
       });
-      console.log(response);
-    } catch(error) {
-      console.log(error);
-    }
-    //Initialize payment sheet
-  
-    const { error: paymentSheetError } = await initPaymentSheet({
-      merchantDisplayName: 'Drift',
-      paymentIntentClientSecret: response.data.paymentIntent,
-      billingAddressCollection: 'required',
-      defaultBillingDetails: {
-        name: 'Christian Jackson',
-      },
-    });
-    if (paymentSheetError) {
-      console.log(paymentSheetError);
-      Alert.alert('Something went wrong');
-      return;
-    }
-  
-    //Present the payment sheet from stripe
-    const paymentResponse = await presentPaymentSheet();
+      if (paymentSheetError) {
+        console.log(paymentSheetError);
+        Alert.alert('Something went wrong');
+        return;
+      }
+    
+      //Present the payment sheet from stripe
+      const paymentResponse = await presentPaymentSheet();
 
-    if(paymentResponse.error) {
-      Alert.alert(
-        `Error code: ${paymentResponse.error.code}`,
-        paymentResponse.error.message
-      );
-      return;
-    }
-  
-    //Authorize info and create order
+      if(paymentResponse.error) {
+        Alert.alert(
+          `Error code: ${paymentResponse.error.code}`,
+          paymentResponse.error.message
+        );
+        return;
+      }
+    
+      //Authorize info and create order
 
-    if(paymentResponse) {
-      //create order
-      onCreateOrder()
-    }
+      if(paymentResponse) {
+        //create order
+        onCreateOrder()
+      }
 
-    setTimeout(() => {
-      navigation.navigate('Discover');
-    }, 500);
+      setTimeout(() => {
+        navigation.navigate('Discover');
+      }, 500);
+    }
 
   }
 
@@ -216,14 +239,17 @@ const CartPage = ({navigation}) => {
         </Pressable>
         {showAddressEntrySheet && (
         <AddressEntrySheet
-          onSubmit={(addressData) => {
-            console.log('Submitted address data:', addressData);
-
-            setShowAddressEntrySheet(false);
-            onCheckout();
+          onSubmit={ (addressData) => {
+            handleAddressEntrySubmit(addressData);
+            console.log(salesTax); 
           }}
         />
       )}
+      {showTotalsSheet && <TotalsSheet 
+          subtotal={subtotal} 
+          salesTax={salesTax} 
+          onClose={handleCloseTotalsSheet}/>
+      }
       </CartProvider>
   );
 };
