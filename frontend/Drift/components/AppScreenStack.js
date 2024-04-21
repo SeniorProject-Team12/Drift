@@ -11,6 +11,7 @@ import SellerPage from "../pages/SellerPage";
 import SettingsPage from '../pages/SettingsPage';
 import SelectedOrderPage from "../pages/SelectedOrderPage";
 import SelectedChatScreen from "../pages/SelectedChatScreen";
+import LiveChatPage from "../pages/LiveChatPage";
 
 const Stack = createStackNavigator();
 // const Tab = createMaterialBottomTabNavigator();
@@ -78,6 +79,14 @@ const AppScreenStack = ({ navigation }) => {
           <Stack.Screen
             name="Settings"
             component={SettingsPage}
+          />
+          <Stack.Screen 
+            name="Live Chat Support"
+            component={LiveChatPage}
+            options={{
+              headerShown: false,
+              headerBackTitleVisible: false,
+            }}
           />
         </Stack.Navigator>
       </PaperProvider>

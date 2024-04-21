@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { Title, Caption, Paragraph, Drawer, TouchableRipple, Switch } from 'react-native-paper';
+import { TouchableRipple, Switch } from 'react-native-paper';
 import CustomButton from "../components/customButton";
 
 const SettingsPage = ({navigation}) => {
@@ -37,7 +37,7 @@ const SettingsPage = ({navigation}) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    onPress={() => {  }}>
+                    onPress={() => { navigation.navigate('Live Chat Support') }}>
                     <Text
                         style={{
                             color: 'black',
