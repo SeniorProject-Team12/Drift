@@ -109,17 +109,17 @@ const App = () => {
 						userToken = 'randomToken';
 						AsyncStorage.setItem('userToken', userToken);
 
-						setUserID(res.data[0].userID);
-						setFirstName(res.data[0].firstName);
-						setLastName(res.data[0].lastName);
-						setUsername(res.data[0].username);
-						setEmail(res.data[0].emailAddress);
+						setUserID(res.data[0][0].userID);
+						setFirstName(fName);
+						setLastName(lName);
+						setUsername(username);
+						setEmail(email);
 						// profile["userID"] = res.data[0].userID;
 						// profile["fName"] = res.data[0].firstName;
 						// profile["lName"] = res.data[0].lastName;
 						// profile["email"] = res.data[0].emailAddress;
 					}
-					console.log(res.data);
+					console.log(res.data[0]);
 				}
 			} catch(error) {
 				console.error(error);

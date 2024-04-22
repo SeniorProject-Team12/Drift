@@ -126,59 +126,65 @@ const LoginPage = ({navigation, route}) => {
 					onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
 					secureTextEntry={true}
 				/>
-				<TouchableOpacity
-					style={{
-						// backgroundColor: '#AD40AF',
-						backgroundColor: '#8fcbbc',
-						padding: 20,
-						width: '90%',
-						borderRadius: 10,
-						marginBottom: 50,
-						marginTop: 50,
-						marginLeft: 15,
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-					}}
-					onPress={async () => { 
-						loginHandle( data.username, data.password ); 
-					}}>
-					<Text
+
+				<View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+					<TouchableOpacity
 						style={{
-							color: 'white',
-							fontSize: 26,
-							textAlign: 'center',
-							fontWeight: 'bold',
+							// backgroundColor: '#AD40AF',
+							backgroundColor: '#8fcbbc',
+							padding: 20,
+							width: '90%',
+							borderRadius: 10,
+							marginBottom: 50,
+							marginTop: 50,
+							marginLeft: 15,
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignContent: 'center'
+						}}
+						onPress={async () => { 
+							loginHandle( data.username, data.password ); 
 						}}>
-							Sign In
-					</Text>
-					<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
-				</TouchableOpacity>
-				
-				<TouchableOpacity
-					style={{
-						// backgroundColor: '#AD40AF',
-						backgroundColor: '#8fcbbc',
-						padding: 20,
-						width: '50%',
-						borderRadius: 10,
-						marginBottom: 0,
-						marginTop: 0,
-						marginLeft: 85,
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-					}}
-					onPress={() => { navigation.goBack() }}>
-					<Text
+						<Text
+							style={{
+								color: 'white',
+								fontSize: 26,
+								textAlign: 'center',
+								fontWeight: 'bold',
+							}}>
+								Sign In
+						</Text>
+						<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
+					</TouchableOpacity>
+				</View>
+
+				<View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+					<TouchableOpacity
 						style={{
-							color: 'white',
-							fontSize: 16,
-							textAlign: 'center',
-							fontWeight: 'bold',
-						}}>
-							Go Back
-					</Text>
-					<MaterialIcons name="arrow-back-ios" size={22} color="#fff" />
-				</TouchableOpacity>
+							// backgroundColor: '#AD40AF',
+							backgroundColor: '#8fcbbc',
+							padding: 20,
+							width: '50%',
+							borderRadius: 10,
+							marginBottom: 0,
+							marginTop: 0,
+							// marginLeft: 85,
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+						}}
+						onPress={() => { navigation.goBack() }}>
+						<Text
+							style={{
+								color: 'white',
+								fontSize: 16,
+								textAlign: 'center',
+								fontWeight: 'bold',
+							}}>
+								Go Back
+						</Text>
+						<MaterialIcons name="arrow-back-ios" size={22} color="#fff" />
+					</TouchableOpacity>
+				</View>
 
 				<View
 					style={{
