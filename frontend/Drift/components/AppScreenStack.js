@@ -64,6 +64,20 @@ const AppScreenStack = ({ navigation }) => {
             }}
           />
           <Stack.Screen
+            name="Conversation"
+            component={Conversation}
+            options={{
+              headerBackTitleVisible: false
+            }}
+          />
+          <Stack.Screen
+            name="User Profile"
+            component={UserProfile}
+            options={{
+              headerBackTitleVisible: false
+            }}
+          />
+          <Stack.Screen
             name="SelectedChat"
             component={SelectedChatScreen}
             options={({route}) => ({

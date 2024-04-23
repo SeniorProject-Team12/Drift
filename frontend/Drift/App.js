@@ -101,9 +101,6 @@ const App = () => {
     initialLoginState
   );
 
-  // const ZusfirstName = useUserStore((state) => state.firstName);
-  // const ZusLastName = useUserStore((state) => state.lastName);
-
   const setUserID = useUserStore((state) => state.updateUserID);
   const setFirstName = useUserStore((state) => state.updateFirstName);
   const setLastName = useUserStore((state) => state.updateLastName);
@@ -172,10 +169,6 @@ const App = () => {
 						setLastName(lName);
 						setUsername(username);
 						setEmail(email);
-						// profile["userID"] = res.data[0].userID;
-						// profile["fName"] = res.data[0].firstName;
-						// profile["lName"] = res.data[0].lastName;
-						// profile["email"] = res.data[0].emailAddress;
 					}
 					console.log(res.data[0]);
 				}
