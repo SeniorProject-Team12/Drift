@@ -11,6 +11,7 @@ import { router as savedFoldersRouter } from './routes/savedFolders';
 import { router as savedItemsRouter } from './routes/savedItems';
 import { router as paymentRouter } from './routes/payment';
 import { router as profileRouter } from './routes/profile';
+import { router as savedPaymentMethodRouter } from './routes/savedPayment';
 
 export const app = express();
 
@@ -34,6 +35,7 @@ app.use("/savedFolders", savedFoldersRouter);
 app.use("/savedItems", savedItemsRouter);
 app.use("/profile", profileRouter);
 app.use("/payment", paymentRouter);
+app.use("/savedPaymentMethod", savedPaymentMethodRouter);
 
 
 app.listen(3000, '0.0.0.0', () => {
@@ -44,6 +46,4 @@ export default app;
 // TODO
 
 // Insert new listing or item user is selling
-// Insert Order corresponding to user
 // Insert new saved item for user
-// Insert new saved folder created

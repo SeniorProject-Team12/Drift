@@ -14,6 +14,7 @@ import Conversation from "../pages/chat/Conversation";
 import UserProfile from "../pages/UserProfile";
 import { useNavigation } from "@react-navigation/native";
 import LiveChatPage from "../pages/LiveChatPage";
+import SavedPaymentPage from "../pages/SavedPaymentPage";
 
 const Stack = createStackNavigator();
 const AppScreenStack = ({ navigation }) => {
@@ -98,7 +99,15 @@ const AppScreenStack = ({ navigation }) => {
             name="Live Chat Support"
             component={LiveChatPage}
             options={{
-              headerShown: false,
+              // headerShown: false,
+              headerBackTitleVisible: false,
+            }}
+          />
+        <Stack.Screen 
+            name="Edit Saved Method of Payment"
+            component={SavedPaymentPage}
+            options={{
+              // headerShown: false,
               headerBackTitleVisible: false,
             }}
           />
