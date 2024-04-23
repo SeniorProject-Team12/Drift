@@ -167,24 +167,28 @@ const App = () => {
               AsyncStorage.setItem("Username", res.data[0].username);
               AsyncStorage.setItem("Email", res.data[0].emailAddress);
 
-              setUserID(res.data[0].userID);
-              setFirstName(res.data[0].firstName);
-              setLastName(res.data[0].lastName);
-              setUsername(res.data[0].username);
-              setEmail(res.data[0].emailAddress);
-            }
-            console.log(res.data);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-        dispatch({ type: "SIGNUP", id: username, token: userToken });
-      },
-      Login: async (username, password) => {
-        let userToken;
-        userToken = null;
-
-        console.log(API_URL + "/user/login");
+						setUserID(res.data[0][0].userID);
+						setFirstName(fName);
+						setLastName(lName);
+						setUsername(username);
+						setEmail(email);
+						// profile["userID"] = res.data[0].userID;
+						// profile["fName"] = res.data[0].firstName;
+						// profile["lName"] = res.data[0].lastName;
+						// profile["email"] = res.data[0].emailAddress;
+					}
+					console.log(res.data[0]);
+				}
+			} catch(error) {
+				console.error(error);
+			}
+        	dispatch({ type: 'SIGNUP', id: username, token: userToken });
+		},
+    	Login: async (username, password) => {
+        	let userToken;
+        	userToken = null;
+			
+			console.log(API_URL + '/user/login');
 
         try {
           // console.log("Before w/ \'" + username + "\' and \'" + password + "\'");

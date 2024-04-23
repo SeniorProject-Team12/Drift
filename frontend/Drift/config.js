@@ -1,5 +1,5 @@
 const configs = [
-    { API_URL: 'https://early-planets-fold.loca.lt' }
+    { API_URL: 'http://192.168.0.117:3000' }
 ];
 
 export default configs;
