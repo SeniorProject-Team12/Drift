@@ -6,16 +6,16 @@ import FolderDetailsPage from "../pages/FolderDetailsPage";
 import CartPage from "../pages/CartPage";
 import { IconButton } from "react-native-paper";
 import MainTabScreen from "./MainTabScreen";
-// import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import SellerPage from "../pages/SellerPage";
-import SettingsPage from '../pages/SettingsPage';
+import SettingsPage from "../pages/SettingsPage";
 import SelectedOrderPage from "../pages/SelectedOrderPage";
 import SelectedChatScreen from "../pages/SelectedChatScreen";
+import Conversation from "../pages/chat/Conversation";
+import UserProfile from "../pages/UserProfile";
+import { useNavigation } from "@react-navigation/native";
 import LiveChatPage from "../pages/LiveChatPage";
 
 const Stack = createStackNavigator();
-// const Tab = createMaterialBottomTabNavigator();
-
 const AppScreenStack = ({ navigation }) => {
     return (
       <PaperProvider>

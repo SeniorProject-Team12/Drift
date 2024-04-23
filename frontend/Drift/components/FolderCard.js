@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Image, Text} from "react-native";
-import {Card } from "react-native-paper";
+import {Card, Icon } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const FolderCard = ({folder, cardWidth, navigation }) => {
@@ -20,7 +20,12 @@ const FolderCard = ({folder, cardWidth, navigation }) => {
             style={{ width: "100%", height: 100 }}
             resizeMode="cover"
           />
-          <Text>{folder.folderName}</Text>
+          {/* <Icon
+            source="star-box-outline"
+            color="black"
+            size={80}
+          /> */}
+          <Text variant="labelLarge">{folder.folderName}</Text>
         </Card.Content>
       </Card>
     </TouchableOpacity>
