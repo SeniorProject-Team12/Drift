@@ -12,6 +12,7 @@ import SettingsPage from '../pages/SettingsPage';
 import SelectedOrderPage from "../pages/SelectedOrderPage";
 import SelectedChatScreen from "../pages/SelectedChatScreen";
 import LiveChatPage from "../pages/LiveChatPage";
+import SavedPaymentPage from "../pages/SavedPaymentPage";
 
 const Stack = createStackNavigator();
 // const Tab = createMaterialBottomTabNavigator();
@@ -84,7 +85,15 @@ const AppScreenStack = ({ navigation }) => {
             name="Live Chat Support"
             component={LiveChatPage}
             options={{
-              headerShown: false,
+              // headerShown: false,
+              headerBackTitleVisible: false,
+            }}
+          />
+        <Stack.Screen 
+            name="Edit Saved Method of Payment"
+            component={SavedPaymentPage}
+            options={{
+              // headerShown: false,
               headerBackTitleVisible: false,
             }}
           />
