@@ -13,10 +13,27 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
             if(err) {
                 console.log("ERROR: ", err);
             } else {
-                // console.log(data);   
                 res.send(data);
             }
         });     
+    } catch(e) {
+        next(e);
+    }
+});
+
+// Get user by userID
+router.get('/getUser/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userID = req.params.userID
+        
+
+        await DB.executeSQL(`SELECT * FROM users WHERE userID = ` + userID, function(err, data) {
+            if(err) {
+                console.log("ERROR: ", err);
+            } else { 
+                res.send(data);
+            }
+        }); 
     } catch(e) {
         next(e);
     }
@@ -26,7 +43,6 @@ router.get('/', async (req: Request, res: Response, next: NextFunction) => {
 router.post("/login", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { username, password } = req.body;
-        // const sp = "SP_GetUserByUsername";
         const parsedUsername = (username.split(";"))[0];
 
         console.log("IN API login w/ ", username, password);
@@ -39,7 +55,6 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
             console.log("Hashed pass - ", hashedPass);
             console.log("Data res - ", data);
             if(err) {
-                // req.setEncoding({err: err});
                 console.log("ERROR: ", err);
                 res.send("Error logging in!");
             }
@@ -53,7 +68,6 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
                 
                 console.log(data, data[0].password);
                 if(data.length > 0){
-                    // console.log(data);
                     res.send(data);
                 } else {
                     res.send(null);
@@ -77,8 +91,7 @@ router.post('/signUp', async (req: Request, res: Response, next: NextFunction) =
             if(err) {
                 console.log("ERROR: ", err);
                 res.send("ERROR: please enter correct sign up details.");
-            } else {
-                // console.log(data);   
+            } else {  
                 res.send(data);
             }
         });
@@ -117,7 +130,6 @@ router.post('/resetPassword', async (req: Request, res: Response, next: NextFunc
             if(err) {
                 console.error(err);
             } else if(!data) {
-                // res.send(data);
                 res.send("Error occurred while trying to reset password.");
             } else {
                 const resetCode = await generateCode(5);
