@@ -46,7 +46,7 @@ router.post('/addSavedItem', async (req, res, next) => {
     try {
         const { itemID, savedFolderIDs } = req.body;
         await DB.executeSQL(
-            `CALL saveItemToFolders(${itemID}, ${savedFolderIDs});`,
+            `CALL saveItemToFolders(${itemID}, "${savedFolderIDs}");`,
             async (err, results) => {
                 if(err) {
                     console.log("ERROR: ", err);

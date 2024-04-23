@@ -2,7 +2,7 @@ import { create } from 'zustand';
   
 // Create your store, which includes both state and (optionally) actions
 const useUserStore = create((set) => ({
-    userID: 0,
+    userID: "1",
     firstName: '',
     lastName: '',
     username: '',
@@ -16,13 +16,3 @@ const useUserStore = create((set) => ({
 }))
 
 export default useUserStore;
-
-// export var profile = { userID: "", fName: "", lName: "", username: "", email: "" };
-
-// export function clearProfile() {
-//     profile["userID"] = "";
-//     profile["fName"] = "";
-//     profile["lName"] = "";
-//     profile["email"] = "";
-//     profile["username"] = "";
-// }

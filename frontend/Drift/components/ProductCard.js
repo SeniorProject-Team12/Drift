@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Image, Text, View, StyleSheet } from "react-native";
-// import { Card } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const ProductCard = ({ item, cardWidth, showInfo, navigation }) => {
@@ -8,7 +7,7 @@ const ProductCard = ({ item, cardWidth, showInfo, navigation }) => {
     <TouchableOpacity
       style={{ width: cardWidth }}
       onPress={() => {
-        navigation.navigate("Item Details", {item: item });
+        navigation.navigate("Item Details", { item: item });
       }}
     >
       <View style={styles.container}>
