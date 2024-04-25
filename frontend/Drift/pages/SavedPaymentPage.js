@@ -4,6 +4,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import SignUpInputField from "../components/signUpInputBox";
 import useUserStore from "../components/UserContext";
+import axios from "axios";
+import configs from "../config";
 
 const SavedPaymentPage = ({ navigation }) => {
 
@@ -14,11 +16,38 @@ const SavedPaymentPage = ({ navigation }) => {
     const [secCode, setSecCode] = React.useState("");
     const [expiration, setExpiration] = React.useState("");
 
-    const handleSubmitNewPaymentMethod = () => {
+    const handleSubmitNewPaymentMethod = async () => {
         try {
             console.log("Save new payment method PRESSED!");
             // if no one exists for user ---> insert new one
             // else update existing saved payment
+            const savedPayment = await axios.get(configs[0].API_URL + '/savedPaymentMethod/getSavedPaymentByuserID/id/' + userID);
+            // console.log(savedPayment.data);
+
+            if(savedPayment.data.length == 0) {
+                // insert saved payment row
+                // console.log("in if save payment method");
+                const insertedPayment = await axios.post(configs[0].API_URL + '/savedPaymentMethod/insertSavedPayment', 
+                {
+                    userID: userID,
+                    nameOnCard: cardName,
+                    cardNum: cardNumber,
+                    secCode: secCode,
+                    expiration: expiration
+                });
+            } else {
+                // console.log("in else save payment method");
+
+                // update existing saved payment row
+                console.log(savedPayment.data[0]);
+                const updatePayment = await axios.post(configs[0].API_URL + '/savedPaymentMethod/updateSavedPayment/id/' + savedPayment.data[0].userID, {
+                    nameOnCard: cardName,
+                    cardNum: cardNumber,
+                    secCode: secCode,
+                    expiration: expiration
+                });
+                console.log("UPDATED DATA - ", updatePayment);
+            }
 
             Alert.alert("Payment Method Saved", "The payment details entered have been saved!");
             navigation.goBack();
@@ -27,17 +56,24 @@ const SavedPaymentPage = ({ navigation }) => {
         }
     };
 
-    const handleDeleteSavedPayment = () => {
-        try {
-            console.log("dELETE payment method PRESSED!");
-            // if no one exists for user ---> insert new one
-            // else update existing saved payment
-
-
-            Alert.alert("Saved Payment Deleted", "The currently saved payment for this account (if any) has been deleted.");
-        } catch(e) {
-            console.error("Error saving new payment method: ", e);
-        }
+    const handleDeleteSavedPayment = async () => {
+        Alert.alert("Delete Saved Payment Method", "Are you sure you want to delete the existing saved payment method?",[
+            {
+                text: 'YES', onPress: async () => {
+                    try{
+                        const res = await axios.delete(configs[0].API_URL + '/savedPaymentMethod/deleteSavedPayment/id/' + userID);
+                        alert("The saved payment method has been deleted!");
+                        navigation.goBack();
+                    } catch(e) {
+                        console.error("Error saving new payment method: ", e);
+                    }
+            }},
+            {
+              text: 'NO',
+              onPress: () => console.log('No Pressed'),
+              style: 'cancel',
+            },
+        ]);
     };
 
     return (
@@ -73,6 +109,8 @@ const SavedPaymentPage = ({ navigation }) => {
                                 style={{marginRight: 5}}
                             />
                         }
+                        keyboardType={'numeric'}
+                        maxLength={16}
                         onChangeText={(val) => setCardNumber(val)}
                     />       
 
@@ -86,6 +124,8 @@ const SavedPaymentPage = ({ navigation }) => {
                                 style={{marginRight: 5}}
                             />
                         }
+                        maxLength={5}
+                        keyboardType={'numeric'}
                         onChangeText={(val) => setSecCode(val)}
                     />       
 

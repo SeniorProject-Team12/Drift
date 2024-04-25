@@ -23,11 +23,11 @@ const SettingsPage = ({navigation}) => {
     const fetchSavedPaymentMethod = async () => {
         try {
             const savedPayment = await axios.get(configs[0].API_URL + '/savedPaymentMethod/getSavedPaymentByuserID/id/' + userID);
-            // console.log("HERE WITH NAME - ", savedPayment.data[0].nameOnCard);
             
             if(savedPayment.data.length == 0) {
                 setCardName("No payment found.");
             }  else {
+                // console.log("HERE WITH NAME - ", savedPayment.data[0].nameOnCard);
                 setCardName(savedPayment.data[0].nameOnCard);
                 setCardNumber(savedPayment.data[0].cardNumber);
                 setExpiration(savedPayment.data[0].expirationDate);
@@ -98,6 +98,7 @@ const SettingsPage = ({navigation}) => {
                         justifyContent: 'space-between',
                     }}
                     onPress={() => { 
+                        setCardNumber("");
                         navigation.navigate('Edit Saved Method of Payment');
                     }}>
                     <Text
