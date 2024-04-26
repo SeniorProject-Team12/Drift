@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View } from "react-native";
 import {
   Button,
   Text,
@@ -11,6 +11,7 @@ import axios from "axios";
 import configs from "../config";
 import { useIsFocused } from "@react-navigation/native";
 import { colors } from "../assets/Colors";
+import useUserStore from "../components/UserContext.js";
 
 const UserProfile = ({ route, navigation }) => {
   const userID = route.params.userID;
@@ -20,6 +21,7 @@ const UserProfile = ({ route, navigation }) => {
   const [username, setUsername] = useState(null);
   const [bio, setBio] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const userIDLoggedIn = useUserStore((state) => state.userID);
 
   const isFocused = useIsFocused();
 
@@ -105,6 +107,41 @@ const UserProfile = ({ route, navigation }) => {
           }
         >
           Message
+        </Button>
+        <Button
+          textColor="white"
+          buttonColor={colors.red}
+          mode="contained"
+          style={{ flex: 1, marginLeft: 4 }} // Use marginLeft to add spacing between buttons
+          onPress={() =>
+            Alert.alert("Confirm Report User", "Are you sure you want to report this user?",
+              [
+                {
+                  text: "YES",
+                  onPress: async () => {
+                    try {
+                      console.log(configs[0].API_URL + "/user/reportUser/id/" + userIDLoggedIn);
+                      const response = await axios.post(
+                        configs[0].API_URL + "/user/reportUser/id/" + userIDLoggedIn 
+                      );
+                      alert(
+                        "This user's profile has been reported and will be reviewed by Admin!"
+                      );
+                    } catch (e) {
+                      console.error("Error reporting posted item:", e);
+                    }
+                  },
+                },
+                {
+                  text: "NO",
+                  onPress: () => console.log("No Pressed"),
+                  style: "cancel",
+                },
+              ]
+            ) 
+          }
+        >
+          Report
         </Button>
       </Card.Actions>
 

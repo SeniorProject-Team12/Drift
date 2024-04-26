@@ -50,6 +50,31 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
         const query = 'select * from users where username = \'' + parsedUsername + '\'';
 
         const hashedPass = createHash('sha256').update(password).digest('hex');
+        // await DB.executeStoredProcedure("SP_Login", { parsedUsername }, async function(err: any, data: any) {
+        //     console.log("Hashed pass - ", hashedPass);
+        //     console.log("Data res - ", data);
+
+        //     console.log("PASS - ", data[0][0].password);
+        //     if(err) {
+        //         console.log("ERROR: ", err);
+        //         res.send("Error logging in!");
+        //     }
+        //     else if(!data || Object.keys(data).length == 0){
+        //         res.send("Error logging in!");
+        //     }
+        //     else if(hashedPass != data[0][0].password) {
+        //         res.send("Wrong password found in API!");
+        //     } 
+        //     else {
+                
+        //         console.log(data, data[0][0].password);
+        //         if(data.length > 0){
+        //             res.send(data[0]);
+        //         } else {
+        //             res.send(null);
+        //         }
+        //     }
+        // });
 
         await DB.executeSQL(query, async function(err: any, data: any) {
             console.log("Hashed pass - ", hashedPass);
@@ -72,7 +97,7 @@ router.post("/login", async (req: Request, res: Response, next: NextFunction) =>
                 } else {
                     res.send(null);
                 }
-            }                 
+            }
         });
     } catch(e) {
         next(e);
@@ -116,6 +141,24 @@ router.post('/id/:id', async (req: Request, res: Response, next: NextFunction) =
             }
         });
     } catch(e) {
+        next(e);
+    }
+});
+
+// Increase user's report count
+router.post('/reportUser/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userID = req.params.id;
+        const sp = "SP_IncreaseUserReportCount";
+
+        await DB.executeStoredProcedure(sp, { userID }, function(err: any, data: any) {
+            if(err) {
+                console.log("ERROR reporting in API: ", err);
+            } else {
+                res.send(data);
+            }
+        });
+    } catch(e) {    
         next(e);
     }
 });
