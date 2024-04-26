@@ -64,6 +64,7 @@ const ItemPage = ({ route, navigation }) => {
       );
       if (!response.ok) throw new Error("Network response was not ok.");
       const data = await response.json();
+      console.log("Fetched folders a -> ", data);
       setFolders(data);
     } catch (error) {
       console.error("There was an error fetching the saved folders:", error);
@@ -107,19 +108,21 @@ const ItemPage = ({ route, navigation }) => {
   const saveItem = async (itemID, checkedFolders) => {
     const savedFolderIDs = checkedFolders.join(",");
     try {
-      const response = await axios.post(
-        configs[0].API_URL + "/savedItems/addSavedItem",
-        {
-          itemID,
-          savedFolderIDs,
+      if (savedFolderIDs != "") {
+        const response = await axios.post(
+          configs[0].API_URL + "/savedItems/addSavedItem",
+          {
+            itemID,
+            savedFolderIDs,
+          }
+        );
+        if (response.status === 201) {
+          console.log("Saved item successfully added:", response.data);
+          return response.data;
+        } else {
+          console.log("Failed to add saved item:", response.status);
+          return null;
         }
-      );
-      if (response.status === 201) {
-        console.log("Saved item successfully added:", response.data);
-        return response.data;
-      } else {
-        console.log("Failed to add saved item:", response.status);
-        return null;
       }
     } catch (error) {
       console.error("Error adding saved item:", error);

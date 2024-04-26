@@ -9,6 +9,7 @@ import DiscoverAdminPage from "./DiscoverAdminPage";
 import SelectedUserPage from "./SelectedUserPage";
 import SelectedItemPostPage from "./SelectedItemPost";
 import SettingsAdminPage from "./SettingsAdminPage";
+import LiveChatWebPage from "./LiveChatWebPage";
 
 const AdminStack = createMaterialBottomTabNavigator();
 const DiscoverAdminStack = createStackNavigator();
@@ -94,13 +95,13 @@ const SettingsScreenStack = ({ navigation }) => {
                   ),
               }}
             />
-            {/* <AccountStack.Screen
-              name="Selected User"
-              component={SelectedUserPage}
+            <AccountStack.Screen
+              name="Admin - Live Support Chat"
+              component={LiveChatWebPage}
               options={{
                 headerBackTitleVisible: false,
               }}
-            /> */}
+            />
           </AccountStack.Navigator>
         </PaperProvider>
     );

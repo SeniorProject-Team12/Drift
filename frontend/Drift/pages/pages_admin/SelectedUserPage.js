@@ -49,7 +49,7 @@ const SelectedUserPage = ({ route }) => {
                 <Card.Title titleStyle={{ fontSize: 24, fontWeight: '700', marginTop: 25, marginBottom: 10 }} title={`Username: ${item.username}`} subtitleStyle={styles.text} subtitle={`User ID: ${item.userID}`} />
                 <Card.Content style={{ height: "100%", flexDirection: "column", gap: "5px" }}>
                     <Text style={styles.text}>User's First & Last Name: {item.firstName} {item.lastName}</Text>
-                    <Text style={{ marginTop: 30}}>Times Reported: 0</Text>
+                    <Text style={{ marginTop: 30, color: 'red' }}>Times user has been reported: {item.reportedCount}</Text>
                     <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
 
                         <TouchableOpacity

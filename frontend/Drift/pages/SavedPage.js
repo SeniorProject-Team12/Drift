@@ -12,13 +12,16 @@ import {
 import axios from "axios";
 import configs from "../config";
 import { colors } from "../assets/Colors";
+import useUserStore from "../components/UserContext";
 
-const userID = 1;
+// const userID = 1;
 
 const SavedPage = ({ navigation }) => {
   const [savedFolders, setSavedFolders] = React.useState([]);
   const [newFolderName, setNewFolderName] = React.useState("");
   const [visible, setVisible] = React.useState(false);
+
+  const userID = useUserStore((state) => state.userID);
 
   const fetchSavedFolders = async () => {
     try {
