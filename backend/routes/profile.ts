@@ -22,10 +22,10 @@ router.get('/getProfile/userID/:userID', async (req: Request, res: Response, nex
 });
 
 // Update profile bio
-router.post('/updateBio/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/updateBio', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userID = req.params.userID;
-        const {bio} = req.body;
+
+        const { userID, bio } = req.body;
 
         await DB.executeSQL(
             `UPDATE Profile SET bio = "${bio}" WHERE userID = ${userID};`,

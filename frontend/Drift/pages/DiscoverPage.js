@@ -68,7 +68,7 @@ const DiscoverPage = ({ navigation }) => {
         />
       </Appbar.Header>
 
-      <Products items={items} navigation={navigation} showInfo={true} />
+      <Products items={items} numCols={2} navigation={navigation} showInfo={true} />
     </View>
   );
 };

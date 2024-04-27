@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+import { colors } from "../../assets/Colors";
 import { Avatar, Card, IconButton } from "react-native-paper";
 
 const COMETCHAT_AUTHKEY = "dca323479e4634f3626d04753a10521f35a5c1cc";
@@ -67,7 +68,7 @@ const ChatPage = ({ navigation }) => {
         <Card.Title
           title={item.conversationWith.name}
           subtitle={item.lastMessage.data.text}
-          left={(props) => <Avatar.Icon {...props} icon="account" />}
+          left={() => <Avatar.Icon icon="account" />}
         />
       </TouchableOpacity>
     );
