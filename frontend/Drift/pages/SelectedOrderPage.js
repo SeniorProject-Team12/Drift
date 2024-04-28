@@ -39,7 +39,6 @@ const SelectedOrderPage = ({ route }) => {
 
 export default SelectedOrderPage;
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

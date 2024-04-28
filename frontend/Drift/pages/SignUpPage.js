@@ -20,7 +20,7 @@ const SignUpPage = ({navigation}) => {
     // const [signUpStatus, setSignUpStatus] = useState("");
 
     const signUpHandle = (firstName, lastName, username, email, phoneNumber, password, confirmPassword) => {
-        SignUp(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
+        SignUp(firstName, lastName, username, email, phoneNumber, password, confirmPassword);
   	}
 
     return (
@@ -98,6 +98,8 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    maxLength={10}
+                    keyboardType={'numeric'}
                     onChangeText={(val) => setPhoneNumber(val)}
                 />
                 <SignUpInputField
@@ -131,8 +133,9 @@ const SignUpPage = ({navigation}) => {
                     label={'Sign Up'}
                     onPress={() => { 
                         console.log(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
+
                         // Calls authContext to useMemo and jump to signup module
-                        signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword )
+                        signUpHandle(firstName, lastName, username, email, phoneNumber, password, confirmPassword)
                     }} 
                 />
 

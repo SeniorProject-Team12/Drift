@@ -8,6 +8,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@cometchat-pro/react-native-chat": "^3.0.13",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-picker/picker": "2.4.10",
     "@react-navigation/drawer": "^6.6.6",
@@ -32,9 +33,13 @@
     "react-native-reanimated": "~3.3.0",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
+    "react-native-sectioned-multi-select": "^0.10.0",
     "react-native-svg": "13.9.0",
-    "react-native-vector-icons": "^10.0.2",
-    "styled-components": "^6.1.8"
+    "react-native-vector-icons": "^10.0.3",
+    "sales-tax": "^2.14.0",
+    "react-native-webview": "^13.8.6",
+    "styled-components": "^6.1.8",
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",

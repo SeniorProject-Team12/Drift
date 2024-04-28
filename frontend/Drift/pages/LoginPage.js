@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, TextInput, TouchableOpacity, View, Button, Alert, SafeAreaView } from 'react-native';
+import axios from "axios";
+import { StyleSheet, Text, TouchableOpacity, View, Alert, SafeAreaView } from 'react-native';
 import { AuthContext } from "../components/context";
 import * as Animatable from 'react-native-animatable';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import SignUpInputField from "../components/signUpInputBox";
 import { ScrollView } from "react-native-gesture-handler";
-// import SampleUsers from '../components/sampleUsers';
 
 const LoginPage = ({navigation, route}) => {
     // login state variable as defined in App.js
@@ -56,13 +56,6 @@ const LoginPage = ({navigation, route}) => {
 		// console.log(data);
     }
 
-    // const updateSecureTextEntry = () => {
-    //     setData({
-    //         ...data,
-    //         secureTextEntry: !data.secureTextEntry
-    //     });
-    // }
-
     const handleValidUser = (val) => {
         if( val.trim().length >= 4 ) {
             setData({
@@ -76,6 +69,10 @@ const LoginPage = ({navigation, route}) => {
             });
         }
     }
+
+	const handleForgotPass = () => {
+		navigation.navigate('ForgotPasswordPage');
+	}
 
     const loginHandle = (username, password) => {
         Login(username, password)
@@ -129,60 +126,65 @@ const LoginPage = ({navigation, route}) => {
 					onEndEditing={(e)=>handleValidUser(e.nativeEvent.text)}
 					secureTextEntry={true}
 				/>
-				<TouchableOpacity
-					style={{
-						// backgroundColor: '#AD40AF',
-						backgroundColor: '#8fcbbc',
-						padding: 20,
-						width: '90%',
-						borderRadius: 10,
-						marginBottom: 50,
-						marginTop: 50,
-						marginLeft: 15,
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-					}}
-					onPress={() => { loginHandle( data.username, data.password ) }}>
-					<Text
+
+				<View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+					<TouchableOpacity
 						style={{
-							color: 'white',
-							fontSize: 30,
-							textAlign: 'center',
-							fontWeight: 'bold',
-							//   fontFamily: 'Roboto-MediumItalic',
+							// backgroundColor: '#AD40AF',
+							backgroundColor: '#8fcbbc',
+							padding: 20,
+							width: '90%',
+							borderRadius: 10,
+							marginBottom: 50,
+							marginTop: 50,
+							marginLeft: 15,
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+							alignContent: 'center'
+						}}
+						onPress={async () => { 
+							loginHandle( data.username, data.password ); 
 						}}>
-							Sign In
-					</Text>
-					<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
-				</TouchableOpacity>
-				
-				{/* <Button width={50} title="Go Back" color={'#8fcbbc'} onPress={() => { navigation.goBack() }} /> */}
-				<TouchableOpacity
-					style={{
-						// backgroundColor: '#AD40AF',
-						backgroundColor: '#8fcbbc',
-						padding: 20,
-						width: '50%',
-						borderRadius: 10,
-						marginBottom: 0,
-						marginTop: 0,
-						marginLeft: 85,
-						flexDirection: 'row',
-						justifyContent: 'space-between',
-					}}
-					onPress={() => { navigation.goBack() }}>
-					<Text
+						<Text
+							style={{
+								color: 'white',
+								fontSize: 26,
+								textAlign: 'center',
+								fontWeight: 'bold',
+							}}>
+								Sign In
+						</Text>
+						<MaterialIcons name="arrow-forward-ios" size={22} color="#fff" />
+					</TouchableOpacity>
+				</View>
+
+				<View style={{ justifyContent: 'center', flexDirection: 'row' }}>
+					<TouchableOpacity
 						style={{
-							color: 'white',
-							fontSize: 16,
-							textAlign: 'center',
-							fontWeight: 'bold',
-							//   fontFamily: 'Roboto-MediumItalic',
-						}}>
-							Go Back
-					</Text>
-					<MaterialIcons name="arrow-back-ios" size={22} color="#fff" />
-				</TouchableOpacity>
+							// backgroundColor: '#AD40AF',
+							backgroundColor: '#8fcbbc',
+							padding: 20,
+							width: '50%',
+							borderRadius: 10,
+							marginBottom: 0,
+							marginTop: 0,
+							// marginLeft: 85,
+							flexDirection: 'row',
+							justifyContent: 'space-between',
+						}}
+						onPress={() => { navigation.goBack() }}>
+						<Text
+							style={{
+								color: 'white',
+								fontSize: 16,
+								textAlign: 'center',
+								fontWeight: 'bold',
+							}}>
+								Go Back
+						</Text>
+						<MaterialIcons name="arrow-back-ios" size={22} color="#fff" />
+					</TouchableOpacity>
+				</View>
 
 				<View
 					style={{
@@ -192,8 +194,8 @@ const LoginPage = ({navigation, route}) => {
 						paddingTop: 20
 					}}>
 					<Text>Forgot Password?</Text>
-					<TouchableOpacity onPress={() => {}}>
-						<Text style={{color: '#8fcbbc', fontWeight: '700'}}> Login</Text>
+					<TouchableOpacity onPress={() => { handleForgotPass() }}>
+						<Text style={{color: '#8fcbbc', fontWeight: '700'}}> Reset Password</Text>
 					</TouchableOpacity>
 				</View>
 			</ScrollView>

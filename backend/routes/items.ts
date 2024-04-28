@@ -5,8 +5,29 @@ import { DB } from './modules/db';
 
 export const router = Router();
 
+router.delete('/deleteItem/:itemID', async (req, res) => {
+  const { itemID } = req.params;
+  console.log(`CALL DeleteItem(${itemID})`)
+  try {
+    console.log("deleting item")
+    console.log(`CALL DeleteItem(${itemID})`)
+    await DB.executeSQL(`CALL DeleteItem(${itemID})`, function(err: any, data: any) {
+      if (err) {
+        console.log("ERROR: ", err);
+        res.send("Error deleting item");
+      } else {
+        res.send("Success deleting item!");
+      }
+    })
+  } catch (err) {
+    console.error("ERROR: ", err);
+    res.status(500).send("Error processing your request");
+  }
+});
+
+
+
 router.get('/getAllItems', async (req: Request, res: Response, next: NextFunction) => {
-  console.log("ts getting all items")
   req.setTimeout(30000)
 
   try {
@@ -23,11 +44,9 @@ router.get('/getAllItems', async (req: Request, res: Response, next: NextFunctio
   }
 });
 router.get('/test', (req, res) => {
-console.log('hi') 
 res.send('Test route')});
 
 router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextFunction) => {
-  console.log("ts getting items by keyword")
   req.setTimeout(10000)
   try {
     const keyword = req.query.keyword; // Get the keyword from the query string
@@ -58,7 +77,6 @@ router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextF
 });
 
 router.get('/getItemsByUserID/itemID/:itemID', async (req: Request, res: Response, next: NextFunction) => {
-  console.log("getting item by itemID")
   req.setTimeout(10000)
   try {
     const itemID = req.params.itemID;
@@ -79,13 +97,11 @@ router.get('/getItemsByUserID/itemID/:itemID', async (req: Request, res: Respons
 });
 
 router.get('/getItemsByUserID/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
-  console.log("getting items by userID typescript")
   req.setTimeout(10000)
   try {
     const userID = req.params.userID;
 
     let sqlQuery = 'SELECT * FROM items WHERE userID = ' + userID;
-    console.log("sqlquery for items by userID",sqlQuery)
 
       await DB.executeSQL(sqlQuery, function(err: any, data: any){
         if (err) {
@@ -119,7 +135,6 @@ router.post('/addNewItem', async (req: Request, res: Response, next: NextFunctio
   }
 });
 
-
 // Update existing item
 router.post('/updateItem/id/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -140,23 +155,21 @@ router.post('/updateItem/id/:id', async (req: Request, res: Response, next: Next
   }
 });
 
-// Delete item
-router.delete('/deleteItem/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+// Report Item Posted
+router.post('/report/id/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const itemIDtoDelete = req.params.id;
-    
-    const sp = "SP_DeleteItem";
+    const itemID = req.params.id;
+    const sp = "SP_IncreaseItemReportCount";
 
-    await DB.executeStoredProcedure(sp, { itemIDtoDelete }, function(err, data) {
+    await DB.executeStoredProcedure(sp, {itemID}, function(err, data) {
       if(err) {
-        console.log("Error: ", err);
+          console.log("ERROR reporting in API: ", err);
       } else {
-        res.send(data);
+          res.send(data);
       }
     });
   } catch(e) {
     next(e);
   }
 });
-
 export default router;
