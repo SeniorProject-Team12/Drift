@@ -22,9 +22,25 @@ router.get('/getAllItems', async (req: Request, res: Response, next: NextFunctio
     next(e);
   }
 });
-router.get('/test', (req, res) => {
-console.log('hi') 
-res.send('Test route')});
+
+router.get('/getAllUnsoldItems', async (req: Request, res: Response, next: NextFunction) => {
+  console.log("ts getting all unsold items")
+  req.setTimeout(30000)
+
+  try {
+    await DB.executeSQL('SELECT * FROM items WHERE soldStatus IS NULL', function(err: any, data: any) {
+      if (err) {
+        console.log("ERROR: ", err);
+        res.send("Error getting all items");
+      } else {
+        res.send(data);
+      }
+    });
+  } catch (e) {
+    next(e);
+  }
+});
+
 
 router.get('/getItemsByKeyWord', async (req: Request, res: Response, next: NextFunction) => {
   console.log("ts getting items by keyword")
@@ -101,7 +117,8 @@ router.get('/getItemsByUserID/userID/:userID', async (req: Request, res: Respons
 });
 
 // Add a new item
-router.post('/addNewItem', async (req: Request, res: Response, next: NextFunction) => {
+
+router.post("/addNewItem", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { name, description, price, quality, brand, color, hashtags, category, userID, photoURL, size } = req.body;
 
@@ -123,13 +140,32 @@ router.post('/addNewItem', async (req: Request, res: Response, next: NextFunctio
 router.post('/updateItem/id/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
     const itemID = req.params.id;
-    const { name, description, price, quality, brand, color, hashtags, category, userID, photoURL, size } = req.body;
+    const { name, description, price, quality, brand, color, hashtags, category, userID, photoURL, size, soldStatus } = req.body;
 
     const sp = "SP_UpdateItem";
 
-    await DB.executeStoredProcedure(sp, { itemID, name, description, price, quality, brand, color, hashtags, category, userID, photoURL, size }, function(err, data) {
+    await DB.executeStoredProcedure(sp, { itemID, name, description, price, quality, brand, color, hashtags, category, userID, photoURL, size, soldStatus }, function(err, data) {
       if(err) {
           console.log("ERROR: ", err);
+      } else {
+          res.send(data);
+      }
+    });
+  } catch(e) {
+    next(e);
+  }
+});
+
+router.post('/updateSoldStatus/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const itemID = req.params.id;
+    const { soldStatus } = req.body;
+
+    const sp = "SP_UpdateSoldStatus";
+
+    await DB.executeStoredProcedure(sp, { p_itemID: itemID, p_soldStatus: soldStatus }, function(err, data) {
+      if(err) {
+          console.log("ERROR updating sold status: ", err);
       } else {
           res.send(data);
       }

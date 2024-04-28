@@ -7,13 +7,15 @@ import configs from "../config";
 import FolderList from "../components/FolderList"
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import { MaterialIcons as Icon } from '@expo/vector-icons';
-const userID = 1;
+import useUserStore from "../components/UserContext";
 
 const ItemPage = ({route}) => {
   const [folders, setFolders] = React.useState([]);
   const [isSaved, setIsSaved] = React.useState();
   const [visible, setVisible] = React.useState(false);
   const [checkedFolders, setCheckedFolders] = useState({});
+  const userID = useUserStore((state) => state.userID)
+
 
 
   const showDialog = () => setVisible(true);
@@ -41,7 +43,13 @@ const ItemPage = ({route}) => {
     }
 
     const handleAddToCart = () => {
-      dispatch({ type: 'ADD_TO_CART', item });
+      // Check if the userID of the item matches the userID stored in the context
+      if (item.userID === userID) {
+        alert("You can't add your own item to cart.");
+      } else {
+        // If the userID doesn't match, add the item to cart
+        dispatch({ type: 'ADD_TO_CART', item });
+      }
     };
 
     const fetchIsSaved =  async () => {

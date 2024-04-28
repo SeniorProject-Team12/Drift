@@ -31,6 +31,18 @@ const DiscoverPage = ({navigation}) => {
         }
       };
 
+    const fetchAllUnsoldItems = async () => {
+    try {
+        console.log(configs[0].API_URL + '/items/getAllUnsoldItems') 
+        const response = await axios.get(configs[0].API_URL + '/items/getAllUnsoldItems', { timeout: 30000 });
+        // console.log('test')
+        // console.log(response.data)
+        setItems(response.data); 
+    } catch (error) {
+        console.error('Error fetching items:', error);
+    }
+    };
+
     const fetchSearchResults = async () => {
         try {
             const response = await fetch(configs[0].API_URL + `/items/getItemsByKeyWord?keyword=${searchQuery}`);
@@ -44,7 +56,7 @@ const DiscoverPage = ({navigation}) => {
 
     useEffect(() => {
         if (searchQuery === "") {
-            fetchAllItems();
+            fetchAllUnsoldItems();
         }
     }, [isFocused]); 
 

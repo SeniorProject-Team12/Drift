@@ -1,18 +1,18 @@
 import * as React from "react";
-import { Text, StyleSheet, View, Image } from "react-native";
+import { Text, Image, StyleSheet, View } from "react-native";
 import { Card } from "react-native-paper";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const OrderCard = ({ item, cardWidth, showInfo, navigation }) => {
-  console.log("Order card rendered w/", item);
+const SoldItemCard = ({ item, cardWidth, showInfo, navigation }) => {
+  console.log("Sold item card rendered w/", item);
 
   const getStatus = (input) => {
     if (input === 1) {
-      return "The seller hasn't sent this item yet.";
+      return "You have yet to send this item.";
     } else if (input === 2) {
-      return "This item has been sent.";
+      return "You have sent this item.";
     } else if (input === 3) {
-      return "You have received this item.";
+      return "This item was successfully received.";
     } else {
       return "Invalid input";
     }
@@ -24,7 +24,7 @@ const OrderCard = ({ item, cardWidth, showInfo, navigation }) => {
     <TouchableOpacity
       style={{ width: cardWidth }}
       onPress={() => {
-        navigation.navigate("Order Details", { item: item });
+        navigation.navigate("Seller Details", { item: item });
       }}
     >
       <Card elevation={0} style={{ marginTop: 15, backgroundColor: 'white' }}>
@@ -71,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OrderCard;
+export default SoldItemCard;

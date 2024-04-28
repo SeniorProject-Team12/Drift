@@ -8,10 +8,11 @@ import AppScreenStack from './components/AppScreenStack';
 import { DrawerContent } from './pages/DrawerContent';
 import SettingsPage from './pages/SettingsPage';
 import OrdersPage from './pages/OrdersPage';
+import SellingPage from './pages/SellingPage';
 import AuthStackScreen from './pages/AuthScreenStack';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StripeProvider } from '@stripe/stripe-react-native';
-import { CartProvider } from './components/CartContext'
+import { CartProvider, CartContext } from './components/CartContext'
 import AdminScreenStack from './pages/pages_admin/AdminScreenStack';
 const Drawer = createDrawerNavigator();
 
@@ -78,6 +79,7 @@ const App = () => {
 	const setUsername = useUserStore((state) => state.updateUsername);
 	const setEmail = useUserStore((state) => state.updateEmail);
     const clearUserInfo = useUserStore((state) => state.clearUserInfo);
+
 
     const authContext = React.useMemo(() => ({
     	SignUp: async (fName, lName, username, email, phoneNumber, pass, confirmPass) => { 
@@ -169,7 +171,7 @@ const App = () => {
         		// set random token currently, but pull from db once API developed
         		userToken = 'random';
         		await AsyncStorage.removeItem('userToken');
-
+				
 				clearUserInfo();
         	} catch(e) {
         		console.log(e);
@@ -201,10 +203,10 @@ const App = () => {
     }
 
     return (
+		<CartProvider>
     	<AuthContext.Provider value={authContext}>
 			<SafeAreaProvider>
 				<StripeProvider publishableKey = {STRIPE_KEY}>
-					<CartProvider>
 					{/* <UserContext> */}
 						<NavigationContainer>
 							{(() => {
@@ -219,6 +221,7 @@ const App = () => {
 											<Drawer.Screen name="Drift" component={AppScreenStack} />
 											<Drawer.Screen name="Settings" component={SettingsPage} />
 											<Drawer.Screen name="Orders" component={OrdersPage} />
+											<Drawer.Screen name="Selling" component={SellingPage} />
 										</Drawer.Navigator>
 									)
 								} else {
@@ -228,10 +231,10 @@ const App = () => {
 							})()}
 						</NavigationContainer>
 						{/* </UserContext> */}
-					</CartProvider>
 				</StripeProvider>
 			</SafeAreaProvider>
     	</AuthContext.Provider>
+		</CartProvider>
   	);
 }
 

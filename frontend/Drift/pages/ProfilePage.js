@@ -8,12 +8,13 @@ import ProfileImage from '../components/profileImage.js';
 import { Icon } from 'react-native-paper';
 import axios from 'axios';
 import configs from "../config";
+import useUserStore from "../components/UserContext";
 import { useIsFocused } from '@react-navigation/native';
 
 const testUser = {
-      id: 1,
-      name: "John Joe",
-      bio: "Looking to give me clothes a 2nd home. Please message me with any questions",
+      id: 9,
+      name: "Christian Jackson",
+      bio: "Looking to give my clothes a second home. Please message me with any questions!",
 }
 
 const userID = 1
@@ -24,6 +25,8 @@ const ProfilePage = ({navigation}) => {
     const [errorMessage, setErrorMessage] = useState('');
 
     const isFocused = useIsFocused();
+
+    const userID = useUserStore((state) => state.userID);
 
     const fetchItemsByUserID = async () => {
       
@@ -157,8 +160,8 @@ const styles = StyleSheet.create({
     profileHeader: {
         flexDirection: 'row',
         padding: 10,
-        // top: 0,
-        // position: 'absolute',
+         top: 0,
+         position: 'absolute',
     },
     profileHeaderCol2: {
         flex: 1, 
