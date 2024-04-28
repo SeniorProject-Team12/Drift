@@ -248,7 +248,7 @@ const testItems = [
     hashtags: ["fashion", "formal", "new"],
     category: "Top",
     sellerId: 3,
-    photoURL: 'https://images.unsplash.com/photo-1618517351616-38fb9c5210c6?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fHQlMjBzaGlydHxlbnwwfHwwfHx8MA%3D%3D',
+    photoURL: '',
     size: "Large",
   },
   {

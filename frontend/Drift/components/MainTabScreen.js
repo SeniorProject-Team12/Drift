@@ -4,7 +4,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import Icon from 'react-native-ico-material-design';
 
 import DiscoverPage from '../pages/DiscoverPage';
-import ChatPage from '../pages/ChatPage';
+import ChatPage from '../pages/chat/ChatPage';
 import SavedPage from "../pages/SavedPage";
 import PostPage from "../pages/PostPage";
 import ProfilePage from "../pages/ProfilePage";

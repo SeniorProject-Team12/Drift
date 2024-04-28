@@ -9,18 +9,18 @@ const cartReducer = (state, action) => {
   switch(action.type) {
   
     case 'ADD_TO_CART':
-      // Check if the item is already in the cart
-      const itemIndex = state.items.findIndex(item => item.id === action.item.id);
-      if (itemIndex === -1) {
-        // Item is not in the cart, add it
-        return {
-          ...state,
-          items: [...state.items, action.item],
-        };
-      } else {
-        alert('Item already in cart!');
-        return state;
-      }
+    // Check if the item is already in the cart
+    const isItemInCart = state.items.some(item => item.itemID === action.item.itemID);
+    if (!isItemInCart) {
+      // Item is not in the cart, add it
+      return {
+        ...state,
+        items: [...state.items, action.item],
+      };
+    } else {
+      alert('Item already in cart!');
+      return state;
+    }
     case 'REMOVE_FROM_CART':
       return {
         ...state,

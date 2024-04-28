@@ -66,13 +66,13 @@ const SelectedItemPostPage = ({ route }) => {
                     <Text style={{ marginTop: 20, fontWeight: '800', color: 'red' }}>Times Post has been Reported - {item.reportedCount}</Text>
 
                 </Card.Content>
+                <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
                     <TouchableOpacity
                         style={{
                             backgroundColor: 'red',
                             padding: 20,
                             width: '50%',
                             borderRadius: 10,
-                            marginLeft: 95
                         }}
                         onPress={() => { handleDeletePost() }}>
                         <Text
@@ -85,6 +85,7 @@ const SelectedItemPostPage = ({ route }) => {
                                 Delete Post
                         </Text>
                 </TouchableOpacity>
+                </View>
             </Card>
         </View>
     );

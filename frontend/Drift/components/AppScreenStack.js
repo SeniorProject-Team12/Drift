@@ -6,16 +6,18 @@ import FolderDetailsPage from "../pages/FolderDetailsPage";
 import CartPage from "../pages/CartPage";
 import { IconButton } from "react-native-paper";
 import MainTabScreen from "./MainTabScreen";
-// import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import SellerPage from "../pages/SellerPage";
-import SettingsPage from '../pages/SettingsPage';
+import SettingsPage from "../pages/SettingsPage";
 import SelectedOrderPage from "../pages/SelectedOrderPage";
 import SelectedSellerPage from "../pages/SelectedSellerPage";
 import SelectedChatScreen from "../pages/SelectedChatScreen";
+import Conversation from "../pages/chat/Conversation";
+import UserProfile from "../pages/UserProfile";
+import { useNavigation } from "@react-navigation/native";
+import LiveChatPage from "../pages/LiveChatPage";
+import SavedPaymentPage from "../pages/SavedPaymentPage";
 
 const Stack = createStackNavigator();
-// const Tab = createMaterialBottomTabNavigator();
-
 const AppScreenStack = ({ navigation }) => {
     return (
       <PaperProvider>
@@ -72,6 +74,20 @@ const AppScreenStack = ({ navigation }) => {
             }}
           />
           <Stack.Screen
+            name="Conversation"
+            component={Conversation}
+            options={{
+              headerBackTitleVisible: false
+            }}
+          />
+          <Stack.Screen
+            name="User Profile"
+            component={UserProfile}
+            options={{
+              headerBackTitleVisible: false
+            }}
+          />
+          <Stack.Screen
             name="SelectedChat"
             component={SelectedChatScreen}
             options={({route}) => ({
@@ -87,6 +103,22 @@ const AppScreenStack = ({ navigation }) => {
           <Stack.Screen
             name="Settings"
             component={SettingsPage}
+          />
+          <Stack.Screen 
+            name="Live Chat Support"
+            component={LiveChatPage}
+            options={{
+              // headerShown: false,
+              headerBackTitleVisible: false,
+            }}
+          />
+        <Stack.Screen 
+            name="Edit Saved Method of Payment"
+            component={SavedPaymentPage}
+            options={{
+              // headerShown: false,
+              headerBackTitleVisible: false,
+            }}
           />
         </Stack.Navigator>
       </PaperProvider>

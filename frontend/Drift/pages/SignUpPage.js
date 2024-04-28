@@ -98,6 +98,7 @@ const SignUpPage = ({navigation}) => {
                             style={{marginRight: 5}}
                         />
                     }
+                    maxLength={10}
                     keyboardType={'numeric'}
                     onChangeText={(val) => setPhoneNumber(val)}
                 />
