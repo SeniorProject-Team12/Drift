@@ -170,6 +170,27 @@ const App = () => {
 						setLastName(lName);
 						setUsername(username);
 						setEmail(email);
+  
+            let user = new CometChat.User(String(res.data[0][0].userID));
+            user.setName(`${fName} ${lName}`)
+
+            CometChat.createUser(user, COMETCHAT_AUTHKEY).then(
+              user => {
+                  console.log("comet chat user created", user);
+              }, error => {
+                  console.log("comet chat user creation error ", error);
+              }
+            );
+            CometChat.login(String(res.data[0][0].userID), COMETCHAT_AUTHKEY).then(
+              (user) => {
+                console.log("Login Successful:", { user });
+              },
+              (error) => {
+                console.log("Login failed with exception:", { error });
+              }
+            );
+
+
 					}
 					console.log(res.data[0]);
 				}

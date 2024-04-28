@@ -1,13 +1,14 @@
 import React, { useEffect, useState} from "react";
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Products from "./Products";
 import testItems from "./testData/testFolders";
 import configs from "../config";
-
+import {Button} from "react-native-paper";
 
 const FolderDetailsPage = ({ route, navigation }) => {
     const [items, setItems] = useState([]);
     const {folder} = route.params;
+
     const fetchSavedItems = async () => {
         try {
             console.log("trying to fetch items", folder.savedFolderID)
@@ -21,6 +22,26 @@ const FolderDetailsPage = ({ route, navigation }) => {
         }
     }
 
+    const deleteFolder = async () => {
+        console.log(configs[0].API_URL + `/savedFolders/deleteSavedFolder/${folder.savedFolderID}`)
+        try {
+            const response = await fetch(configs[0].API_URL + `/savedFolders/deleteSavedFolder/${folder.savedFolderID}`, {
+                method: 'DELETE'
+            });
+
+            navigation.navigate('Main', { screen: 'Discover' });
+    
+            if (!response.ok) {
+                const message = await response.text(); 
+                throw new Error(`Failed to delete folder: ${message}`);
+            }
+            return response.text();  
+        } catch (error) {
+            console.error('Error deleting the folder:', error);
+            throw error; 
+        }
+    }
+
     useEffect(() => {
         fetchSavedItems();
     }, []);
@@ -30,7 +51,18 @@ const FolderDetailsPage = ({ route, navigation }) => {
     return (
         <View style={styles.container}>
             <Text>{folder.folderName}</Text>
-            <Products items={items} navigation={navigation} showInfo={false} />
+            <Button
+                mode="contained"
+                buttonColor="white"
+                textColor="black"
+                onPress={() => {
+                    deleteFolder();
+                    navigation.navigate('Saved');
+                }}
+            >
+                Delete Folder
+            </Button>
+            <Products items={items} numCols={2} navigation={navigation} showInfo={false} />
         </View>
     );
 };

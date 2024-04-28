@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable, KeyboardAvoidingView } from "react-native";
 import Folders from "./Folders";
+import { useIsFocused } from "@react-navigation/native";
 import {
   Text,
   Button,
@@ -14,15 +15,12 @@ import configs from "../config";
 import { colors } from "../assets/Colors";
 import useUserStore from "../components/UserContext";
 
-// const userID = 1;
-
 const SavedPage = ({ navigation }) => {
   const [savedFolders, setSavedFolders] = React.useState([]);
   const [newFolderName, setNewFolderName] = React.useState("");
   const [visible, setVisible] = React.useState(false);
-
+  const isFocused = useIsFocused();
   const userID = useUserStore((state) => state.userID);
-
   const fetchSavedFolders = async () => {
     try {
       const response = await fetch(
@@ -38,7 +36,7 @@ const SavedPage = ({ navigation }) => {
 
   useEffect(() => {
     fetchSavedFolders();
-  }, []);
+  }, [isFocused]);
   useEffect(() => {}, [savedFolders]);
 
   const addFolder = async () => {
@@ -61,7 +59,6 @@ const SavedPage = ({ navigation }) => {
   const showDialog = () => setVisible(true);
   const hideDialog = () => setVisible(false);
 
-  const containerStyle = { backgroundColor: "white", padding: 20 };
 
   return (
     <View style={styles.container}>
@@ -76,19 +73,19 @@ const SavedPage = ({ navigation }) => {
         Create a Folder
       </Button>
 
-      <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
-          <Dialog.Title>Create a new folder</Dialog.Title>
-          <TextInput
-            label="Folder Name"
-            value={newFolderName}
-            onChangeText={(newFolderName) => setNewFolderName(newFolderName)}
-          />
-          <Dialog.Actions>
-            <Button onPress={addFolder}>Done</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
+        <Portal>
+          <Dialog visible={visible} onDismiss={hideDialog} style={{marginTop: -150}}>
+            <Dialog.Title>Create a new folder</Dialog.Title>
+            <TextInput
+              label="Folder Name"
+              value={newFolderName}
+              onChangeText={(newFolderName) => setNewFolderName(newFolderName)}
+            />
+            <Dialog.Actions>
+              <Button onPress={addFolder}>Done</Button>
+            </Dialog.Actions>
+          </Dialog>
+        </Portal>
 
       <Divider bold="true" />
       <Folders files={savedFolders} navigation={navigation} />
@@ -104,5 +101,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#8fcbbc",
+    paddingHorizontal: '10',
   },
 });

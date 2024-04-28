@@ -81,6 +81,12 @@ const DiscoverStackScreen = ({navigation}) => (
       <DiscoverStack.Screen name="Discover" component={DiscoverPage} />
     </DiscoverStack.Navigator>
 );
+
+const SavedStackScreen = ({navigation}) => (
+  <DiscoverStack.Navigator>
+    <DiscoverStack.Screen name="Saved" component={SavedPage} />
+  </DiscoverStack.Navigator>
+);
   
 const ChatStackScreen = ({navigation}) => (
     <ChatStack.Navigator>

@@ -17,7 +17,7 @@ const SelectedSellerPage = ({ route }) => {
     useEffect(() => {
         if (route.params && route.params.item) {
             const { item } = route.params;
-            setButtonText(item.orderStatus === 2 ? "Mark As Unsent" : "Mark As Sent");
+            setButtonText(item.orderStatus === 2 ? "Unmark As Sent" : "Mark As Sent");
             console.log(item);
         }
         

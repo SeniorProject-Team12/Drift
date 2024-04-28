@@ -1,14 +1,14 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
-const UserProfileImage = ({ image, selectImage }) => {
+const UserProfileImage = ({ image }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.imageContainer}>
         {image ? (
           <Image source={{ uri: image }} style={styles.image} />
         ) : (
-          <Text></Text>
+          <Text>^_^</Text>
         )}
       </TouchableOpacity>
     </View>

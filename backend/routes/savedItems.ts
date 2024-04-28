@@ -5,10 +5,8 @@ export const router = Router();
 
 // Get saved items from saverFolderID
 router.get('/getSavedItems/savedFolderID/:savedFolderID', async (req: Request, res: Response, next: NextFunction) => {
-    console.log("route getSavedItems")
     try {
         const savedFolderID = req.params.savedFolderID;
-        console.log("savedFolderID", savedFolderID)
         await DB.executeSQL('SELECT itemID FROM saved_items WHERE savedFolderID = '+ savedFolderID, async function(err, itemIDs) {
             if(err) {
                 console.log("ERROR: ", err);

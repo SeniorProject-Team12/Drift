@@ -32,6 +32,24 @@ const ItemPage = ({ route, navigation }) => {
 
   const showDialog = () => setVisible(true);
 
+  const deleteItem = async () => {
+    try {
+        const response = await fetch(configs[0].API_URL + `/items/deleteItem/${item.itemID}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            const message = await response.text(); 
+            throw new Error(`Failed to delete item: ${message}`);
+        }
+        return response.text();  
+    } catch (error) {
+        console.error('Error deleting the item:', error);
+        throw error; 
+    }
+}
+
+
   const fetchUserByUserID = async () => {
     try {
       const response = await axios.get(
@@ -175,7 +193,6 @@ const ItemPage = ({ route, navigation }) => {
   return (
     <View
       style={{
-        backgroundColor: colors.vanilla,
         paddingTop: 40,
         paddingBottom: 30,
       }}
@@ -326,6 +343,7 @@ const ItemPage = ({ route, navigation }) => {
               buttonColor={colors.red}
               mode="contained"
               style={{ flex: 1, marginLeft: 4 }} // Use marginLeft to add spacing between buttons
+              onPress={deleteItem}
             >
               Delete
             </Button>
