@@ -2,6 +2,7 @@ import * as React from "react";
 import { Image, Text, TouchableOpacity, StyleSheet, View } from "react-native";
 import { Card } from "react-native-paper";
 // import SelectedItemPage from "";
+import { colors } from "../../assets/Colors";
 
 const ItemCard = ({ item, cardWidth, showInfo, navigation }) => {
     console.log("Admin Item card rendered w/", item);
@@ -22,7 +23,7 @@ const ItemCard = ({ item, cardWidth, showInfo, navigation }) => {
                     source={{ uri: item.photoURL }}
                 />
                 {showInfo && <View style={styles.textContainer}>
-                    {showReported && <Text style={{ color: 'red', justifyContent: 'center', flexDirection: 'row' }}>REPORTED ITEM</Text> || showInfo && <Text style={styles.cardTitleText}>{`${item.brand} - ${item.category} $${item.price}`}</Text>}
+                    {showReported && <Text style={{ color: colors.red, justifyContent: 'center', flexDirection: 'row' }}>REPORTED ITEM</Text> || showInfo && <Text style={styles.cardTitleText}>{`${item.brand} - ${item.category} $${item.price}`}</Text>}
                 </View>}
                 </View>
             </View>

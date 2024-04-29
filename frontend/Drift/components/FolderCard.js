@@ -23,10 +23,10 @@ const FolderCard = ({ folder, cardWidth, navigation }) => {
           /> */}
           <Icon
             source="star-box-outline"
-            color={colors.lightYellow}
+            color={colors.white}
             size={100}
           />
-          <Text variant="labelLarge">{folder.folderName}</Text>
+          <Text style={{textAlign: 'center'}} variant="titleMedium">{folder.folderName}</Text>
         </Card.Content>
       </Card>
     </TouchableOpacity>

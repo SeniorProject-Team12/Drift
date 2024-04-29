@@ -276,6 +276,7 @@ const App = () => {
         try {
           // set random token currently, but pull from db once API developed
           userToken = "random";
+          CometChat.logout();
           await AsyncStorage.removeItem("userToken");
 
           clearUserInfo();

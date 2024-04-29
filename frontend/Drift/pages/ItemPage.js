@@ -42,6 +42,10 @@ const ItemPage = ({ route, navigation }) => {
             const message = await response.text(); 
             throw new Error(`Failed to delete item: ${message}`);
         }
+
+        //navigation.navigate('Main', { screen: 'Discover' });
+        navigation.navigate("Main");
+
         return response.text();  
     } catch (error) {
         console.error('Error deleting the item:', error);
@@ -288,7 +292,7 @@ const ItemPage = ({ route, navigation }) => {
         </Card.Content>
 
         <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog visible={visible} onDismiss={hideDialog} style={{backgroundColor: colors.white}}>
             <Dialog.Title>Save to:</Dialog.Title>
             {folders.map((folder) => (
               <Button
@@ -305,13 +309,13 @@ const ItemPage = ({ route, navigation }) => {
                 }
                 textColor={colors.black}
                 onPress={() => toggleCheckBox(folder.savedFolderID)}
-                style={{ marginBottom: 8, paddingHorizontal: 30 }} // Adds space between buttons
+                style={{ marginBottom: 8, marginHorizontal: 30 }} // Adds space between buttons
               >
                 {folder.folderName}
               </Button>
             ))}
             <Dialog.Actions>
-              <Button onPress={hideDialog}>Done</Button>
+              <Button onPress={hideDialog} textColor={colors.darkBlue}>Done</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>

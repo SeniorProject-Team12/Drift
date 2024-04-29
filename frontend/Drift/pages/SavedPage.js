@@ -44,10 +44,12 @@ const SavedPage = ({ navigation }) => {
     try {
       console.log("newFolderName", newFolderName);
       console.log(userID);
-      const response = await axios.post(
-        configs[0].API_URL + `/savedFolders/addSavedFolder`,
-        { userID: userID, folderName: newFolderName }
-      );
+      if(newFolderName != ''){
+        const response = await axios.post(
+          configs[0].API_URL + `/savedFolders/addSavedFolder`,
+          { userID: userID, folderName: newFolderName }
+        );
+      }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -62,7 +64,7 @@ const SavedPage = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text variant="displaySmall">Your Saved Items</Text>
+      {/* <Text variant="displaySmall">Your Saved Items</Text> */}
 
       <Button
         mode="contained"
@@ -82,7 +84,7 @@ const SavedPage = ({ navigation }) => {
               onChangeText={(newFolderName) => setNewFolderName(newFolderName)}
             />
             <Dialog.Actions>
-              <Button onPress={addFolder}>Done</Button>
+              <Button textColor={colors.darkBlue} onPress={addFolder}>Done</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
@@ -97,6 +99,7 @@ export default SavedPage;
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 20,
     flex: 1,
     alignItems: "center",
     justifyContent: "center",

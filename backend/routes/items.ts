@@ -11,7 +11,7 @@ router.delete('/deleteItem/:itemID', async (req, res) => {
   try {
     console.log("deleting item")
     console.log(`CALL DeleteItem(${itemID})`)
-    await DB.executeSQL(`CALL DeleteItem(${itemID})`, function(err: any, data: any) {
+    await DB.executeSQL(`CALL SP_DeleteItem(${itemID})`, function(err: any, data: any) {
       if (err) {
         console.log("ERROR: ", err);
         res.send("Error deleting item");

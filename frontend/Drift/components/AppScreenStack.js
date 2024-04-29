@@ -16,6 +16,7 @@ import UserProfile from "../pages/UserProfile";
 import { useNavigation } from "@react-navigation/native";
 import LiveChatPage from "../pages/LiveChatPage";
 import SavedPaymentPage from "../pages/SavedPaymentPage";
+import ProfilePage from "../pages/ProfilePage"
 
 const Stack = createStackNavigator();
 const AppScreenStack = ({ navigation }) => {

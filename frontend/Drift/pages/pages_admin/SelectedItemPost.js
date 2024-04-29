@@ -4,6 +4,7 @@ import { Alert, Button, Image, View, Text, StyleSheet, TouchableOpacity } from "
 import { Card } from "react-native-paper";
 import { useNavigation } from '@react-navigation/native';
 import configs from "../../config";
+import { colors } from "../../assets/Colors";
 
 const SelectedItemPostPage = ({ route }) => {
     console.log("Selected Item Post PAGE");
@@ -28,8 +29,8 @@ const SelectedItemPostPage = ({ route }) => {
             {
                 text: 'YES', onPress: async () => {
                 try{
-                    const res = await axios.delete(configs[0].API_URL + '/items/deleteItem/id/' + item.itemID);
-                    console.log(configs[0].API_URL + '/items/deleteItem/id/' + item.itemID);
+                    const res = await axios.delete(configs[0].API_URL + '/items/deleteItem/' + item.itemID);
+                    console.log(configs[0].API_URL + '/items/deleteItem/' + item.itemID);
                     alert("Item Posting has been deleted!");
                     navigation.navigate("Admin Discover");
                 } catch(e) {
@@ -63,13 +64,13 @@ const SelectedItemPostPage = ({ route }) => {
                     <Text>{item.price} USD</Text>
                     <Text>{item.description}</Text>
                     <Text style={{ marginTop: 20 }}>Seller's User ID - {item.userID}</Text>
-                    <Text style={{ marginTop: 20, fontWeight: '800', color: 'red' }}>Times Post has been Reported - {item.reportedCount}</Text>
+                    <Text style={{ marginTop: 20, fontWeight: '800', color: colors.red }}>Times Post has been Reported - {item.reportedCount}</Text>
 
                 </Card.Content>
                 <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
                     <TouchableOpacity
                         style={{
-                            backgroundColor: 'red',
+                            backgroundColor: colors.red,
                             padding: 20,
                             width: '50%',
                             borderRadius: 10,

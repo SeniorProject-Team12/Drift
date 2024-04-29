@@ -4,6 +4,7 @@ import { Searchbar, IconButton } from 'react-native-paper';
 import { Appbar } from "react-native-paper";
 import Posts from "./Posts";
 
+
 const DiscoverAdminPage = ({navigation}) => {
     const [searchQuery, setSearchQuery] = React.useState("");
     const onChangeSearch = (query) => setSearchQuery(query);

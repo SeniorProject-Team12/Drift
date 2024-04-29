@@ -50,7 +50,7 @@ const FolderDetailsPage = ({ route, navigation }) => {
     
     return (
         <View style={styles.container}>
-            <Text>{folder.folderName}</Text>
+            {/* <Text>{folder.folderName}</Text> */}
             <Button
                 mode="contained"
                 buttonColor="white"
