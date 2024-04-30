@@ -16,6 +16,9 @@ import {
 import { useCart } from "../components/CartContext";
 import axios from "axios";
 import configs from "../config";
+import FolderList from "../components/FolderList"
+import SectionedMultiSelect from 'react-native-sectioned-multi-select';
+import { MaterialIcons as Icon } from '@expo/vector-icons';
 import useUserStore from "../components/UserContext";
 import { colors } from "../assets/Colors";
 
@@ -29,6 +32,28 @@ const ItemPage = ({ route, navigation }) => {
 
   const showDialog = () => setVisible(true);
 
+  const deleteItem = async () => {
+    try {
+        const response = await fetch(configs[0].API_URL + `/items/deleteItem/${item.itemID}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            const message = await response.text(); 
+            throw new Error(`Failed to delete item: ${message}`);
+        }
+
+        //navigation.navigate('Main', { screen: 'Discover' });
+        navigation.navigate("Main");
+
+        return response.text();  
+    } catch (error) {
+        console.error('Error deleting the item:', error);
+        throw error; 
+    }
+}
+
+
   const fetchUserByUserID = async () => {
     try {
       const response = await axios.get(
@@ -40,6 +65,15 @@ const ItemPage = ({ route, navigation }) => {
     }
   };
 
+    const handleAddToCart = () => {
+      // Check if the userID of the item matches the userID stored in the context
+      if (item.userID === userID) {
+        alert("You can't add your own item to cart.");
+      } else {
+        // If the userID doesn't match, add the item to cart
+        dispatch({ type: 'ADD_TO_CART', item });
+      }
+    };
   const hideDialog = () => {
     saveItem(item.itemID, checkedFolders);
     setIsSaved(1);
@@ -69,10 +103,6 @@ const ItemPage = ({ route, navigation }) => {
     } catch (error) {
       console.error("There was an error fetching the saved folders:", error);
     }
-  };
-
-  const handleAddToCart = () => {
-    dispatch({ type: "ADD_TO_CART", item });
   };
 
   const fetchIsSaved = async () => {
@@ -167,7 +197,6 @@ const ItemPage = ({ route, navigation }) => {
   return (
     <View
       style={{
-        backgroundColor: colors.vanilla,
         paddingTop: 40,
         paddingBottom: 30,
       }}
@@ -229,7 +258,7 @@ const ItemPage = ({ route, navigation }) => {
 
         <Card.Title
           style={{ paddingTop: 10, paddingBottom: 10, fontWeight: "bold" }}
-          title={item.name}
+          title={item.brand + ' - '+ item.category}
           subtitle={seller}
           titleVariant="headlineMedium"
           subtitleVariant="titleLarge"
@@ -257,17 +286,13 @@ const ItemPage = ({ route, navigation }) => {
             <Text style={{ fontWeight: "bold" }}>Price:</Text> ${item.price} USD
           </Text>
           <Text>
-            <Text style={{ fontWeight: "bold" }}>Condition:</Text>{" "}
-            {item.quality}
-          </Text>
-          <Text>
             <Text style={{ fontWeight: "bold" }}>Description:</Text>{" "}
             {item.description}
           </Text>
         </Card.Content>
 
         <Portal>
-          <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog visible={visible} onDismiss={hideDialog} style={{backgroundColor: colors.white}}>
             <Dialog.Title>Save to:</Dialog.Title>
             {folders.map((folder) => (
               <Button
@@ -284,13 +309,13 @@ const ItemPage = ({ route, navigation }) => {
                 }
                 textColor={colors.black}
                 onPress={() => toggleCheckBox(folder.savedFolderID)}
-                style={{ marginBottom: 8, paddingHorizontal: 30 }} // Adds space between buttons
+                style={{ marginBottom: 8, marginHorizontal: 30 }} // Adds space between buttons
               >
                 {folder.folderName}
               </Button>
             ))}
             <Dialog.Actions>
-              <Button onPress={hideDialog}>Done</Button>
+              <Button onPress={hideDialog} textColor={colors.darkBlue}>Done</Button>
             </Dialog.Actions>
           </Dialog>
         </Portal>
@@ -310,7 +335,7 @@ const ItemPage = ({ route, navigation }) => {
               textColor={colors.orange}
               buttonColor={colors.white}
               mode="outlined"
-              style={{ flex: 1, marginRight: 4, borderColor: colors.orange }} // Use marginRight to add spacing between buttons
+              style={{ flex: 1, marginRight: 4, borderColor: colors.orange, marginTop: -60 }} // Use marginRight to add spacing between buttons
             >
               Offer
             </Button>
@@ -322,6 +347,7 @@ const ItemPage = ({ route, navigation }) => {
               buttonColor={colors.red}
               mode="contained"
               style={{ flex: 1, marginLeft: 4 }} // Use marginLeft to add spacing between buttons
+              onPress={deleteItem}
             >
               Delete
             </Button>
@@ -330,7 +356,7 @@ const ItemPage = ({ route, navigation }) => {
               textColor="white"
               buttonColor={colors.orange}
               mode="contained"
-              style={{ flex: 1, marginLeft: 4 }} // Use marginLeft to add spacing between buttons
+              style={{ flex: 1, marginLeft: 4, marginTop: -60 }} // Use marginLeft to add spacing between buttons
               onPress={handleAddToCart}
             >
               Add to cart

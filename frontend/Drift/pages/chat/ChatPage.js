@@ -3,12 +3,13 @@ import { CometChat } from "@cometchat-pro/react-native-chat";
 import useUserStore from "../../components/UserContext";
 import {
   View,
-  Text,
+  // Text,
   FlatList,
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-import { Avatar, Card, IconButton } from "react-native-paper";
+import { colors } from "../../assets/Colors";
+import { Avatar, Card, IconButton, Text } from "react-native-paper";
 
 const COMETCHAT_AUTHKEY = "dca323479e4634f3626d04753a10521f35a5c1cc";
 
@@ -65,9 +66,14 @@ const ChatPage = ({ navigation }) => {
         style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: "#ccc" }}
       >
         <Card.Title
+          // <Text variant="titleMedium" style={{paddingLeft: 50}}> {item.conversationWith.name}</Text>
           title={item.conversationWith.name}
+          titleStyle={{paddingLeft:20}}
           subtitle={item.lastMessage.data.text}
-          left={(props) => <Avatar.Icon {...props} icon="account" />}
+          subtitleStyle={{paddingLeft:20}}
+          left={() => <Avatar.Icon 
+            icon="account" style={{backgroundColor: colors.lightBlue}}/>}
+
         />
       </TouchableOpacity>
     );

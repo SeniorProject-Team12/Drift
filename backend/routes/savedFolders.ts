@@ -38,6 +38,23 @@ router.get('/getSavedFolders/userID/:userID', async (req: Request, res: Response
     }
 });
 
+router.delete('/deleteSavedFolder/:folderID', async (req, res) => {
+    const { folderID } = req.params;
+    console.log(`CALL SP_DeleteSavedFolder(${folderID})`)
+    try {
+      console.log("deleting folder")
+      await DB.executeSQL(`CALL SP_DeleteSavedFolder(${folderID})`, function(err: any, data: any) {
+        if (err) {
+          console.log("ERROR: ", err);
+          res.send("Error deleting folder");
+        }
+      })
+    } catch (err) {
+      console.error("ERROR: ", err);
+      res.status(500).send("Error processing your request");
+    }
+  });
+
 // add saved folder
 router.post('/addSavedFolder', async (req: Request, res: Response, next: NextFunction) => {
     

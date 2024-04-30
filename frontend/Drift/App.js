@@ -8,10 +8,11 @@ import AppScreenStack from "./components/AppScreenStack";
 import { DrawerContent } from "./pages/DrawerContent";
 import SettingsPage from "./pages/SettingsPage";
 import OrdersPage from "./pages/OrdersPage";
+import SellingPage from './pages/SellingPage'
 import AuthStackScreen from "./pages/AuthScreenStack";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { StripeProvider } from "@stripe/stripe-react-native";
-import { CartProvider } from "./components/CartContext";
+import { CartProvider, CartContext } from "./components/CartContext";
 import AdminScreenStack from "./pages/pages_admin/AdminScreenStack";
 import { createStackNavigator } from "@react-navigation/stack";
 const Stack = createStackNavigator();
@@ -169,6 +170,27 @@ const App = () => {
 						setLastName(lName);
 						setUsername(username);
 						setEmail(email);
+  
+            let user = new CometChat.User(String(res.data[0][0].userID));
+            user.setName(`${fName} ${lName}`)
+
+            CometChat.createUser(user, COMETCHAT_AUTHKEY).then(
+              user => {
+                  console.log("comet chat user created", user);
+              }, error => {
+                  console.log("comet chat user creation error ", error);
+              }
+            );
+            CometChat.login(String(res.data[0][0].userID), COMETCHAT_AUTHKEY).then(
+              (user) => {
+                console.log("Login Successful:", { user });
+              },
+              (error) => {
+                console.log("Login failed with exception:", { error });
+              }
+            );
+
+
 					}
 					console.log(res.data[0]);
 				}
@@ -254,6 +276,7 @@ const App = () => {
         try {
           // set random token currently, but pull from db once API developed
           userToken = "random";
+          CometChat.logout();
           await AsyncStorage.removeItem("userToken");
 
           clearUserInfo();
@@ -342,6 +365,7 @@ const App = () => {
                       <Drawer.Screen name="Drift" component={AppScreenStack} />
                       <Drawer.Screen name="Settings" component={SettingsPage} />
                       <Drawer.Screen name="Orders" component={OrdersPage} />
+                      <Drawer.Screen name="Selling" component={SellingPage} />
                     </Drawer.Navigator>
                   );
                 } else {

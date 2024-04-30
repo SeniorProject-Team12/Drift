@@ -4,14 +4,17 @@ import React from 'react';
 import { View, Text, StyleSheet, Button, Pressable } from 'react-native';
 
 const TotalsSheet = ({ subtotal, salesTax, onClose }) => {
+
+    const total = (subtotal + salesTax);
+
     return (
         <View style={styles.container}>
             <View style={styles.overlay}>
                 <View style={styles.innerContainer}>
                     <Text style={styles.title}>Totals</Text>
                     <Text style={styles.subtotal}>Subtotal: ${subtotal}</Text>
-                    <Text style={styles.subtotal}>Sales Tax: ${salesTax}</Text>
-                    <Text style={styles.total}>Total: ${subtotal + salesTax}</Text>
+                    <Text style={styles.subtotal}>Sales Tax: ${salesTax.toFixed(2)}</Text>
+                    <Text style={styles.total}>Total: ${total.toFixed(2)}</Text>
                     <Pressable style={styles.button} onPress={onClose}>
                             <Text style={styles.buttonText}>
                                 CONTINUE

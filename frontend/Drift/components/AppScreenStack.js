@@ -9,12 +9,14 @@ import MainTabScreen from "./MainTabScreen";
 import SellerPage from "../pages/SellerPage";
 import SettingsPage from "../pages/SettingsPage";
 import SelectedOrderPage from "../pages/SelectedOrderPage";
+import SelectedSellerPage from "../pages/SelectedSellerPage";
 import SelectedChatScreen from "../pages/SelectedChatScreen";
 import Conversation from "../pages/chat/Conversation";
 import UserProfile from "../pages/UserProfile";
 import { useNavigation } from "@react-navigation/native";
 import LiveChatPage from "../pages/LiveChatPage";
 import SavedPaymentPage from "../pages/SavedPaymentPage";
+import ProfilePage from "../pages/ProfilePage"
 
 const Stack = createStackNavigator();
 const AppScreenStack = ({ navigation }) => {
@@ -52,6 +54,14 @@ const AppScreenStack = ({ navigation }) => {
           <Stack.Screen
             name="Order Details"
             component={SelectedOrderPage}
+            options={{
+              headerBackTitleVisible: false,
+              // headerLeft: navigation.navigate("Orders")
+            }}
+          />
+          <Stack.Screen
+            name="Seller Details"
+            component={SelectedSellerPage}
             options={{
               headerBackTitleVisible: false,
               // headerLeft: navigation.navigate("Orders")

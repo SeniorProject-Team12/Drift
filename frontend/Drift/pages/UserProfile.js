@@ -6,7 +6,7 @@ import {
   Card,
 } from "react-native-paper";
 import Products from "./Products";
-import ProfileImage from "../components/profileImage.js";
+import UserProfileImage from "../components/userProfileImage.js";
 import axios from "axios";
 import configs from "../config";
 import { useIsFocused } from "@react-navigation/native";
@@ -14,6 +14,7 @@ import { colors } from "../assets/Colors";
 import useUserStore from "../components/UserContext.js";
 
 const UserProfile = ({ route, navigation }) => {
+
   const userID = route.params.userID;
   const [items, setItems] = useState([]);
   const [image, setImage] = useState(null);
@@ -42,7 +43,7 @@ const UserProfile = ({ route, navigation }) => {
       const response = await axios.get(
         configs[0].API_URL + `/profile/getProfile/userID/${userID}`
       );
-      setImage(response.data.photo);
+      setImage(response.data[0].photo);
       setBio(response.data[0].bio);
     } catch (error) {
       console.error("Error fetching items:", error);
@@ -72,7 +73,7 @@ const UserProfile = ({ route, navigation }) => {
     <View style={styles.container}>
       <View style={styles.profileHeader}>
         <View>
-          <ProfileImage image={image} />
+          <UserProfileImage image={image} />
         </View>
 
         <Card.Title
@@ -145,7 +146,7 @@ const UserProfile = ({ route, navigation }) => {
         </Button>
       </Card.Actions>
 
-      <Products items={items} navigation={navigation} showInfo={false} />
+      <Products items={items} numCols = {2} navigation={navigation} showInfo={false} />
     </View>
   );
 };

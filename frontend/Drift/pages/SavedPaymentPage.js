@@ -6,6 +6,7 @@ import SignUpInputField from "../components/signUpInputBox";
 import useUserStore from "../components/UserContext";
 import axios from "axios";
 import configs from "../config";
+import { colors } from "../assets/Colors";
 
 const SavedPaymentPage = ({ navigation }) => {
 
@@ -172,7 +173,7 @@ const SavedPaymentPage = ({ navigation }) => {
                 <View style={{  justifyContent: 'center', flexDirection: 'row' }}>
                     <TouchableOpacity
                         style={{
-                            backgroundColor: 'red',
+                            backgroundColor: colors.red,
                             borderColor: 'black',
                             borderWidth: 2,
                             padding: 20,

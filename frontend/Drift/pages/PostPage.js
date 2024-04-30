@@ -17,6 +17,7 @@ import ImagePickerComponent from '../components/ImagePickerComponent.js';
 import { Picker } from '@react-native-picker/picker';
 import axios from 'axios';
 import configs from '../config.js';
+import useUserStore from "../components/UserContext";
 
 const AnimatedIcon = Animated.createAnimatedComponent(Ionicons);
 
@@ -46,6 +47,8 @@ const PostItemScreen = () => {
   const [selectedCategoryLabel, setSelectedCategoryLabel] = useState('Select Category');
 
   const scaleValue = useRef(new Animated.Value(0)).current;
+  const userID = useUserStore((state) => state.userID);
+
 
   useEffect(() => {
     getPermissionAsync();
@@ -62,6 +65,7 @@ const PostItemScreen = () => {
 
   const selectImage = async () => {
     // If an image is already selected, show options to delete or select a different one
+
     if (image) {
       Alert.alert(
         'Image Options',
@@ -141,14 +145,14 @@ const PostItemScreen = () => {
     } else {
 
       try {
-        console.log("In POSTITEM w/ ", description, brand, category, price, image, '1');
-        const response = await axios.post(configs[0].API_URL + '/items/addNewItem', {
+        console.log("In POSTITEM w/ ", description, brand, category, price, image, userID);
+        const response = await axios.post(configs[0].API_URL + "/items/addNewItem", {
           "description": description,
           "brand": brand,
           "price": price,
           "category": category,
           "photoURL": image,
-          "userID": 1 //Update with actual user id
+          "userID": userID,
         });
         console.log(response);
         setPostSuccesssful(true);
