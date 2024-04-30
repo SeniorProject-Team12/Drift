@@ -77,22 +77,10 @@ const FolderList = ({itemID}) => {
     return <View>
     <Checkbox.Item label={item.folderName} status="checked" />
   </View>
-  //   <FolderCard folder={item} cardWidth={cardWidth} navigation={navigation} />
-  //   <View>
-  //   <Checkbox.Item label={item.savedFolderName} status="checked" />
-  // </View>
   };
 
   return (
     <View style={{ flex: 1 }}>
-      {/* <FlatList
-        data={folders}
-        renderItem={renderFolder}
-        numColumns={1}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ padding: 8 }}
-      /> */}
-
       <FlatList
             data={folders}
             keyExtractor={(item) => item.savedFolderID}

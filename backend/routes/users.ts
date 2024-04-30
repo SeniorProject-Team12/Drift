@@ -125,6 +125,27 @@ router.post('/signUp', async (req: Request, res: Response, next: NextFunction) =
     }
 });
 
+router.get('/getUserByUserID/id/:id', async (req: Request, res: Response, next: NextFunction) => {
+    console.log("getting user by userID")
+    req.setTimeout(10000)
+    try {
+      const userID = req.params.id;
+  
+      let sqlQuery = 'SELECT * FROM users WHERE userID = ' + userID;
+  
+        await DB.executeSQL(sqlQuery, function(err: any, data: any){
+          if (err) {
+            console.log("ERROR: ", err);
+            res.send("Error getting user by userID");
+          } else {
+            res.send(data)
+          }
+        });
+      } catch (e) {
+        next(e);
+      }
+  });
+
 // Update a specific user record
 router.post('/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {

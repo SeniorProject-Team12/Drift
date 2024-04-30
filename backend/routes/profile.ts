@@ -22,10 +22,10 @@ router.get('/getProfile/userID/:userID', async (req: Request, res: Response, nex
 });
 
 // Update profile bio
-router.post('/updateBio/userID/:userID', async (req: Request, res: Response, next: NextFunction) => {
+router.post('/updateBio', async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const userID = req.params.userID;
-        const {bio} = req.body;
+
+        const { userID, bio } = req.body;
 
         await DB.executeSQL(
             `UPDATE Profile SET bio = "${bio}" WHERE userID = ${userID};`,
@@ -47,17 +47,17 @@ router.post('/updatePhoto/userID/:userID', async (req: Request, res: Response, n
     try {
         const userID = req.params.userID;
         const {photo} = req.body;
+        const sp = "SP_UpdatePhoto"
+        console.log("Update photo in profile");
 
-        await DB.executeSQL(
-            `UPDATE Profile SET photo = "${photo}" WHERE userID = ${userID};`,
-            async (err, results) => {
-                if(err) {
-                    res.status(500).send("Error updating profile photo");
-                } else {
-                    res.status(201).send(results);
-                }
+        await DB.executeStoredProcedure(sp, { p_userID: userID, p_photo: photo }, function(err, data) {
+            if(err) {
+                console.log("ERROR: ", err);
+                res.status(500).send("Error updating order status");
+            } else {
+                res.send(data);
             }
-        );
+        });
     } catch(e) {
         next(e);
     }

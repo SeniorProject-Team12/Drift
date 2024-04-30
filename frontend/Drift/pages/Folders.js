@@ -3,7 +3,7 @@ import { View, FlatList, Dimensions } from "react-native";
 import FolderCard from "../components/FolderCard";
 
 const screenWidth = Dimensions.get("window").width;
-const cardWidth = screenWidth / 3 - 20;
+const cardWidth = screenWidth / 3;
 
 const Folders = ({ files, navigation}) => {
   const [folders, setFolders] = useState(files)
@@ -23,7 +23,7 @@ const Folders = ({ files, navigation}) => {
         renderItem={renderFolder}
         numColumns={3}
         keyExtractor={(item) => item.savedFolderID}
-        contentContainerStyle={{ padding: 8 }}
+        contentContainerStyle={{ padding: 5 }}
       />
     </View>
   );

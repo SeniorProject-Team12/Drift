@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Alert } from "react-native";
 import {
   Appbar,
   IconButton,
@@ -27,6 +27,7 @@ const ProfilePage = ({ navigation }) => {
   const [image, setImage] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [bio, setBio] = useState(null);
+  const [newBio, setNewBio] = useState(null);
   const [visible, setVisible] = React.useState(false);
 
   const showDialog = () => setVisible(true);
@@ -41,15 +42,12 @@ const ProfilePage = ({ navigation }) => {
 
   const fetchProfileByUserID = async () => {
     try {
-      {
-        console.log("fetchProfileByUserID");
-      }
       const response = await axios.get(
         configs[0].API_URL + `/profile/getProfile/userID/${userID}`
       );
-      setImage(response.data.photo);
+      setImage(response.data[0].photo);
       setBio(response.data[0].bio);
-      console.log(response.data);
+      setNewBio(response.data[0].bio);
     } catch (error) {
       console.error("Error fetching items:", error);
     }
@@ -57,9 +55,6 @@ const ProfilePage = ({ navigation }) => {
 
   const fetchItemsByUserID = async () => {
     try {
-      {
-        console.log("fetchItemsByUserID");
-      }
       const response = await axios.get(
         configs[0].API_URL + `/items/getItemsByUserID/userID/${userID}`
       );
@@ -69,16 +64,28 @@ const ProfilePage = ({ navigation }) => {
     }
   };
 
-  const editBio = async (newBio) => {
+  const updatePhoto = async(photo_url) => {
+    try {
+      await axios.post(configs[0].API_URL + '/profile/updatePhoto/userID/' + userID, {
+        photo: photo_url
+      });
+    } catch(error) {
+      console.error("Error updating profile photo: ", error);
+    }
+  }
+
+  const editBio = async () => {
     try {
       const response = await axios.post(
-        configs[0].API_URL + `/profile/updateBio/userID/${userID}`,
+        configs[0].API_URL + `/profile/updateBio`,
         {
-          newBio,
+          userID: userID,
+          bio: newBio
         }
       );
       if (response.status === 201) {
-        console.log("Bio successfully ipdated:", response.data);
+        hideDialog();
+        fetchProfileByUserID();
         return response.data;
       } else {
         console.log("Failed to update profile:", response.status);
@@ -88,7 +95,6 @@ const ProfilePage = ({ navigation }) => {
       console.error("Error updating profile:", error);
       throw error;
     }
-    hideDialog();
   };
 
   const selectImage = async () => {
@@ -116,6 +122,7 @@ const ProfilePage = ({ navigation }) => {
 
               if (!result.canceled) {
                 setImage(result.assets[0].uri);
+                updatePhoto(result.assets[0].uri);
                 setErrorMessage("");
               }
             },
@@ -136,9 +143,11 @@ const ProfilePage = ({ navigation }) => {
         quality: 1,
       });
 
+
+
       if (!result.canceled) {
         setImage(result.assets[0].uri);
-
+        updatePhoto(result.assets[0].uri);
         // Clear error message when user selects an image
         setErrorMessage("");
       }
@@ -151,9 +160,8 @@ const ProfilePage = ({ navigation }) => {
   useEffect(() => {
     fetchItemsByUserID();
     fetchProfileByUserID();
-    console.log("profile items", items);
   }, [isFocused]);
-  //KIM
+
   useEffect(() => {}, [items]);
   return (
     <View style={[styles.container]}>
@@ -192,20 +200,20 @@ const ProfilePage = ({ navigation }) => {
       </Card.Content>
 
       <Portal>
-        <Dialog visible={visible} onDismiss={hideDialog}>
+        <Dialog visible={visible} onDismiss={hideDialog} style={{marginTop: -200}}>
           <Dialog.Title>Edit Bio</Dialog.Title>
           <TextInput
             label="Bio"
-            value={bio}
-            onChangeText={(bio) => setBio(bio)}
+            value={newBio}
+            onChangeText={(newBio) => setNewBio(newBio)}
           />
           <Dialog.Actions>
-            {/* <Button onPress={editBio}>Done</Button> */}
+            <Button onPress={editBio}>Done</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
 
-      <Products items={items} navigation={navigation} showInfo={false} />
+      <Products items={items} numCols={2} navigation={navigation} showInfo={false} />
     </View>
   );
 };
@@ -213,19 +221,23 @@ const ProfilePage = ({ navigation }) => {
 export default ProfilePage;
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "white",
-    flex: 1,
-  },
-  profileHeader: {
-    flexDirection: "row",
-    paddingHorizontal: 10,
-  },
-  profileHeaderCol2: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  products: {
-    flex: 1,
-  },
+    container: {
+        // alignItems: 'center',
+        backgroundColor: 'white',
+        flex: 1
+    },
+    profileHeader: {
+        flexDirection: 'row',
+        padding: 10,
+         top: 0,
+         position: 'absolute',
+    },
+    profileHeaderCol2: {
+        flex: 1, 
+        justifyContent: 'center', 
+    },
+    products: {
+        flex: 1,
+    }
+      
 });

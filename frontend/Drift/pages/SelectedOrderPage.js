@@ -22,14 +22,16 @@ const SelectedOrderPage = ({ route }) => {
 
     return(
         <View>
-            {/* <Text style={{ fontSize: 20, alignContent: 'center', justifyContent: 'center' }}>Order Page</Text> */}
             <Card style={{ borderRadius: 15 }} elevation={ 0 }>
-                <Card.Title titleStyle={{fontSize: 24, fontWeight: '700'}} title={"Order Details:"} subtitleStyle={styles.text} subtitle={`Item Count: ${item.itemCount}`} />
+                <Card.Title titleStyle={{fontSize: 24, fontWeight: '700'}} title={"Order Details:"} subtitleStyle={styles.text}/>
+                <View style={styles.imageContainer}>
+                    <Image source={{ uri: item.photoURL }} style={styles.image}/>
+                </View>
                 <Card.Content style={{ height: "100%", flexDirection: "column", gap: "5px" }}>
+                    <Text style={styles.title}>{item.brand} - {item.category}</Text>
                     <Text style={styles.text}>Order ID: {item.orderID}</Text>
-                    <Text style={styles.text}>Tracking Number: {item.trackingNumber}</Text>
-                    <Text style={styles.text}>Total Price: {item.totalShippingPrice}</Text>
-                    <Text style={styles.text}>Order for: {item.customerName}</Text>
+                    <Text style={styles.text}>Total Price: {item.totalPrice}</Text>
+                    <Text style={styles.text}>Purchased from: {item.sellerUsername}</Text>
                     <Text style={styles.text}>Shipping Address: {item.shippingAddress}</Text>
                 </Card.Content>
             </Card>
@@ -40,11 +42,25 @@ const SelectedOrderPage = ({ route }) => {
 export default SelectedOrderPage;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    imageContainer: {
         alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#8fcbbc'
+        marginTop: -10,
+        marginBottom: 10
+    },
+    title: {
+        textAlign: 'center',
+        fontSize: 16,
+        marginLeft: 10,
+        fontWeight: '600',
+        paddingBottom: 5,
+      },
+    image: {
+        width: 250,
+        height: 250,
+        resizeMode: 'cover',
+        borderWidth: 1,
+        borderColor: 'black',
+        borderRadius: 5,
     },
     text: {
         marginLeft: 10,

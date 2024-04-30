@@ -5,38 +5,10 @@ import { useCart, CartProvider } from '../components/CartContext';
 import AddressEntrySheet from '../components/AddressEntrySheet';
 import TotalsSheet from '../components/TotalsSheet';
 import salesTaxRates from '../components/salesTaxDict';
-
-//import API calls here for selectTotal
+import useUserStore from "../components/UserContext";
 import { useStripe } from '@stripe/stripe-react-native';
 import axios from 'axios';
-import testCartItems from './testData/testCartItems';
 import configs from '../config';
-
-const testPaymentIntent = 
-  'pi_3OnrzUAh9NlzJ6kb1zdRHqDw_secret_hPNIuthNdBdYAbxmXJsthJTdv';
-
-const CartTotals = () => {
-
-   const { cart, dispatch } = useCart();
-
-   let subtotal = 0;
-   for (const item of cart.items) {
-     subtotal += item.price;
-   }
-   let deliveryFee = 5;
-   let total = subtotal + deliveryFee;
-
-  return (
-    <CartProvider>
-      <View style={styles.totalsContainer}>
-        <View style={styles.row}>
-          <Text style={styles.text}>Subtotal</Text>
-          <Text style={styles.text}>{subtotal.toFixed(2)} US$</Text>
-        </View>
-      </View>
-    </CartProvider>
-  )
-}
 
 const CartPage = ({navigation}) => {
 
@@ -48,6 +20,9 @@ const CartPage = ({navigation}) => {
   const [addressData, setAddressData] = useState(null);
   const [salesTax, setSalesTax] = useState(0);
   const [showAddressEntrySheet, setShowAddressEntrySheet] = useState(false);
+  const userID = useUserStore((state) => state.userID);
+  const customerName = (useUserStore((state) => state.firstName) + ' ' + useUserStore((state) => state.lastName));
+
 
   useEffect(() => {
     setCartItems(cart.items);
@@ -78,60 +53,61 @@ const CartPage = ({navigation}) => {
 
   };
 
-   const onCreateOrder = async () => {
-
-    //calculate item count, subtotal, total, 
-    
-    let itemNames = ''
-    let itemCount = 0;
-    for (const item of cart.items) {
-      itemCount++;
-      itemNames = itemNames + item.brand + '-' + item.category
-    }
-
-    let billingAddress = '1585 Hillside Drive, Reno, NV, 89503';
-    let shippingAddress = '1585 Hillside Drive, Reno, NV, 89503';
-    let userID = 9; //Update when authentication context is added
-    let customerName = 'Christian Jackson';
-    let orderStatus = 1;
+  const updateSoldStatus = async (itemID) => {
 
     try {
-      const response = await axios.post(API_URL + '/order/insertOrder', {
-        'userID': userID,
-        'customerName': customerName,
-        'billingAddress': billingAddress,
-        'shippingAddress': shippingAddress,
-        'itemCount': itemCount,
-        'orderStatus': orderStatus,
-
-        //Need to edit Stored Procedure before adding these:
-
-        //'items': itemNames,
-        //'totalPrice': total, 
-        //'salesTax': null, 
-        //'totalShippingPrice': null, 
-        //'trackingNumber': null,
+      await axios.post(API_URL + `/items/updateSoldStatus/id/${itemID}`, {
+        soldStatus: 1
       });
-      console.log(response);
-    } catch(error) {
+    }
+    catch(error) {
+      console.error(error);
+    }
+
+  }
+
+   const onCreateOrder = async (total) => {
+
+    let addressString = '';
+
+    if (addressData.addressLine2 !== '') {
+      addressString = `${addressData.address} ${addressData.addressLine2}, ${addressData.city}, ${addressData.state}, ${addressData.zipCode}`;
+    } else {
+      addressString = `${addressData.address}, ${addressData.city}, ${addressData.state}, ${addressData.zipCode}`;
+    }
+
+    try {
+      for (const item of cart.items) {
+
+        const sellerID = item.userID;
+        const itemID = item.itemID;
+  
+  
+        // Make the API call for each item
+        const response = await axios.post(API_URL + '/order/insertOrder', {
+          'userID': userID,
+          'customerName': customerName,
+          'billingAddress': addressString,
+          'shippingAddress': addressString,
+          'itemCount': 1,
+          'items': itemID,
+          'orderStatus': 1,
+          'totalPrice': parseFloat(total).toFixed(2),
+          'sellerID': sellerID,
+        });
+  
+        console.log(response);
+  
+        //Change sold status to 1 for item
+        updateSoldStatus(itemID);
+
+      }
+  
+      // Clear cart context after all items are processed
+      dispatch({ type: 'CLEAR_CART' });
+    } catch (error) {
       console.log(error);
     }
-
-
-    //Delete items from items database
-    for (const item of cart.items) {
-
-      try {
-        const response = await axios.delete(API_URL + `/items/deleteItem/id/${item.itemID}`)
-        console.log(response);
-      } catch(error){
-        console.log(error);
-      }
-    }
-
-    //Clear cart context
-    
-    dispatch({ type: 'CLEAR_CART' });
 
    };
 
@@ -156,9 +132,11 @@ const CartPage = ({navigation}) => {
     if(!showAddressEntrySheet && showTotalsSheet) {
       response = new Object();
 
+      const total = subtotal + salesTax;
+
       try {
           response = await axios.post(API_URL + '/payment/intent', {
-          amount: Math.floor(21.65 * 100),
+          amount: Math.floor(total * 100),
         });
         console.log(response);
       } catch(error) {
@@ -169,6 +147,7 @@ const CartPage = ({navigation}) => {
       const { error: paymentSheetError } = await initPaymentSheet({
         merchantDisplayName: 'Drift',
         paymentIntentClientSecret: response.data.paymentIntent,
+        returnURL: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab',
         billingAddressCollection: 'required',
         defaultBillingDetails: {
           name: 'Christian Jackson',
@@ -195,7 +174,7 @@ const CartPage = ({navigation}) => {
 
       if(paymentResponse) {
         //create order
-        onCreateOrder()
+        onCreateOrder(total);
       }
 
       setTimeout(() => {
@@ -230,7 +209,13 @@ const CartPage = ({navigation}) => {
         item={item} 
         onDelete={() => deleteCartItem(index)} // Pass onDelete callback to CartListItem
       />}
-        ListFooterComponent={CartTotals(cartItems)}
+        ListFooterComponent={
+        <View style={styles.totalsContainer}>
+          <View style={styles.row}>
+            <Text style={styles.text}>Subtotal</Text>
+            <Text style={styles.text}>{subtotal.toFixed(2)} US$</Text>
+          </View>
+        </View>}
         />
         <Pressable onPress={onCheckout} style={styles.button}>
           <Text style={styles.buttonText}>

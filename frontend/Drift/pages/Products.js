@@ -3,10 +3,10 @@ import { View, FlatList, Dimensions } from "react-native";
 import ProductCard from "../components/ProductCard";
 
 const screenWidth = Dimensions.get("window").width;
-const cardWidth = screenWidth / 2 - 20;
 
-const Products = ({ items, navigation, showInfo }) => {
+const Products = ({ items, numCols, navigation, showInfo }) => {
   const [products, setProducts] = useState(items);
+  const cardWidth = screenWidth / numCols - 20;
   useEffect(() => {
     setProducts(items);
   }, [items]);
@@ -25,7 +25,7 @@ const Products = ({ items, navigation, showInfo }) => {
       <FlatList
         data={products}
         renderItem={renderProduct}
-        numColumns={2}
+        numColumns={numCols}
         keyExtractor={(item) => item.itemID}
         contentContainerStyle={{ padding: 8 }}
       />

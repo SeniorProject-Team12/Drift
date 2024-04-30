@@ -54,7 +54,6 @@ const Conversation = ({ route }) => {
 
     return () => {
       CometChat.removeMessageListener(listenerID);
-      CometChat.logout();
     };
   }, []); 
 
