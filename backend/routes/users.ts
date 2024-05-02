@@ -170,9 +170,10 @@ router.post('/id/:id', async (req: Request, res: Response, next: NextFunction) =
 router.post('/reportUser/id/:id', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const userID = req.params.id;
+        const { reportReason } = req.body;
         const sp = "SP_IncreaseUserReportCount";
 
-        await DB.executeStoredProcedure(sp, { userID }, function(err: any, data: any) {
+        await DB.executeStoredProcedure(sp, { userID, reportReason }, function(err: any, data: any) {
             if(err) {
                 console.log("ERROR reporting in API: ", err);
             } else {
