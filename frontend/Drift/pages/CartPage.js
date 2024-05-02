@@ -66,7 +66,7 @@ const CartPage = ({navigation}) => {
 
   }
 
-   const onCreateOrder = async (total) => {
+   const onCreateOrder = async (total, salesTax) => {
 
     let addressString = '';
 
@@ -94,6 +94,7 @@ const CartPage = ({navigation}) => {
           'orderStatus': 1,
           'totalPrice': parseFloat(total).toFixed(2),
           'sellerID': sellerID,
+          'salesTax': parseFloat(salesTax).toFixed(2)
         });
   
         console.log(response);
@@ -174,7 +175,7 @@ const CartPage = ({navigation}) => {
 
       if(paymentResponse) {
         //create order
-        onCreateOrder(total);
+        onCreateOrder(total, salesTax);
       }
 
       setTimeout(() => {

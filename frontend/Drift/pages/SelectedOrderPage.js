@@ -30,7 +30,10 @@ const SelectedOrderPage = ({ route }) => {
                 <Card.Content style={{ height: "100%", flexDirection: "column", gap: "5px" }}>
                     <Text style={styles.title}>{item.brand} - {item.category}</Text>
                     <Text style={styles.text}>Order ID: {item.orderID}</Text>
-                    <Text style={styles.text}>Total Price: {item.totalPrice}</Text>
+                    <Text style={styles.text}>Subtotal: ${(item.totalPrice - item.salesTax).toFixed(2)}</Text>
+                    <Text style={styles.text}>Sales Tax: ${item.salesTax}</Text>
+                    <Text style={styles.text}>Total Price: ${item.totalPrice}</Text>
+                    <Text style={styles.text}>Tracking Number: {item.trackingNumber}</Text>
                     <Text style={styles.text}>Purchased from: {item.sellerUsername}</Text>
                     <Text style={styles.text}>Shipping Address: {item.shippingAddress}</Text>
                 </Card.Content>

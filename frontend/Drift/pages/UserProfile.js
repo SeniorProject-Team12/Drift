@@ -86,7 +86,7 @@ const UserProfile = ({ route, navigation }) => {
       </View>
 
       <Card.Content>
-        <Text>{bio}</Text>
+        <Text style={{marginTop: 10, marginBottom: 10}} >{bio}</Text>
       </Card.Content>
 
       <Card.Actions style={{ justifyContent: "space-between" }}>

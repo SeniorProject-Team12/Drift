@@ -64,10 +64,10 @@ router.get('/getOrderBySellerID/id/:id', async (req:Request, res: Response, next
 router.post('/insertOrder', async (req:Request, res: Response, next: NextFunction) => {
     try {
 
-        const { userID, customerName, billingAddress, shippingAddress, itemCount, items, orderStatus, totalPrice, sellerID /*salesTax/*, totalShippingPrice, trackingNumber*/  } = req.body;
+        const { userID, customerName, billingAddress, shippingAddress, itemCount, items, orderStatus, totalPrice, sellerID, salesTax/*, totalShippingPrice, trackingNumber*/  } = req.body;
         const sp = "SP_InsertOrder";
 
-        await DB.executeStoredProcedure(sp, { userID, customerName, billingAddress, shippingAddress, itemCount, items, orderStatus, totalPrice, sellerID /*salesTax/*, totalShippingPrice, trackingNumber*/ }, function(err, data) {
+        await DB.executeStoredProcedure(sp, { userID, customerName, billingAddress, shippingAddress, itemCount, items, orderStatus, totalPrice, sellerID, salesTax/*, totalShippingPrice, trackingNumber*/ }, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
             } else {
@@ -105,11 +105,11 @@ router.post('/updateOrder/id/:id', async (req:Request, res: Response, next: Next
 router.post('/updateOrderStatus/id/:id', async (req, res, next) => {
     try {
         const orderID = req.params.id;
-        const { orderStatus } = req.body; // Only extracting orderStatus from req.body
+        const { orderStatus, trackingNumber } = req.body;
 
         const sp = "SP_UpdateOrderStatus";
 
-        await DB.executeStoredProcedure(sp, { order_ID: orderID, orderStatus: orderStatus }, function(err, data) {
+        await DB.executeStoredProcedure(sp, { order_ID: orderID, orderStatus: orderStatus, trackingNumber: trackingNumber }, function(err, data) {
             if(err) {
                 console.log("ERROR: ", err);
                 res.status(500).send("Error updating order status");
