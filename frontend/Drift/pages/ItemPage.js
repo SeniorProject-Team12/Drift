@@ -177,6 +177,7 @@ const ItemPage = ({ route, navigation }) => {
                 alert(
                   "This post has just been reported and will be reviewed by admin!"
                 );
+                navigation.navigate('Discover');
               } catch (e) {
                 console.error("Error reporting posted item:", e);
               }
