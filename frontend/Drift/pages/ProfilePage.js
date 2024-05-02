@@ -179,6 +179,7 @@ const ProfilePage = ({ navigation }) => {
         <ProfileImage
           image={image}
           selectImage={() => selectImage(setImage, setErrorMessage)}
+          style={{marginBottom: 50}}
         />
         <Card.Title
           title={name}
@@ -196,7 +197,7 @@ const ProfilePage = ({ navigation }) => {
         />
       </View>
       <Card.Content>
-        <Text>{bio}</Text>
+        <Text style={{marginTop: 10, marginBottom: 10}}>{bio}</Text>
       </Card.Content>
 
       <Portal>
@@ -213,7 +214,7 @@ const ProfilePage = ({ navigation }) => {
         </Dialog>
       </Portal>
 
-      <Products items={items} numCols={2} navigation={navigation} showInfo={false} />
+      <Products items={items} numCols={2} navigation={navigation} showInfo={false}/>
     </View>
   );
 };
@@ -234,7 +235,7 @@ const styles = StyleSheet.create({
     },
     profileHeaderCol2: {
         flex: 1, 
-        justifyContent: 'center', 
+        justifyContent: 'center',
     },
     products: {
         flex: 1,
