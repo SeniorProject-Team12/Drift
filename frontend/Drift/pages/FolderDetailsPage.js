@@ -3,11 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import Products from "./Products";
 import testItems from "./testData/testFolders";
 import configs from "../config";
-import {Button} from "react-native-paper";
+import {Button, Portal, Dialog} from "react-native-paper";
+import { colors } from "../assets/Colors";
 
 const FolderDetailsPage = ({ route, navigation }) => {
     const [items, setItems] = useState([]);
     const {folder} = route.params;
+    const [visible, setVisible] = useState(false)
 
     const fetchSavedItems = async () => {
         try {
@@ -40,6 +42,7 @@ const FolderDetailsPage = ({ route, navigation }) => {
             console.error('Error deleting the folder:', error);
             throw error; 
         }
+        hideDialog();
     }
 
     useEffect(() => {
@@ -47,21 +50,30 @@ const FolderDetailsPage = ({ route, navigation }) => {
     }, []);
     useEffect(() => {
     }, [items]);
+
+    const showDialog = () => setVisible(true);
+    const hideDialog = () => setVisible(false);
     
     return (
         <View style={styles.container}>
-            {/* <Text>{folder.folderName}</Text> */}
             <Button
                 mode="contained"
                 buttonColor="white"
                 textColor="black"
-                onPress={() => {
-                    deleteFolder();
-                    navigation.navigate('Saved');
-                }}
+                onPress={() => showDialog()}
             >
                 Delete Folder
             </Button>
+
+            <Portal>
+            <Dialog visible={visible} onDismiss={hideDialog} style={{marginTop: -150}}>
+                <Dialog.Title>Delete saved folder?</Dialog.Title>
+                <Dialog.Actions>
+                <Button textColor={colors.red} onPress={hideDialog}>No</Button>
+                <Button textColor={colors.darkBlue} onPress={() => {deleteFolder(); navigation.navigate('Saved');}}>Yes</Button>
+                </Dialog.Actions>
+            </Dialog>
+            </Portal>
             <Products items={items} numCols={2} navigation={navigation} showInfo={false} />
         </View>
     );
