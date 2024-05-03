@@ -1,11 +1,11 @@
 import {
   StyleSheet,
-  Text,
   View,
-  Button,
   FlatList,
-  TextInput,
+  KeyboardAvoidingView,
+  Platform 
 } from "react-native";
+import { Text, Button, TextInput } from "react-native-paper";
 import React, { useState, useEffect } from "react";
 import { CometChat } from "@cometchat-pro/react-native-chat";
 import useUserStore from "../../components/UserContext";
@@ -18,6 +18,8 @@ const Conversation = ({ route }) => {
   const { receiverID } = route.params;
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const [sending, setSending] = useState(false);
+
   const chatUserID = useUserStore((state) => state.userID);
 
   useEffect(() => {
@@ -71,7 +73,9 @@ const Conversation = ({ route }) => {
   };
 
   const sendMessage = () => {
-    if (input.trim() === "") return;
+    if (input.trim() === "" || sending) return;
+
+    setSending(true);
 
     const textMessage = new CometChat.TextMessage(
       receiverID,
@@ -85,40 +89,48 @@ const Conversation = ({ route }) => {
         setInput("");
       },
       (error) => console.log("Message sending failed with error:", error)
-    );
+      ).finally(() => {
+        setSending(false);
+      });
   };
 
   return (
-    <View style={{ flex: 1, padding: 10 }}>
-      <FlatList
-        data={messages}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Text
-            style={
-              item.sender.uid === chatUserID ? styles.sender : styles.receiver
-            }
-          >
-            {item.text}
-          </Text>
-        )}
-        inverted
-      />
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <TextInput
-          style={{
-            flex: 1,
-            borderWidth: 1,
-            borderColor: "#ccc",
-            padding: 10,
-            margin: 5,
-          }}
-          value={input}
-          onChangeText={setInput}
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'} enabled>
+      <View style={{ flex: 1, padding: 10 }}>
+        <FlatList
+          data={messages}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <Text
+            //variant="labelMedium"
+              style={
+                item.sender.uid === chatUserID ? styles.sender : styles.receiver
+              }
+            >
+              {item.text}
+            </Text>
+          )}
+          inverted
         />
-        <Button title="Send" onPress={sendMessage} />
+        <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <TextInput
+            style={{
+              flex: 1,
+              // borderWidth: 1,
+              // borderColor: "#ccc",
+              // padding: 10,
+              margin: 5,
+            }}
+            mode="outlined"
+            outlinedColor="#ccc"
+            value={input}
+            onChangeText={setInput}
+            disabled={sending}
+          />
+          <Button mode="text" textColor={colors.darkBlue} onPress={sendMessage} disabled={sending}>Send</Button>
+        </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
