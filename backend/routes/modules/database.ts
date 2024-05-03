@@ -21,7 +21,7 @@ class Database {
     }
 
     executeSQL(query: any, callback: any) {
-        this.makeConnection();
+        // this.makeConnection();
         this.con.query(query, (err: any, result: any) => {
             if (typeof callback === 'function') {
                 if (err) {
