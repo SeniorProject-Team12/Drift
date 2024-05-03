@@ -1,6 +1,7 @@
 import bodyParser from "body-parser";
 import express from 'express';
 import mysql from 'mysql';
+import { DB } from "./routes/modules/db";
 // import Database from "./routes/modules/database";
 
 import { router as userRouter } from './routes/users';
@@ -25,6 +26,7 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
+DB.makeConnection();
 
 // use routes
 app.use('/', indexRouter);

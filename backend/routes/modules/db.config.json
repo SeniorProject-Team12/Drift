@@ -2,7 +2,7 @@
   "development": {
     "username": "sqluser",
     "password": "Sqlrocks01!", 
-    "database": "drift",
+    "database": "driftfinal",
     "host": "localhost", 
     "dialect": "mysql"
   },

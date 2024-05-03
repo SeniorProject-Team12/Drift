@@ -49,7 +49,7 @@ router.get('/getAllUnsoldItems', async (req: Request, res: Response, next: NextF
   req.setTimeout(30000)
 
   try {
-    await DB.executeSQL('SELECT * FROM items WHERE soldStatus IS NULL', function(err: any, data: any) {
+    await DB.executeSQL('SELECT * FROM items WHERE soldStatus IS NULL AND reportedCount < 3', function(err: any, data: any) {
       if (err) {
         console.log("ERROR: ", err);
         res.send("Error getting all items");
@@ -118,7 +118,7 @@ router.get('/getItemsByUserID/userID/:userID', async (req: Request, res: Respons
   try {
     const userID = req.params.userID;
 
-    let sqlQuery = 'SELECT * FROM items WHERE userID = ' + userID;
+    let sqlQuery = 'SELECT * FROM items WHERE userID = ' + userID + ' AND reportedCount < 3';
 
       await DB.executeSQL(sqlQuery, function(err: any, data: any){
         if (err) {
