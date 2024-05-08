@@ -5,19 +5,5 @@
     "database": "driftfinal",
     "host": "localhost", 
     "dialect": "mysql"
-  },
-  "test": {
-    "username": "root",
-    "password": "Nana7forever!",
-    "database": "drift",
-    "host": "localhost",
-    "dialect": "mysql"
-  },
-  "production": {
-    "username": "",
-    "password": "",
-    "database": "",
-    "host": "",
-    "dialect": "mysql"
   }
 }
