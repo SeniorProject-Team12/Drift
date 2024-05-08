@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Pressable, KeyboardAvoidingView } from "react-native";
-import Folders from "./Folders";
+import Folders from "../components/Folders";
 import { useIsFocused } from "@react-navigation/native";
 import {
   Text,

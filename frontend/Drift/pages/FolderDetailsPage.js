@@ -1,6 +1,6 @@
 import React, { useEffect, useState} from "react";
 import { StyleSheet, Text, View } from 'react-native';
-import Products from "./Products";
+import Products from "../components/Products";
 import testItems from "./testData/testFolders";
 import configs from "../config";
 import {Button, Portal, Dialog} from "react-native-paper";

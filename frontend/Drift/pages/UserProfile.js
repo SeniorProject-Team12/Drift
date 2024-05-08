@@ -8,7 +8,7 @@ import {
   Portal,
   TextInput
 } from "react-native-paper";
-import Products from "./Products";
+import Products from "../components/Products.js";
 import UserProfileImage from "../components/userProfileImage.js";
 import axios from "axios";
 import configs from "../config";

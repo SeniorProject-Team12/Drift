@@ -102,7 +102,6 @@ const Conversation = ({ route }) => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <Text
-            //variant="labelMedium"
               style={
                 item.sender.uid === chatUserID ? styles.sender : styles.receiver
               }
@@ -116,9 +115,6 @@ const Conversation = ({ route }) => {
           <TextInput
             style={{
               flex: 1,
-              // borderWidth: 1,
-              // borderColor: "#ccc",
-              // padding: 10,
               margin: 5,
             }}
             mode="outlined"

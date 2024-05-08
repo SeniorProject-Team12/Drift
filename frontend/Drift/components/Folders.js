@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, FlatList, Dimensions } from "react-native";
-import FolderCard from "../components/FolderCard";
+import FolderCard from "./FolderCard";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth / 3;

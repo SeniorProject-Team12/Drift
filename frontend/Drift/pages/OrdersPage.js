@@ -1,6 +1,6 @@
 import React from "react";
 // import axios from 'axios';
-import Orders from './Orders';
+import Orders from '../components/Orders';
 import { SafeAreaView, StyleSheet, View, Text, TouchableOpacity } from "react-native";
 
 const OrdersPage = ({navigation}) => {

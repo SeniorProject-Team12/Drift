@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import AppScreenStack from "./components/AppScreenStack";
-import { DrawerContent } from "./pages/DrawerContent";
+import { DrawerContent } from "./components/DrawerContent";
 import SettingsPage from "./pages/SettingsPage";
 import OrdersPage from "./pages/OrdersPage";
 import SellingPage from './pages/SellingPage'
@@ -206,7 +206,6 @@ const App = () => {
 			console.log(API_URL + '/user/login');
 
         try {
-          // console.log("Before w/ \'" + username + "\' and \'" + password + "\'");
           const res = await axios.post(API_URL + "/user/login", {
             username: username,
             password: password,
@@ -231,7 +230,6 @@ const App = () => {
           } else {
             userToken = "randomUserToken";
             AsyncStorage.setItem("userToken", userToken);
-            // value={ZusfirstName};
             AsyncStorage.setItem("userID", String(res.data[0].userID));
             AsyncStorage.setItem("FirstName", res.data[0].firstName);
             AsyncStorage.setItem("LastName", res.data[0].lastName);
