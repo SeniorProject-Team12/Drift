@@ -1,10 +1,10 @@
 import React from "react";
 import axios from 'axios';
 import configs from "../config";
-import OrderCard from "../components/OrderCard";
+import OrderCard from "./OrderCard";
 import { View, FlatList, Dimensions } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import useUserStore from "../components/UserContext";
+import useUserStore from "./UserContext";
 
 const screenWidth = Dimensions.get("window").width;
 const cardWidth = screenWidth - 20;

@@ -66,7 +66,6 @@ const ChatPage = ({ navigation }) => {
         style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: "#ccc" }}
       >
         <Card.Title
-          // <Text variant="titleMedium" style={{paddingLeft: 50}}> {item.conversationWith.name}</Text>
           title={item.conversationWith.name}
           titleStyle={{paddingLeft:20}}
           subtitle={item.lastMessage.data.text}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View} from "react-native";
 import { Searchbar, IconButton, Text, ActivityIndicator } from "react-native-paper";
-import Products from "./Products";
+import Products from "../components/Products";
 import { Appbar } from "react-native-paper";
 import axios from "axios";
 import configs from "../config";

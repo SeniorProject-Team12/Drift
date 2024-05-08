@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, FlatList, Dimensions } from "react-native";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "./ProductCard";
 
 const screenWidth = Dimensions.get("window").width;
 
