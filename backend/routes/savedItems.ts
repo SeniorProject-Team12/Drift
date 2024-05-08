@@ -60,7 +60,7 @@ router.post('/addSavedItem', async (req, res, next) => {
     }
 });
 
-//add saved items
+//delete saved items
 router.post('/deleteSavedItem', async (req, res, next) => {
     console.log("deleting saved item");
     try {

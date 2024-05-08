@@ -12,7 +12,7 @@ import {
   Dialog,
   TextInput,
 } from "react-native-paper";
-import Products from "./Products";
+import Products from "../components/Products.js";
 import testItems from "./testData/testItems";
 import * as ImagePicker from "expo-image-picker";
 import ProfileImage from "../components/profileImage.js";
